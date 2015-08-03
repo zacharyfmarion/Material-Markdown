@@ -1,0 +1,17 @@
+#marked{
+  background: #2c3e50;
+}
+
+#marked h1, h2, h3, h4, h5, h6, p, hr, code, li{
+  color: #95a5a6;
+}
+
+#marked a{
+  color: #3498db;
+  text-decoration: none;
+}
+
+#marked blockquote{
+  border-left: 5px solid #95a5a6;
+  padding-left: 5px;
+}

@@ -24,6 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     #marked{
       height: inherit;
       padding: 5px;
+      overflow-y: scroll;
     }
 
     #render-button{
@@ -67,11 +68,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Create editor
         var editor = this._createEditor(this.$.editor);
         this.$.editor.style.height = (window.innerHeight - 65) + 'px';
-        //add event listener to watch for window resize...not working for some reason
-        window.addEventListener('resize', function(){
-          this.$.editor.style.height = (window.innerHeight - 65) + 'px';
-          this.aceEditor.resize();
-        }, true);
+        this.$.marked.style.height = (window.innerHeight - 75) + 'px';
+
+        // window.addEventListener('resize', function(){
+        //   this.$.editor.style.height = (window.innerHeight - 65) + 'px';
+        //   this.$.marked.style.height = (window.innerHeight - 75) + 'px';
+        //   this.aceEditor.resize();
+
+        // }, true);
         // Edit session based on attributes
         var session = this._editSession(editor);
         // If autoRendering, render the markdown when editor changes
