@@ -66,10 +66,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready: function(){
         // Create editor
         var editor = this._createEditor(this.$.editor);
-        this.$.editor.style.height = (window.innerHeight - 65) + "px";
+        this.$.editor.style.height = (window.innerHeight - 65) + 'px';
         //add event listener to watch for window resize...not working for some reason
         window.addEventListener('resize', function(){
-          this.$.editor.style.height = (window.innerHeight - 65) + "px";
+          this.$.editor.style.height = (window.innerHeight - 65) + 'px';
           this.aceEditor.resize();
         }, true);
         // Edit session based on attributes
