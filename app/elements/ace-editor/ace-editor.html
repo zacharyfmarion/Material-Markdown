@@ -1,0 +1,148 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="ace-editor">
+  <style>
+    :host {
+      display: block;
+    }
+
+    #editor{
+      height: 300px;
+    }
+
+  </style>
+  <template>
+    <div id="editor" class = "flex"></div>
+  </template>
+  <script>
+  (function() {
+    Polymer({
+      is: 'ace-editor',
+
+      properties: {
+        /**
+         * Theme for the ace editor instance to be created, can currenty
+         * be set to 'light' or 'dark'
+         */
+        theme: {
+          type: String,
+          value: "light",
+          notify: true
+        },
+        /**
+         * Mode that the editor will be set to...for example 'javascript'
+         *  or 'css'. Currently only supports css, js, markdown, and html
+         */
+        mode: {
+          type: String,
+          value: "javascript",
+          notify: true
+        },
+        /**
+         * Determines whether text in the ace editor wraps
+         */
+        wrap: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+        /**
+          * Defines options to be passed into the editor.setOptions() method
+          */
+        options: {
+          type: Object,
+          value: function(){
+            return {};
+          },
+          notify: true
+        },
+        /**
+         * Determines whether the ace editor uses a worker
+         */
+        useworker: {
+          type: Boolean,
+          value: false,
+          notify: true
+        },
+        /**
+          * The editor object created on ace.edit(container)
+          */
+        aceEditor: {
+          type: Object,
+          readonly: true
+        }
+      },
+
+      ready: function(){
+        // Create editor from div
+        this._createEditor();
+        // Editor session, setting everything to attribute specs
+        this._editSession();
+
+        this.$.editor.style.height = (window.innerHeight - 65) + 'px';
+      },
+
+      /**
+       * Create an instance of the ace editor and set the theme
+       *
+       * @param {String} Name of the container that will hold the editor
+       * @return {Object} Instance of the ace editor created
+       */
+      _createEditor: function(){
+        //// Create ACE
+        var editor = ace.edit(this.$.editor);
+        this.aceEditor = editor;
+        // Prevent error message
+        editor.$blockScrolling = Infinity;
+        // Set theme based on attrubute
+        if (this.theme == "dark") editor.setTheme("ace/theme/monokai");
+        else editor.setTheme("ace/theme/textmate");
+        editor.setOptions(this.options);
+        return editor;
+      },
+      /**
+       * Edit an ace session to set wrap, worker, and mode (separate function)
+       *
+       * @param {Object} The editor instance whose session is being manipulated
+       * @return {Object} The ace editor session
+       */
+      _editSession: function(){
+        var session = this.aceEditor.getSession();
+        // set wrap based on attribute
+        session.setUseWrapMode(this.wrap);
+        // set worker based on attribute
+        session.setUseWorker(this.useworker);
+        // set mode based on attribute
+        this._setMode(session);
+        return session;
+      },
+      /**
+       * Set the mode of an ace editor session
+       *
+       * @param {Object} The ace editor session
+       */
+      _setMode: function(session){
+        var fullMode = "ace/mode/" + this.mode;
+        session.setMode(fullMode);
+      },
+      /**
+       * Observer function that changes wrap mode on change of the "wrap" attribute
+       */
+      _wrapModeChanged: function(){
+        var session = this.aceEditor.getSession();
+        session.setUseWrapMode(this.wrap);
+      }
+    });
+  })();
+  </script>
+</dom-module>
