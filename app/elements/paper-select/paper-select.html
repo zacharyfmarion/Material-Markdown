@@ -19,11 +19,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     #dropdown-trigger{
+      position: relative;
       height: 25px;
-      border-bottom: 1px solid #95a5a6;
-      padding: 0px;
+      /* border-bottom: 1px solid #95a5a6; */
       margin: 0;
-      color: white;
+      color: black;
+      background: white;
+      padding: 3px;
     }
 
     .select-value{
@@ -74,7 +76,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
     <div id = "dropdown-trigger" on-tap="open" class = "layout horizontal">
-      <span class = "flex select-value">{{label}}</span><iron-icon icon = "arrow-drop-down"></iron-icon>
+      <paper-ripple></paper-ripple>
+      <div class="layout vertical center">
+        <span class = "flex select-value">{{label}}</span>
+      </div>
+      <iron-icon icon = "arrow-drop-down" style = "color: black"></iron-icon>
       <content select=".dropdown-trigger"></content>
     </div>
     <iron-dropdown id="dropdown"
@@ -170,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       open: function() {
-        if (this.items != null){
+        if (this.items !== null){
           this.$.dropdown.open();
         }
       },

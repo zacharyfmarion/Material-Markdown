@@ -40,15 +40,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     #ribbon{
-      background: #3498db;
-      height: 50px;
+      background: #E91E63;
+      height: 60px;
+    }
+
+    .select-label{
+      padding-left: 4px;
+      color: #fff;
     }
 
   </style>
   <template>
     <div class = "fullbleed layout vertical">
       <div id = "ribbon" class = "layout horizontal">
-        <paper-select id = "themeSelect" items = "{{themeOptions}}" initval = 'dark'></paper-select>
+        <!-- TODO: HOW DO YOU GET THESE TO HOOK ON AND ACTUALLY CHANGE ATTRIBUTES???? -->
+        <span class = "select-label">Editor Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" initval = 'light'></paper-select>
+        <span class = "select-label">Font Size: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = '12'></paper-select>
       </div>
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
@@ -86,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return [
               {
                 name: "Light",
-                value: "light"
+                value: "light",
               },
               {
                 name: "Dark",
@@ -97,6 +104,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 value: "other"
               }
             ]
+          },
+          reflectToAttribute: true
+        },
+
+        fontOptions: {
+          type: Array,
+          value: function(){
+            var sizes = [];
+            for (var i = 10; i < 25; i++){
+              sizes[i-10] = {
+                name: i.toString(),
+                value: i.toString()
+              }
+            }
+            return sizes;
           }
         }
       },
@@ -104,6 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [FirepadBehaviors.AceBehavior],
 
       ready: function(){
+        // Change theme based on initval of themeSelect
         this.aceTheme = this.$.themeSelect.getAttribute('value');
         // Create editor
         var editor = this._createEditor(this.$.editor);
@@ -134,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _adjustHeights: function(){
-        var ribbonHeight = (this.noribbon) ? 0 : 50;
+        var ribbonHeight = (this.noribbon) ? 20 : 80;
         this.$.editor.style.height = (window.innerHeight - 65 - ribbonHeight) + 'px';
         this.$.marked.style.height = (window.innerHeight - 74 - ribbonHeight) + 'px';
       }

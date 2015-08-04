@@ -57,13 +57,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 </head>
 
+  <style>
+    .menubar{
+      -webkit-app-region: drag;
+      -webkit-user-select: none;
+      border-radius: 0;
+    }
+
+    paper-header-panel{
+      border-radius: 0;
+    }
+  </style>
+
+  <style is="custom-style">
+    .small-icon {
+      --iron-icon-height: 18px;
+      --iron-icon-width: 18px;
+      padding: 0;
+      margin: 0;
+    }
+  </style>
+
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
-
           <!-- Main Area -->
           <paper-header-panel main condenses keep-condensed-header>
-
+            <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
+              <paper-icon-button class="small-icon" icon="close"></paper-icon-button>
+              <paper-icon-button class="small-icon" icon="remove"></paper-icon-button>
+              <paper-icon-button class="small-icon" icon="fullscreen"></paper-icon-button>
+            </div>
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
               <paper-icon-button id = "toggleRibbon" icon="menu"></paper-icon-button>
@@ -71,10 +95,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-icon-button id = "style-settings" icon="settings"></paper-icon-button>
             </paper-toolbar>
             <div class="content">
-                <markdown-editor wrap aceMode = "markdown" autoRender noRibbon></markdown-editor>
+                <markdown-editor wrap aceTheme = "dark" aceMode = "markdown" autoRender noRibbon></markdown-editor>
             </div>
           </paper-header-panel>
-
+          <!-- Main content...the editor -->
           <styles-editor></styles-editor>
 
     <paper-toast id="caching-complete"
@@ -108,7 +132,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <!-- build:js scripts/app.js -->
-
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
 </body>
