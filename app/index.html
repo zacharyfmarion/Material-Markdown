@@ -55,24 +55,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
 
-  <style>
-    #styles-editor{
-      height: 800px;
-      width: 1000px;
-    }
-
-    #styles-modal{
-      padding: 0;
-      margin: 0;
-    }
-
-    paper-dialog.paper-dialog-0{
-      padding: 0;
-      margin: 0;
-      background: #fff;
-    }
-  </style>
-
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -93,13 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
           </paper-header-panel>
 
-          <paper-dialog id = "styles-modal" class = "layout vertical" modal>
-            <div id = "styles-editor" class = "flex"></div>
-            <div class = "layout horizontal">
-              <paper-button dialog-dismiss>Cancel</paper-button>
-              <paper-button dialog-confirm>Apply</paper-button>
-            </div>
-          </paper-dialog>
+          <styles-editor></styles-editor>
 
     <paper-toast id="caching-complete"
                  duration="6000"
@@ -123,9 +99,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }, false)
 
       var styleSettings = document.getElementById('style-settings');
+      var stylesEditor = document.getElementsByTagName('styles-editor')[0];
       styleSettings.addEventListener('click', function(){
-        document.getElementById('styles-modal').setAttribute('opened', '');
-        var stylesEditor = ace.edit('styles-editor');
+        stylesEditor.setAttribute('opened', '');
       }, false)
     </script>
 

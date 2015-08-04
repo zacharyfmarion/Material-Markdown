@@ -9,15 +9,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../ace-behavior/ace-behavior.html">
 
 <dom-module id="styles-editor">
   <style>
     :host {
       display: block;
     }
+
+    #stylesEditor{
+      height: 800px;
+      width: 1000px;
+    }
+
+    #stylesModal{
+      padding: 0;
+      margin: 0;
+    }
+
+    paper-dialog.paper-dialog-0{
+      padding: 0;
+      margin: 0;
+      background: #fff;
+    }
   </style>
   <template>
-    <div>Hello from <span>{{foo}}</span></div>
+    <paper-dialog id = "stylesModal" class = "layout vertical" modal>
+      <div id = "stylesEditor" class = "flex"></div>
+      <div class = "layout horizontal">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm>Apply</paper-button>
+      </div>
+    </paper-dialog>
   </template>
   <script>
   (function() {
@@ -25,12 +48,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'styles-editor',
 
       properties: {
-        foo: {
+        opened: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          observer: "_openStateChanged"
+        },
+        css: {
           type: String,
-          value: 'bar',
-          notify: true
+          value: null
         }
-      }
+      },
+
+      behaviors: [FirepadBehaviors.AceBehavior],
+
+      ready: function(){
+        // Create editor
+        var editor = this._createEditor(this.$.stylesEditor);
+        // Edit session based on attributes
+        var session = this._editSession(editor);
+        session.setMode('ace/mode/css');
+        // Listen for changes to the editor
+        this._listenForChange(session, editor, this);
+      },
+
+      _openStateChanged: function(){
+        var stylesModal = this.$.stylesModal;
+        (this.opened) ? stylesModal.setAttribute('opened', '') : stylesModal.removeAttribute('opened');
+      },
+
+      _listenForChange: function(session, editor, object){
+        session.on('change', function() {
+          Polymer.dom(object).setAttribute('css', editor.getValue());
+        });
+      },
+
     });
   })();
   </script>
