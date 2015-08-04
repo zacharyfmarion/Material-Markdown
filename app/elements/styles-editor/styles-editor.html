@@ -17,29 +17,60 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
     }
 
-    #stylesEditor{
-      height: 800px;
-      width: 1000px;
+    #stylesModal{
     }
 
-    #stylesModal{
-      padding: 0;
-      margin: 0;
+    #stylesEditor{
+      /* position: absolute; */
+      overflow: scroll;
     }
 
     paper-dialog.paper-dialog-0{
       padding: 0;
       margin: 0;
       background: #fff;
+      max-height: 1000px !important;
     }
+
+    paper-toolbar{
+      background: #E91E63;
+    }
+
+    .container{
+      padding:0;
+      margin: 0;
+    }
+
+    .actionButtons{
+      position: absolute;
+      right: 5px;
+      bottom: 5px;
+    }
+
+    #applyAction{
+      background: #E91E63;
+    }
+
   </style>
   <template>
-    <paper-dialog id = "stylesModal" class = "layout vertical" modal>
-      <div id = "stylesEditor" class = "flex"></div>
-      <div class = "layout horizontal">
-        <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm>Apply</paper-button>
+    <paper-dialog id = "stylesModal" modal>
+      <div class = "container">
+        <paper-toolbar>
+          <div class="title">Edit Styles</div>
+        <!--  <paper-tabs selected="0" class="bottom self-end" style="width: 300px;">
+          <paper-tab>ITEM ONE</paper-tab>
+          <paper-tab>ITEM TWO</paper-tab>
+        </paper-tabs> -->
+        <div class="bottom flex"></div>
+      </paper-toolbar>
+        <div id = "stylesEditor"></div>
       </div>
+      <!-- Actions -->
+      <div class = "layout horizontal actionButtons">
+        <paper-button raised on-tap = '_modalClosedWithoutSave' id = "cancelAction">Cancel</paper-button>
+        <paper-button raised on-tap = '_modalClosedWithSave' id = "applyAction">Apply</paper-button>
+      </div>
+
     </paper-dialog>
   </template>
   <script>
@@ -52,7 +83,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false,
           notify: true,
-          observer: "_openStateChanged"
+          observer: "_openStateChanged",
+          reflectToAttribute: true
         },
         css: {
           type: String,
@@ -70,6 +102,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         session.setMode('ace/mode/css');
         // Listen for changes to the editor
         this._listenForChange(session, editor, this);
+        // Set height of editor
+        this.$.stylesEditor.style.height = ((window.innerHeight / 2) - 65) + 'px';
+        this.$.stylesEditor.style.width = (window.innerWidth / 2)  + 'px';
+
       },
 
       _openStateChanged: function(){
@@ -83,6 +119,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
+      _modalClosedWithSave: function(){
+        this.opened = false;
+      },
+
+      _modalClosedWithoutSave: function(){
+        this.opened = false;
+      }
     });
   })();
   </script>

@@ -19,18 +19,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     #dropdown-trigger{
-      height: 30px;
-      width: 100px;
-      border-bottom: 2px solid #95a5a6;
+      height: 25px;
+      border-bottom: 1px solid #95a5a6;
       padding: 0px;
       margin: 0;
       color: white;
     }
 
+    .select-value{
+      padding-left: 2px;
+      padding-right: 6px;
+      padding-top: 2px;
+      font-weight: 300;
+    }
+
+    #dropdown > ::content ul {
+      display: block;
+      position: relative;
+      background-color: #fff;
+      box-shadow: 0px 2px 6px #ccc;
+      margin: 0.25em 0;
+      padding: 0.25em;
+      border-radius: 0px;
+    }
+
+    #dropdown > ::content [vertical-align="top"] ul {
+      margin-top: 0;
+    }
+
+    #dropdown > ::content [vertical-align="bottom"] ul {
+      margin-bottom: 0;
+    }
+
+    #dropdown > ::content li {
+      display: block;
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
+
+    #dropdown > ::content a {
+      display: block;
+      position: relative;
+      color: black;
+      padding: .75em;
+      text-decoration: none;
+      font-weight: 400;
+    }
+
+    /* #dropdown > ::content li:not(:last-of-type) {
+      border-bottom: 1px solid #eee;
+    } */
+
   </style>
   <template>
-    <div id = "dropdown-trigger" on-tap="open">
-      Option
+    <div id = "dropdown-trigger" on-tap="open" class = "layout horizontal">
+      <span class = "flex select-value">{{label}}</span><iron-icon icon = "arrow-drop-down"></iron-icon>
       <content select=".dropdown-trigger"></content>
     </div>
     <iron-dropdown id="dropdown"
@@ -39,7 +83,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       disabled="[[disabled]]"
       open-animation-config="[[openAnimationConfig]]"
       close-animation-config="[[closeAnimationConfig]]">
-      <content select=".dropdown-content"></content>
+      <ul class = "dropdown-content">
+        <template is = "dom-repeat" items = "[[items]]">
+          <li on-tap = "_setValue">
+            <a>[[item.name]]</a>
+            <paper-ripple></paper-ripple>
+          </li>
+        </template>
+      </ul>
     </iron-dropdown>
   </template>
   <script>
@@ -47,9 +98,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'paper-select',
 
       properties: {
+
         verticalAlign: String,
+
         horizontalAlign: String,
+
         disabled: Boolean,
+
         openAnimationConfig: {
           type: Array,
           value: function() {
@@ -79,12 +134,64 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             }];
           }
+        },
+
+        items: {
+          type: Array,
+          value: null,
+          reflectToAttribute: true
+        },
+
+        value: {
+          type: String,
+          value: "",
+          notify: true,
+          reflectToAttribute: true
+        },
+
+        initval: {
+          type: String,
+          reflectToAttribute: true
+        },
+
+        label: {
+          type: String,
+          notify: true,
+          reflectToAttribute: true
         }
+
+      },
+
+      ready: function(){
+        // Set value to initial value if one is provided and this value
+        // is in the items array
+        this._checkForInitval();
+        this.$.dropdown.style.width = 100 + 'px';
       },
 
       open: function() {
-        this.$.dropdown.open();
+        if (this.items != null){
+          this.$.dropdown.open();
+        }
+      },
+
+      _setValue: function(e){
+        var model = e.model;
+        this.value = model.item.value;
+        this.label = model.item.name;
+        this.$.dropdown.close();
+      },
+
+      _checkForInitval: function(){
+        for (var i = 0; i < this.items.length; i++){
+          if (this.items[i].value === this.initval){
+            this.value = this.initval;
+            this.label = this.items[i].name;
+            break;
+          }
+        }
       }
+
     });
   </script>
 </dom-module>
