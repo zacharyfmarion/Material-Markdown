@@ -55,24 +55,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
 
+  <style>
+    #styles-editor{
+      height: 800px;
+      width: 1000px;
+    }
+
+    #styles-modal{
+      padding: 0;
+      margin: 0;
+    }
+
+    paper-dialog.paper-dialog-0{
+      padding: 0;
+      margin: 0;
+      background: #fff;
+    }
+  </style>
+
 </head>
 
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
-
           <!-- Main Area -->
           <paper-header-panel main condenses keep-condensed-header>
 
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
+              <paper-icon-button id = "toggleRibbon" icon="menu"></paper-icon-button>
               <div class="title">Markdown Editor</div>
+              <paper-icon-button id = "style-settings" icon="settings"></paper-icon-button>
             </paper-toolbar>
             <div class="content">
-                <markdown-editor wrap aceMode = "markdown" autoRender></markdown-editor>
+                <markdown-editor wrap aceMode = "markdown" autoRender noRibbon></markdown-editor>
             </div>
           </paper-header-panel>
+
+          <paper-dialog id = "styles-modal" class = "layout vertical" modal>
+            <div id = "styles-editor" class = "flex"></div>
+            <div class = "layout horizontal">
+              <paper-button dialog-dismiss>Cancel</paper-button>
+              <paper-button dialog-confirm>Apply</paper-button>
+            </div>
+          </paper-dialog>
 
     <paper-toast id="caching-complete"
                  duration="6000"
@@ -88,9 +115,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </platinum-sw-cache>
     </platinum-sw-register>
 
+    <script>
+      var ribbonToggle = document.getElementById('toggleRibbon');
+      ribbonToggle.addEventListener('click', function(){
+        var editor = document.getElementsByTagName('markdown-editor')[0];
+        (editor.hasAttribute('noribbon')) ? editor.removeAttribute('noRibbon') : editor.setAttribute('noribbon', '');
+      }, false)
+
+      var styleSettings = document.getElementById('style-settings');
+      styleSettings.addEventListener('click', function(){
+        document.getElementById('styles-modal').setAttribute('opened', '');
+        var stylesEditor = ace.edit('styles-editor');
+      }, false)
+    </script>
+
   </template>
 
   <!-- build:js scripts/app.js -->
+
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
 </body>

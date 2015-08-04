@@ -6,7 +6,11 @@
     "paper-elements": "PolymerElements/paper-elements#1.0.1",
     "platinum-elements": "PolymerElements/platinum-elements#1.0.1",
     "neon-elements": "PolymerElements/neon-elements#1.0.0",
-    "page": "visionmedia/page.js#~1.6.3"
+    "page": "visionmedia/page.js#~1.6.3",
+    "mat-dropdown": "~0.9.5",
+    "iron-dropdown": "PolymerElements/iron-dropdown#~1.0.3",
+    "neon-animation": "PolymerElements/neon-animation#~1.0.6",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.3"
   },
   "devDependencies": {
     "web-component-tester": "*",

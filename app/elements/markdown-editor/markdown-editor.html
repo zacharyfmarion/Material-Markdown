@@ -31,18 +31,89 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       position: absolute;
       bottom: 10px;
       right: 10px;
+      background: #fff;
     }
 
     #editor{
       border-right: 2px solid rgba(100,100,100,.1);
     }
 
+    #ribbon{
+      background: #3498db;
+      height: 50px;
+    }
+
+    ul {
+      display: block;
+      position: relative;
+      background-color: #fff;
+      box-shadow: 0px 2px 6px #ccc;
+      margin: 0.25em 0;
+      padding: 0.25em;
+      border-radius: 3px;
+    }
+
+    [vertical-align="top"] ul {
+      margin-top: 0;
+    }
+
+    [vertical-align="bottom"] ul {
+      margin-bottom: 0;
+    }
+
+    li {
+      display: block;
+      position: relative;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      display: block;
+      position: relative;
+      padding: 1em;
+      text-decoration: none;
+    }
+
+    li:not(:last-of-type) {
+      border-bottom: 1px solid #eee;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      border: 1px solid #ccc;
+      background-color: #eee;
+      padding: 1em;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:focus {
+      outline: none;
+      border-color: blue;
+    }
+
   </style>
   <template>
-    <div class="fullbleed layout horizontal wrapper">
-      <div id = "editor" class = "flex"></div>
-      <marked-element id = "marked" class = "flex"></marked-element>
+    <div class = "fullbleed layout vertical">
+      <div id = "ribbon" class = "layout horizontal">
+        <paper-select>
+          <ul class="dropdown-content">
+            <template is="dom-repeat" items="[[test]]">
+              <li><a href="javascript:void(0)">[[item]]</a></li>
+            </template>
+          </ul>
+        </paper-select>
+      </div>
+      <div class="fullbleed layout horizontal wrapper flex">
+        <div id = "editor" class = "flex"></div>
+        <marked-element id = "marked" class = "flex"></marked-element>
+      </div>
     </div>
+
       <paper-button raised on-tap = "_renderMarkdown" id = "render-button" hidden$="{{autoRender}}">Render</paper-button>
   </template>
   <script>
@@ -55,10 +126,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         /**
           * Element renders on ace change if true
           */
-        autoRender: {
+        autorender: {
           type: Boolean,
           value: true,
           readonly: true
+        },
+
+        noribbon: {
+          type: Boolean,
+          value: false,
+          observer: '_watchRibbonState'
+        },
+
+        test: {
+          type: Array,
+          value: [
+            "option 1",
+            "option 2",
+            "option 3"
+          ]
         }
       },
 
@@ -67,19 +153,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready: function(){
         // Create editor
         var editor = this._createEditor(this.$.editor);
-        this.$.editor.style.height = (window.innerHeight - 65) + 'px';
-        this.$.marked.style.height = (window.innerHeight - 75) + 'px';
-
-        // window.addEventListener('resize', function(){
-        //   this.$.editor.style.height = (window.innerHeight - 65) + 'px';
-        //   this.$.marked.style.height = (window.innerHeight - 75) + 'px';
-        //   this.aceEditor.resize();
-
-        // }, true);
+        // Adjust heights based on the noribbon attribute and window size
+        this._adjustHeights();
         // Edit session based on attributes
         var session = this._editSession(editor);
         // If autoRendering, render the markdown when editor changes
-        if (this.autoRender){
+        if (this.autorender){
           this._listenForChange(session, this);
         }
       },
@@ -93,6 +172,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         session.on('change', function() {
            object._renderMarkdown();
         });
+      },
+
+      _watchRibbonState: function(){
+        (this.noribbon) ? this.$.ribbon.style.display = "none" : this.$.ribbon.style.display = "block";
+        this._adjustHeights();
+      },
+
+      _adjustHeights: function(){
+        var ribbonHeight = (this.noribbon) ? 0 : 50;
+        this.$.editor.style.height = (window.innerHeight - 65 - ribbonHeight) + 'px';
+        this.$.marked.style.height = (window.innerHeight - 75 - ribbonHeight) + 'px';
       }
 
     });
