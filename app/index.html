@@ -44,11 +44,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles/dark-theme.css">
   <!-- endbuild-->
+
+  <!-- build:css styles/marked-theme.css -->
+  <link rel="stylesheet" href="styles/marked-theme.css">
+  <!-- endbuild -->
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js scripts/css-refresh.js -->
+  <script src="scripts/css-refresh.js"></script>
   <!-- endbuild -->
 
   <!-- will be replaced with elements/elements.vulcanized.html -->
@@ -84,7 +91,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- Main Area -->
           <paper-header-panel main condenses keep-condensed-header>
             <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
-              <paper-icon-button class="small-icon" icon="close"></paper-icon-button>
+              <paper-icon-button class="small-icon" icon="close" onclick = "close"></paper-icon-button>
               <paper-icon-button class="small-icon" icon="remove"></paper-icon-button>
               <paper-icon-button class="small-icon" icon="fullscreen"></paper-icon-button>
             </div>
@@ -98,8 +105,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <markdown-editor wrap aceTheme = "dark" aceMode = "markdown" autoRender noRibbon></markdown-editor>
             </div>
           </paper-header-panel>
-          <!-- Main content...the editor -->
-          <styles-editor></styles-editor>
+          <!-- Editor for the marked styles -->
+          <styles-editor wrap></styles-editor>
 
     <paper-toast id="caching-complete"
                  duration="6000"

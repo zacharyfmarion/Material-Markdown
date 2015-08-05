@@ -88,7 +88,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         css: {
           type: String,
+          value: null,
+          reflectToAttribute: true
+        },
+        unsavedChanges: {
+          type: String,
           value: null
+        },
+        fs: {
+          type: Object,
+          value: function(){
+            return require('fs');
+          }
         }
       },
 
@@ -100,17 +111,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Edit session based on attributes
         var session = this._editSession(editor);
         session.setMode('ace/mode/css');
-        // Listen for changes to the editor
-        this._listenForChange(session, editor, this);
         // Set height of editor
         this.$.stylesEditor.style.height = ((window.innerHeight / 2) - 65) + 'px';
         this.$.stylesEditor.style.width = (window.innerWidth / 2)  + 'px';
-
+        // Populate editor with data from marked-theme.css file
+        this._populateStyles(editor);
+        // Listen for changes to the editor
+        this._listenForChange(session, editor, this);
       },
 
       _openStateChanged: function(){
         var stylesModal = this.$.stylesModal;
         (this.opened) ? stylesModal.setAttribute('opened', '') : stylesModal.removeAttribute('opened');
+        // Set unsaved changes to css, to revert back to on close without save
+        this.unsavedChanges = this.css;
       },
 
       _listenForChange: function(session, editor, object){
@@ -120,12 +134,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _modalClosedWithSave: function(){
+        var filePath = 'dist/styles/marked-theme.css';
+        var styles  = cssbeautify(this.css, {
+          indent: '  ',
+          autosemicolon: true
+        });
+        this.fs.writeFile(filePath, styles, function(err) {
+            if(err) throw err;
+            return;
+        });
+
         this.opened = false;
       },
 
       _modalClosedWithoutSave: function(){
+        // Revert to original
+        this.css = this.unsavedChanges;
         this.opened = false;
+      },
+
+      _populateStyles: function(editor){
+        // Populating the styles editor
+        var filePath = 'dist/styles/marked-theme.css';
+        // alert(filePath);
+        this.fs.readFile(filePath, function (err, data){
+            if (err){
+                throw err;
+            }else{
+                // Sets the value of the editor equal to the file and moves the cursor to
+                // the begining
+                var styles  = cssbeautify(data.toString(), {
+                  indent: '  ',
+                  autosemicolon: true
+                });
+                editor.setValue(styles, -1);
+            }
+        });
       }
+
     });
   })();
   </script>
