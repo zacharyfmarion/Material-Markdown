@@ -83,6 +83,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: true,
           readonly: true
         },
+        /**
+          * File path to file loaded (if one is loaded)
+          */
+        filepath: {
+          type: String,
+          value: null,
+          observer: '_filePathChanged'
+        },
 
         noribbon: {
           type: Boolean,
@@ -123,6 +131,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             }
             return sizes;
+          }
+        },
+
+        fs: {
+          type: Object,
+          value: function(){
+            return require('fs');
           }
         }
       },
@@ -171,6 +186,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _changeFontSize: function(){
         var fontSize = this.$.fontSelect.getAttribute('value');
         this.$.editor.style.fontSize = fontSize + 'px';
+      },
+
+      _filePathChanged: function(){
+        if (this.filepath !== null){
+          this._readFile(this.aceEditor, this.filepath);
+        }
+      },
+
+      _readFile: function(editor, filePath){
+        this.fs.readFile(filePath, function (err, data){
+            if (err){
+                throw err;
+            }else{
+                // Sets the value of the editor equal to the file and moves the cursor to
+                // the begining
+                editor.setValue(data.toString(), -1);
+            }
+        });
       }
 
     });
