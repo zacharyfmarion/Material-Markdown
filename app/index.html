@@ -43,19 +43,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
 
   <!-- build:css styles/main.css -->
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
   <!-- endbuild-->
 
-  <!-- build:css styles/marked-theme.css -->
-  <link rel="stylesheet" href="styles/marked-theme.css">
-  <!-- endbuild -->
+  <link id = "marked-styles" rel="stylesheet" href="styles/marked-theme.css">
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-  <!-- endbuild -->
-
-  <!-- build:js scripts/css-refresh.js -->
-  <script src="scripts/css-refresh.js"></script>
   <!-- endbuild -->
 
   <!-- will be replaced with elements/elements.vulcanized.html -->
@@ -82,6 +76,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       --iron-icon-width: 18px;
       padding: 0;
       margin: 0;
+      -webkit-app-region: no-drag;
     }
   </style>
 
@@ -91,9 +86,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- Main Area -->
           <paper-header-panel main condenses keep-condensed-header>
             <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
-              <paper-icon-button class="small-icon" icon="close" onclick = "close"></paper-icon-button>
-              <paper-icon-button class="small-icon" icon="remove"></paper-icon-button>
-              <paper-icon-button class="small-icon" icon="fullscreen"></paper-icon-button>
+              <paper-icon-button class="small-icon" icon="close" id = "close"></paper-icon-button>
+              <paper-icon-button class="small-icon" icon="remove" id = "minimize"></paper-icon-button>
+              <paper-icon-button class="small-icon" icon="fullscreen" id = "fullscreen"></paper-icon-button>
             </div>
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
@@ -102,7 +97,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <paper-icon-button id = "style-settings" icon="settings"></paper-icon-button>
             </paper-toolbar>
             <div class="content">
-                <markdown-editor wrap aceTheme = "dark" aceMode = "markdown" autoRender noRibbon></markdown-editor>
+                <markdown-editor wrap mode = "markdown" autoRender noRibbon></markdown-editor>
             </div>
           </paper-header-panel>
           <!-- Editor for the marked styles -->
@@ -134,13 +129,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       styleSettings.addEventListener('click', function(){
         stylesEditor.setAttribute('opened', '');
       }, false)
+
+      // Update styles when custom element event is fired, signifying style change
+      stylesEditor.addEventListener("styles-changed", function(){
+        // reload window
+      }, false);
     </script>
+
+    <script>require('./menubar');</script>
 
   </template>
 
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
   <!-- endbuild-->
+
 </body>
 
 </html>

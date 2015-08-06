@@ -49,13 +49,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       color: #fff;
     }
 
+    #themeSelectLabel{
+      padding-left: 25px;
+    }
+
   </style>
   <template>
     <div class = "fullbleed layout vertical">
       <div id = "ribbon" class = "layout horizontal">
-        <!-- TODO: HOW DO YOU GET THESE TO HOOK ON AND ACTUALLY CHANGE ATTRIBUTES???? -->
-        <span class = "select-label">Editor Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" initval = 'light'></paper-select>
-        <span class = "select-label">Font Size: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = '12'></paper-select>
+        <span class = "select-label" id = "themeSelectLabel">Editor Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" value = "{{theme}}"></paper-select>
+        <span class = "select-label">Font Size: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "12"></paper-select>
       </div>
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
@@ -90,20 +93,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         themeOptions: {
           type: Array,
           value: function(){
-            return [
-              {
-                name: "Light",
-                value: "light",
-              },
-              {
-                name: "Dark",
-                value: "dark"
-              },
-              {
-                name: "Other",
-                value: "other"
+            // All ace themes
+            var themes = ['ambiance','chaos','chrome','clouds','clouds_midnight', 'cobalt', 'crimson_editor', 'dawn', 'dreamweaver', 'eclipse', 'github', 'idle_fingers', 'iplastic', 'katzenmilch',
+                          'kr_theme', 'kuroir', 'merbivore', 'merbivore_soft', 'mono_industrial', 'monokai', 'pastel_on_dark', 'solarized_dark', 'solarized_light', 'sqlserver', 'terminal',
+                          'textmate', 'tomorrow', 'tomorrow_night', 'tomorrow_night_blue', 'tomorrow_night_bright', 'tomorrow_night_eighties', 'twilight', 'vibrant', 'vibrant_ink', 'xcode'];
+            var final = [];
+            for (var i = 0; i < themes.length; i++){
+              // Uppercase first letter for aesthetics
+              var withSpaces = themes[i].replace(/_/g, ' ');
+              var finalName = withSpaces.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+              final[i] = {
+                name: finalName,
+                value: themes[i]
               }
-            ]
+            }
+            return final;
           },
           reflectToAttribute: true
         },
@@ -138,6 +142,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.autorender){
           this._listenForChange(session, this);
         }
+        // add event listener for select changed
+        this.$.fontSelect.addEventListener('select-changed', this._changeFontSize.bind(this), false);
       },
 
       _renderMarkdown: function(){
@@ -152,7 +158,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       _watchRibbonState: function(){
-        (this.noribbon) ? this.$.ribbon.style.display = "none" : this.$.ribbon.style.display = "block";
+        (this.noribbon) ? this.$.ribbon.style.display = 'none' : this.$.ribbon.style.display = 'block';
         this._adjustHeights();
       },
 
@@ -160,6 +166,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var ribbonHeight = (this.noribbon) ? 20 : 80;
         this.$.editor.style.height = (window.innerHeight - 65 - ribbonHeight) + 'px';
         this.$.marked.style.height = (window.innerHeight - 74 - ribbonHeight) + 'px';
+      },
+
+      _changeFontSize: function(){
+        var fontSize = this.$.fontSelect.getAttribute('value');
+        this.$.editor.style.fontSize = fontSize + 'px';
       }
 
     });

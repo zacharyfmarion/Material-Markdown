@@ -157,6 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         initval: {
           type: String,
+          value: null,
           reflectToAttribute: true
         },
 
@@ -172,7 +173,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Set value to initial value if one is provided and this value
         // is in the items array
         this._checkForInitval();
-        this.$.dropdown.style.width = 100 + 'px';
+        this.$.dropdown.style.minWidth = 100 + 'px';
       },
 
       open: function() {
@@ -186,14 +187,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.value = model.item.value;
         this.label = model.item.name;
         this.$.dropdown.close();
+        // fire a custom event
+        this.fire('select-changed');
       },
 
       _checkForInitval: function(){
-        for (var i = 0; i < this.items.length; i++){
-          if (this.items[i].value === this.initval){
-            this.value = this.initval;
-            this.label = this.items[i].name;
-            break;
+        if (this.initval !== null){
+          for (var i = 0; i < this.items.length; i++){
+            if (this.items[i].value === this.initval){
+              this.value = this.initval;
+              this.label = this.items[i].name;
+              break;
+            }
+          }
+        } else if (this.value !== null){
+          for (var i = 0; i < this.items.length; i++){
+            if (this.items[i].value === this.value){
+              this.label = this.items[i].name;
+              break;
+            }
           }
         }
       }

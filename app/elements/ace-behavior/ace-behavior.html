@@ -20,8 +20,10 @@ are so inclined.
        */
       theme: {
         type: String,
-        value: "light",
-        notify: true
+        value: 'textmate',
+        notify: true,
+        reflectToAttribute: true,
+        observer: '_themeChanged'
       },
       /**
        * Mode that the editor will be set to...for example 'javascript'
@@ -29,8 +31,9 @@ are so inclined.
        */
       mode: {
         type: String,
-        value: "javascript",
-        notify: true
+        value: 'javascript',
+        notify: true,
+        reflectToAttribute: true
       },
       /**
        * Determines whether text in the ace editor wraps
@@ -79,8 +82,7 @@ are so inclined.
       // Prevent error message
       editor.$blockScrolling = Infinity;
       // Set theme based on attrubute
-      if (this.theme == "dark") editor.setTheme("ace/theme/monokai");
-      else editor.setTheme("ace/theme/textmate");
+      this._setTheme(editor);
       editor.setOptions(this.options);
       return editor;
     },
@@ -106,7 +108,7 @@ are so inclined.
      * @param {Object} The ace editor session
      */
     _setMode: function(session){
-      var fullMode = "ace/mode/" + this.mode;
+      var fullMode = 'ace/mode/' + this.mode;
       session.setMode(fullMode);
     },
     /**
@@ -115,6 +117,19 @@ are so inclined.
     _wrapModeChanged: function(){
       var session = this.aceEditor.getSession();
       session.setUseWrapMode(this.wrap);
+    },
+    /**
+     * Observer function that changes theme of editor when the theme attribute changes
+     */
+    _themeChanged: function(){
+      // If the editor has been defined already...
+      if (this.aceEditor) this._setTheme(this.aceEditor);
+    },
+    /**
+     * Helper function that sets the theme of the editor
+     */
+    _setTheme: function(editor){
+      editor.setTheme('ace/theme/' + this.theme);
     }
   };
 </script>

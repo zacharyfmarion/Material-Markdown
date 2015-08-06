@@ -49,6 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     #applyAction{
       background: #E91E63;
+      color: #fff;
     }
 
   </style>
@@ -67,8 +68,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
       <!-- Actions -->
       <div class = "layout horizontal actionButtons">
-        <paper-button raised on-tap = '_modalClosedWithoutSave' id = "cancelAction">Cancel</paper-button>
-        <paper-button raised on-tap = '_modalClosedWithSave' id = "applyAction">Apply</paper-button>
+        <paper-button raised on-tap = "_modalClosedWithoutSave" id = "cancelAction">Cancel</paper-button>
+        <paper-button raised on-tap = "_modalClosedWithSave" id = "applyAction">Apply</paper-button>
       </div>
 
     </paper-dialog>
@@ -83,7 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false,
           notify: true,
-          observer: "_openStateChanged",
+          observer: '_openStateChanged',
           reflectToAttribute: true
         },
         css: {
@@ -93,7 +94,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         unsavedChanges: {
           type: String,
-          value: null
+          value: null,
+          reflectToAttribute: true,
+          notify: true
         },
         fs: {
           type: Object,
@@ -135,7 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _modalClosedWithSave: function(){
         var filePath = 'dist/styles/marked-theme.css';
-        var styles  = cssbeautify(this.css, {
+        var styles = cssbeautify(this.css, {
           indent: '  ',
           autosemicolon: true
         });
@@ -143,13 +146,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             if(err) throw err;
             return;
         });
-
+        // Fire a custom event signifying that the style has been edited and saved
+        this.fire('styles-changed');
+        // Close the modal
         this.opened = false;
       },
 
       _modalClosedWithoutSave: function(){
         // Revert to original
         this.css = this.unsavedChanges;
+        // Close the modal
         this.opened = false;
       },
 
