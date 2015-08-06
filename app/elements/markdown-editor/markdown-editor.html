@@ -66,7 +66,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </div>
     </div>
 
-      <paper-button raised on-tap = "_renderMarkdown" id = "render-button" hidden$="{{autorender}}">Render</paper-button>
+      <paper-button raised on-tap = "renderMarkdown" id = "render-button" hidden$="{{autorender}}">Render</paper-button>
   </template>
   <script>
 
@@ -91,13 +91,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: null,
           observer: '_filePathChanged'
         },
-
+        /**
+          * Specifies whether editor ribbon is visible
+          */
         noribbon: {
           type: Boolean,
           value: false,
           observer: '_watchRibbonState'
         },
-
+        /**
+          * Specifies whether text in editor is up to date with the text stored
+          * in the file located at the this.filepath directory
+          */
+        upToDate: {
+          type: Boolean,
+          value: false,
+          reflectToAttribute: true
+        },
+        /**
+          * All ace editor theme options, formatted for use with <paper-select>
+          */
         themeOptions: {
           type: Array,
           value: function(){
@@ -113,13 +126,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               final[i] = {
                 name: finalName,
                 value: themes[i]
-              }
+              };
             }
             return final;
           },
           reflectToAttribute: true
         },
-
+        /**
+          * Font size options for editor, formatted for use with <paper-select>
+          */
         fontOptions: {
           type: Array,
           value: function(){
@@ -128,12 +143,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               sizes[i-10] = {
                 name: i.toString(),
                 value: i.toString()
-              }
+              };
             }
             return sizes;
           }
         },
-
+        /*
+         * Node fs object used for interacting with user's file system
+         */
         fs: {
           type: Object,
           value: function(){
@@ -142,8 +159,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      /*
+       * Ace editor behavior, giving access to ace functionality
+       */
       behaviors: [FirepadBehaviors.AceBehavior],
 
+      /*
+       * Code to be run when template is ready
+       */
       ready: function(){
         // Change theme based on initval of themeSelect
         this.aceTheme = this.$.themeSelect.getAttribute('value');
@@ -153,51 +176,120 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._adjustHeights();
         // Edit session based on attributes
         var session = this._editSession(editor);
-        // If autoRendering, render the markdown when editor changes
-        if (this.autorender){
-          this._listenForChange(session, this);
-        }
+        // Listen for changes to editor
+        this._listenForChange(session, this)
         // add event listener for select changed
         this.$.fontSelect.addEventListener('select-changed', this._changeFontSize.bind(this), false);
       },
 
-      _renderMarkdown: function(){
+      // PUBLIC FUNCTIONS
+
+      /*
+       * Set the file path of the file being edited
+       * @param {String} Path to file
+       */
+      setFilePath: function(filepath){
+        this.filepath = filepath;
+      },
+
+      /*
+       * Toggles the edit ribbon
+       */
+      toggleRibbon: function(){
+        this.toggleAttribute('noribbon');
+      },
+
+      /*
+       * Renders the markdown currently in the editor
+       */
+      renderMarkdown: function(){
         var text = this.aceEditor.getValue();
+        //TODO: can just say this.$.marked I think...
         Polymer.dom(this.$.marked).setAttribute('markdown', text);
       },
 
+      /*
+       * Saves a file based on a specified filepath
+       */
+      saveFile: function(filepath){
+        var text = this.aceEditor.getValue();
+        this.fs.writeFile(filepath, text, function(err) {
+          if(err) {
+            return console.log(err);
+          }
+        });
+        // Set filepath to save destination
+        this.filepath = filepath;
+        // File is now up to date
+        this.upToDate = true;
+      },
+
+      /*
+       * Method exposing the private method _readFile, to open files from outside the scope
+       */
+      openFile: function(filename){
+        this._readFile(this.aceEditor, filename);
+      },
+
+      // Private functions
+
+      /*
+       * Listens for changes to the ace editor and updates markdown if autorendering
+       * @param {Object} Current ace session
+       * @param {Object} global "this". TODO: use .bind() instead, this is ugly
+       */
       _listenForChange: function(session, object){
         session.on('change', function() {
-           object._renderMarkdown();
+           if (object.autorender){
+             object.renderMarkdown();
+           }
+           object.upToDate = false;
         });
       },
 
+      /*
+       * Watch the ribbon attribute, hiding or showing it accordingly
+       */
       _watchRibbonState: function(){
         (this.noribbon) ? this.$.ribbon.style.display = 'none' : this.$.ribbon.style.display = 'block';
         this._adjustHeights();
       },
 
+      /*
+       * Adjust height of editor when ribbon shown or hidden
+       */
       _adjustHeights: function(){
         var ribbonHeight = (this.noribbon) ? 20 : 80;
         this.$.editor.style.height = (window.innerHeight - 65 - ribbonHeight) + 'px';
         this.$.marked.style.height = (window.innerHeight - 74 - ribbonHeight) + 'px';
       },
 
+      /*
+       * Changes size of aceEditor font
+       */
       _changeFontSize: function(){
         var fontSize = this.$.fontSelect.getAttribute('value');
         this.$.editor.style.fontSize = fontSize + 'px';
       },
 
+      /*
+       * Watch the filepath attribute and read a file on change
+       */
       _filePathChanged: function(){
         if (this.filepath !== null){
           this._readFile(this.aceEditor, this.filepath);
         }
       },
 
+      /*
+       * Read a file specified by the filepath attribute
+       * @param {Object} Ace editor object
+       * @param {String} Path to file currently being loaded
+       */
       _readFile: function(editor, filePath){
         this.fs.readFile(filePath, function (err, data){
             if (err){
-                throw err;
+                return console.log(err);
             }else{
                 // Sets the value of the editor equal to the file and moves the cursor to
                 // the begining
@@ -205,7 +297,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
         });
       }
-
     });
   })();
 

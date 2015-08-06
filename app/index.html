@@ -117,38 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </platinum-sw-cache>
     </platinum-sw-register>
 
-    <script>
-      var ribbonToggle = document.getElementById('toggleRibbon');
-      var editor = document.getElementsByTagName('markdown-editor')[0];
-      ribbonToggle.addEventListener('click', function(){
-        (editor.hasAttribute('noribbon')) ? editor.removeAttribute('noRibbon') : editor.setAttribute('noribbon', '');
-      }, false)
-
-      var styleSettings = document.getElementById('style-settings');
-      var stylesEditor = document.getElementsByTagName('styles-editor')[0];
-      styleSettings.addEventListener('click', function(){
-        stylesEditor.setAttribute('opened', '');
-      }, false)
-
-      var holder = document.getElementById('editor');
-
-      holder.ondragover = function () {
-        editor.style.opacity = '.6';
-        return false;
-      };
-      holder.ondragleave = holder.ondragend = function () {
-        editor.style.opacity = '1';
-        return false;
-      };
-      holder.ondrop = function (e) {
-        e.preventDefault();
-        editor.style.opacity = '1';
-        var file = e.dataTransfer.files[0];
-        editor.setAttribute('filePath', file.path);
-        return false;
-      };
-
-    </script>
+    <script>require('./index');</script>
 
     <script>require('./menubar');</script>
 
