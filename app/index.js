@@ -4,12 +4,19 @@ var editor = document.getElementsByTagName('markdown-editor')[0];
 var styleSettings = document.getElementById('style-settings');
 var stylesEditor = document.getElementsByTagName('styles-editor')[0];
 
+// Adjust height of editor when window is resized
+window.addEventListener('resize', function(){
+  editor.resizeEditor();
+}, true);
+
+// Toggle ribbon when the toggle button is clicked
 ribbonToggle.addEventListener('click', function(){
   editor.toggleRibbon();
 }, false);
 
+// open
 styleSettings.addEventListener('click', function(){
-  stylesEditor.setAttribute('opened', '');
+  stylesEditor.open();
 }, false);
 
 // Allow user to drag a file into the editor to open it

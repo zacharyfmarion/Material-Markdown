@@ -10,6 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../ace-behavior/ace-behavior.html">
+<link rel="import" href="../export-behavior/export-behavior.html">
 
 <dom-module id="markdown-editor">
   <style>
@@ -103,9 +104,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           * Specifies whether text in editor is up to date with the text stored
           * in the file located at the this.filepath directory
           */
-        upToDate: {
-          type: Boolean,
-          value: false,
+        savedText: {
+          type: String,
+          value: null,
           reflectToAttribute: true
         },
         /**
@@ -147,22 +148,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             return sizes;
           }
-        },
-        /*
-         * Node fs object used for interacting with user's file system
-         */
-        fs: {
-          type: Object,
-          value: function(){
-            return require('fs');
-          }
         }
       },
 
       /*
        * Ace editor behavior, giving access to ace functionality
        */
-      behaviors: [FirepadBehaviors.AceBehavior],
+      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior],
 
       /*
        * Code to be run when template is ready
@@ -173,7 +165,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Create editor
         var editor = this._createEditor(this.$.editor);
         // Adjust heights based on the noribbon attribute and window size
-        this._adjustHeights();
+        this.resizeEditor();
         // Edit session based on attributes
         var session = this._editSession(editor);
         // Listen for changes to editor
@@ -200,6 +192,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /*
+       * Adjust height of editor when ribbon shown or hidden
+       */
+      resizeEditor: function(){
+        var ribbonHeight = (this.noribbon) ? 20 : 80;
+        this.$.editor.style.height = (window.innerHeight - 64 - ribbonHeight) + 'px';
+        this.$.marked.style.height = (window.innerHeight - 74 - ribbonHeight) + 'px';
+      },
+
+      /*
        * Renders the markdown currently in the editor
        */
       renderMarkdown: function(){
@@ -218,17 +219,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return console.log(err);
           }
         });
+        // Set saved text
+        this.savedText = text;
         // Set filepath to save destination
         this.filepath = filepath;
-        // File is now up to date
-        this.upToDate = true;
       },
 
       /*
        * Method exposing the private method _readFile, to open files from outside the scope
+       * @param {String} Name of file
        */
       openFile: function(filename){
-        this._readFile(this.aceEditor, filename);
+        this._readFile(this.aceEditor, filename, this);
       },
 
       // Private functions
@@ -243,7 +245,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
            if (object.autorender){
              object.renderMarkdown();
            }
-           object.upToDate = false;
         });
       },
 
@@ -252,16 +253,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _watchRibbonState: function(){
         (this.noribbon) ? this.$.ribbon.style.display = 'none' : this.$.ribbon.style.display = 'block';
-        this._adjustHeights();
-      },
-
-      /*
-       * Adjust height of editor when ribbon shown or hidden
-       */
-      _adjustHeights: function(){
-        var ribbonHeight = (this.noribbon) ? 20 : 80;
-        this.$.editor.style.height = (window.innerHeight - 65 - ribbonHeight) + 'px';
-        this.$.marked.style.height = (window.innerHeight - 74 - ribbonHeight) + 'px';
+        this.resizeEditor();
       },
 
       /*
@@ -277,7 +269,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _filePathChanged: function(){
         if (this.filepath !== null){
-          this._readFile(this.aceEditor, this.filepath);
+          this._readFile(this.aceEditor, this.filepath, this);
         }
       },
 
@@ -285,8 +277,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Read a file specified by the filepath attribute
        * @param {Object} Ace editor object
        * @param {String} Path to file currently being loaded
+       * @param {Object} global "this". TODO: use .bind() instead, this is ugly
        */
-      _readFile: function(editor, filePath){
+      _readFile: function(editor, filePath, object){
         this.fs.readFile(filePath, function (err, data){
             if (err){
                 return console.log(err);
@@ -294,6 +287,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // Sets the value of the editor equal to the file and moves the cursor to
                 // the begining
                 editor.setValue(data.toString(), -1);
+                object.savedText = editor.getValue();
             }
         });
       }

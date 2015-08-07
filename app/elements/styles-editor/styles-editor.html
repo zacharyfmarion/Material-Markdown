@@ -106,7 +106,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      behaviors: [FirepadBehaviors.AceBehavior],
+      behaviors: [MarkdownBehaviors.AceBehavior],
 
       ready: function(){
         // Create editor
@@ -121,6 +121,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._populateStyles(editor);
         // Listen for changes to the editor
         this._listenForChange(session, editor, this);
+      },
+
+      open: function(){
+        this.opened = true;
+      },
+
+      close: function(){
+        this.opened = false;
       },
 
       _openStateChanged: function(){
@@ -149,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Fire a custom event signifying that the style has been edited and saved
         this.fire('styles-changed');
         // Close the modal
-        this.opened = false;
+        this.close();
       },
 
       _modalClosedWithoutSave: function(){

@@ -1,3 +1,5 @@
+'use strict';
+
 var remote = require('remote');
 var app = remote.require('app');
 var BrowserWindow = remote.require('browser-window');
@@ -6,10 +8,25 @@ var dialog = remote.require('dialog');
 
 var myBrowserWindow = BrowserWindow.getAllWindows()[0];
 var stylesEditor = document.getElementsByTagName('styles-editor')[0];
+var editor = document.getElementsByTagName('markdown-editor')[0];
 
 // Close app
 document.getElementById('close').onclick = function(){
-  app.quit();
+  if (editor.savedText === editor.aceEditor.getValue()){
+    app.quit();
+  }else{
+    var response = dialog.showMessageBox({
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      message: 'You have unsaved changes. Do you wish to proceed?',
+      title: 'Unsaved changes'
+    });
+    if (response === 0){
+      app.quit();
+    }else{
+      return;
+    }
+  }
 };
 // Minimize app
 document.getElementById('minimize').onclick = function(){
@@ -26,7 +43,8 @@ stylesEditor.addEventListener('styles-changed', function(){
   myBrowserWindow.reload();
 }, false);
 
-// Building the Application Menu...move this to a json file and then
+// Building the Application Menu...TODO: move this to a json file and call from
+// entry.js on app ready
 var menu = Menu.buildFromTemplate([
   {
     label: 'Electron',
@@ -49,7 +67,22 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Quit',
         click: function(){
-          app.quit();
+          // TODO: Get this to work
+          if ((editor.savedText === editor.aceEditor.getValue()) || (editor.savedText === null && editor.acedEditor.getValue() === '')){
+            app.quit();
+          }else{
+            var response = dialog.showMessageBox({
+              type: 'question',
+              buttons: ['Yes', 'No'],
+              message: 'You have unsaved changes. Do you wish to proceed?',
+              title: 'Unsaved changes'
+            });
+            if (response === 0){
+              app.quit();
+            }else{
+              return;
+            }
+          }
         },
         accelerator: 'Command+Q'
       }
@@ -61,8 +94,8 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'New',
         click: function(){
-          // Clear editor if all changes are saved (check for an attribute)
-
+          // Depends on if you are going to use tabs and routing or if this is a
+          // single window affair
         },
         accelerator: 'Command+N'
       },
@@ -76,18 +109,25 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Open',
         click: function(){
-          var editor = document.getElementsByTagName('markdown-editor')[0]; var hasFilePath;
-          (editor.filepath === null) ? hasFilePath = false : hasFilePath = true;
-          var files = dialog.showOpenDialog({ properties: ['openFile']});
-          var file = files[0];
-          if (hasFilePath !== null){
+          if (editor.savedText === null || editor.savedText === editor.aceEditor.getValue()){
+            var files = dialog.showOpenDialog({ properties: ['openFile']});
+            var file = files[0];
             editor.setFilePath(file);
           }else{
-            // dialog.showMessageBox({
-            //   type: 'error',
-            //   message: 'I need to add a isUpToDate attribute to markdwon-editor',
-            //   title: 'Error opening file'
-            // });
+            var response = dialog.showMessageBox({
+              type: 'question',
+              buttons: ['Yes', 'No'],
+              message: 'You have unsaved changes. Do you wish to proceed?',
+              title: 'Error opening file'
+            });
+            // If they respond with Yes
+            if (response === 0){
+              var files = dialog.showOpenDialog({ properties: ['openFile']});
+              var file = files[0];
+              editor.setFilePath(file);
+            }else{
+              return;
+            }
           }
 
         },
@@ -105,7 +145,11 @@ var menu = Menu.buildFromTemplate([
           {
             label: 'PDF',
             click: function(){
-              // ditto
+              if (editor.savedText !== null){
+                dialog.showSaveDialog(function(filename){
+                  editor.convertToPdf(editor.savedText, filename, 'dist/styles/test.css');
+                });
+              }
             }
           }
         ]
@@ -116,14 +160,13 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Save',
         click: function(){
-          var editor = document.getElementsByTagName('markdown-editor')[0];
           if (editor.filepath === null){
             dialog.showSaveDialog(function(filename){
               editor.saveFile(filename);
             });
           }else{
             editor.saveFile(editor.filepath);
-          };
+          }
         },
         accelerator: 'Command+S'
       },
@@ -136,6 +179,7 @@ var menu = Menu.buildFromTemplate([
     ]
   },
   {
+    //TODO: Implement these methods
     label: 'Edit',
     submenu: [
       {

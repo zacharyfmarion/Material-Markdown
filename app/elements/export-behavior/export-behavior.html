@@ -1,0 +1,52 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<script>
+//ensure that this is not confused with a Polymer behavior in the future
+var MarkdownBehaviors = MarkdownBehaviors || {};
+/**
+  * Behavior for exporting markdown to various formats
+  * @polymerBehavior
+  */
+MarkdownBehaviors.ExportBehavior = {
+  properties: {
+    /**
+     * MarkdownPDF...nodeJS package to render markdown into a PDF form
+     */
+     markdownPdf: {
+       type: Object,
+       value: function(){
+         return require('markdown-pdf');
+       }
+     },
+     /*
+      * Node fs object used for interacting with user's file system
+      */
+     fs: {
+       type: Object,
+       value: function(){
+         return require('fs');
+       }
+     }
+  },
+  /**
+   * Convert a string of markdown to pdf
+   * @param {String} Markdown to be rendered into a pdf
+   * @param {String} Path where the pdf will be saved
+   * @param {String} Path to the css file to be used when rendering pdf
+   */
+   convertToPdf: function(markdown, path, pathToCss){
+     this.markdownPdf({
+       cssPath: pathToCss
+     }).from.string(markdown).to(path);
+   }
+
+};
+</script>
