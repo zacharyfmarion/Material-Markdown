@@ -1,0 +1,70 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="html-output-modal">
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+  <template>
+    <!-- Output of HTML export -->
+    <paper-dialog id = "htmlModal" modal>
+      <div class="fullbleed layout vertical">
+        <div id = "renderedHTML" class = "flex"></div>
+        <!-- Actions -->
+        <div class = "layout horizontal actionButtons">
+          <paper-button raised id = "close" on-tap = '_closeModal'>Close</paper-button>
+        </div>
+      </div>
+    </paper-dialog>
+  </template>
+  <script>
+  (function() {
+    Polymer({
+      is: 'html-output-modal',
+
+      properties: {
+        js_beautify: {
+          type: Object,
+          value: function(){
+            return require('js-beautify');
+          }
+        }
+      },
+
+      ready: function(){
+        // Do nothing
+      },
+
+      /*
+       * Opens the modal, first populating it with the text from the editor, rendered
+       * as HTML with marked
+       * @param {Object} Ace editor object
+       */
+      open: function(editor){
+        var html = marked(editor.getValue());
+        var prettifiedHTML = this.js_beautify.html(html);
+        this.$.renderedHTML.textContent = prettifiedHTML;
+        this.$.htmlModal.open();
+      },
+
+      /*
+       * Closes the modal
+       */
+      _closeModal: function(){
+        this.$.htmlModal.close();
+      }
+    });
+  })();
+  </script>
+</dom-module>

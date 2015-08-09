@@ -19,6 +19,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       cursor: pointer;
     }
 
+    @font-face {
+      font-family: "Cutive_Mono";
+      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+    }
+
+    @font-face {
+      font-family: "Nova_Mono";
+      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+    }
+
+    @font-face {
+      font-family: "Share_Tech_Mono";
+      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+    }
+
+    @font-face {
+      font-family: "Source_Code_Pro";
+      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+    }
+
     .wrapper{
       height: 100%;
     }
@@ -54,12 +74,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding-left: 25px;
     }
 
+    .undoredo{
+      color: #fff;
+    }
+
   </style>
   <template>
     <div class = "fullbleed layout vertical">
       <div id = "ribbon" class = "layout horizontal">
         <span class = "select-label" id = "themeSelectLabel">Editor Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" value = "{{theme}}"></paper-select>
-        <span class = "select-label">Font Size: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "12"></paper-select>
+        <span class = "select-label">Font: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "Monacco"></paper-select>
+        <span class = "select-label">Font Size: </span><paper-select id = "fontSizeSelect" items = "{{fontSizeOptions}}" initval = "12"></paper-select>
+        <paper-icon-button class = 'self-end undoredo' icon = 'undo' on-tap = 'undo'></paper-icon-button>
+        <paper-icon-button class = 'self-end undoredo' icon = 'redo' on-tap = 'redo'></paper-icon-button>
       </div>
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
@@ -133,10 +160,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           },
           reflectToAttribute: true
         },
+
+        /**
+          * Font options for editor, formatted for use with <paper-select>.
+          * Note that the fonts need to be monospaced so that the ace cursor is in
+          * the right position
+          */
+        fontOptions: {
+          type: Array,
+          value: function(){
+            // Ace only supports monospace fonts
+            var fonts = ['Cutive_Mono', 'Monacco', 'Nova_Mono', 'Share_Tech_Mono', 'Source_Code_Pro'];
+            var fontOptions = [];
+            // return an object formatting this correctly
+            for (var i = 0; i < fonts.length; i++){
+              fontOptions[i] = {
+                name: fonts[i],
+                value: fonts[i]
+              };
+            }
+            return fontOptions;
+          }
+        },
         /**
           * Font size options for editor, formatted for use with <paper-select>
           */
-        fontOptions: {
+        fontSizeOptions: {
           type: Array,
           value: function(){
             var sizes = [];
@@ -153,8 +202,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /*
        * Ace editor behavior, giving access to ace functionality
+       * Export behavior, giving access to markdown export functions
+       * Adds ability to animate objects
        */
-      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior],
+      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior,  Polymer.NeonAnimationRunnerBehavior],
 
       /*
        * Code to be run when template is ready
@@ -171,7 +222,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Listen for changes to editor
         this._listenForChange(session, this)
         // add event listener for select changed
-        this.$.fontSelect.addEventListener('select-changed', this._changeFontSize.bind(this), false);
+        this.$.fontSelect.addEventListener('select-changed', this._changeFont.bind(this), false);
+        this.$.fontSizeSelect.addEventListener('select-changed', this._changeFontSize.bind(this), false);
       },
 
       // PUBLIC FUNCTIONS
@@ -233,12 +285,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._readFile(this.aceEditor, filename, this);
       },
 
+      undo: function(){
+        this.aceEditor.undo();
+      },
+
+      redo: function(){
+        this.aceEditor.redo();
+      },
+
       // Private functions
 
       /*
        * Listens for changes to the ace editor and updates markdown if autorendering
        * @param {Object} Current ace session
-       * @param {Object} global "this". TODO: use .bind() instead, this is ugly
+       * @param {Object} global "this". TODO: use .bind() or .call() or whatever instead, this is ugly
        */
       _listenForChange: function(session, object){
         session.on('change', function() {
@@ -257,10 +317,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /*
+       * Changes the aceEditor font
+       */
+      _changeFont: function(){
+        var font = this.$.fontSelect.value;
+        this.$.editor.style.fontFamily = font;
+      },
+
+      /*
        * Changes size of aceEditor font
        */
       _changeFontSize: function(){
-        var fontSize = this.$.fontSelect.getAttribute('value');
+        var fontSize = this.$.fontSizeSelect.value;
         this.$.editor.style.fontSize = fontSize + 'px';
       },
 
@@ -277,7 +345,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Read a file specified by the filepath attribute
        * @param {Object} Ace editor object
        * @param {String} Path to file currently being loaded
-       * @param {Object} global "this". TODO: use .bind() instead, this is ugly
+       * @param {Object} global "this". TODO: use .bind() or .call() or whatever instead, this is ugly
        */
       _readFile: function(editor, filePath, object){
         this.fs.readFile(filePath, function (err, data){

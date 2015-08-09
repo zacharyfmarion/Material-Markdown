@@ -8,31 +8,30 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<script src="../../bower_components/page/page.js"></script>
+<script src="../bower_components/page/page.js"></script>
 <script>
   window.addEventListener('WebComponentsReady', function() {
 
     // We use Page.js for routing. This is a Micro
     // client-side router inspired by the Express router
     // More info: https://visionmedia.github.io/page.js/
+
     page('/', function () {
-      app.route = 'home';
+      settings.route = 'general';
     });
 
-    page('/users', function () {
-      app.route = 'users';
+    page('/editor', function () {
+      settings.route = 'editor';
     });
 
-    page('/users/:name', function (data) {
-      app.route = 'user-info';
-      app.params = data.params;
+    page('/markdown', function () {
+      settings.route = 'markdown';
     });
 
-    page('/contact', function () {
-      app.route = 'contact';
+    page('/theming', function () {
+      settings.route = 'theming';
     });
 
-    // add #! before urls
     page({
       hashbang: true
     });

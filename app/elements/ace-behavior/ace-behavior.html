@@ -67,6 +67,13 @@ are so inclined.
       aceEditor: {
         type: Object,
         readonly: true
+      },
+      /*
+       * The editor session
+       */
+      session: {
+        type: Object,
+        readonly: true
       }
     },
     /**
@@ -94,6 +101,7 @@ are so inclined.
      */
     _editSession: function(editor){
       var session = editor.getSession();
+      this.session = session;
       // set wrap based on attribute
       session.setUseWrapMode(this.wrap);
       // set worker based on attribute
@@ -130,6 +138,10 @@ are so inclined.
      */
     _setTheme: function(editor){
       editor.setTheme('ace/theme/' + this.theme);
+    },
+
+    getCopyText: function(){
+      return aceEditor.getCopyText();
     }
   };
 </script>

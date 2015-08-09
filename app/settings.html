@@ -1,0 +1,254 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<html lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Polymer Starter Kit" />
+  <title>Settings</title>
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#303F9F">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- will be replaced with elements/elements.vulcanized.html -->
+  <link rel="import" href="elements/elements.html">
+  <!-- endreplace-->
+
+  <!-- Routes -->
+  <script src="../bower_components/page/page.js"></script>
+
+  <style is="custom-style">
+    .menubar{
+      -webkit-app-region: drag;
+      -webkit-user-select: none;
+      border-radius: 0;
+    }
+
+    .small-icon {
+      --iron-icon-height: 18px;
+      --iron-icon-width: 18px;
+      padding: 0;
+      margin: 0;
+      -webkit-app-region: no-drag;
+    }
+
+    paper-menu iron-icon {
+      margin-right: 33px;
+      opacity: 0.54;
+    }
+
+    paper-menu a {
+      text-decoration: none;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      -ms-flex-direction: row;
+      -webkit-flex-direction: row;
+      flex-direction: row;
+      -ms-flex-align: center;
+      -webkit-align-items: center;
+      align-items: center;
+      -webkit-font-smoothing: antialiased;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 24px;
+      min-height: 48px;
+      padding: 0 16px;
+    }
+
+    #settings-panel {
+      border-right: 1px solid rgba(0, 0, 0, 0.14);
+    }
+  </style>
+
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+  <template is="dom-bind" id="settings">
+
+    <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
+      <paper-icon-button class="small-icon" icon="close" id = "settings-close"></paper-icon-button>
+      <paper-icon-button class="small-icon" icon="remove" id = "settings-minimize"></paper-icon-button>
+      <paper-icon-button class="small-icon" icon="fullscreen" id = "settings-fullscreen"></paper-icon-button>
+    </div>
+
+    <!-- Main Area -->
+    <paper-scroll-header-panel main condenses keep-condensed-header>
+
+      <!-- Main Toolbar -->
+      <paper-toolbar id="mainToolbar" class="">
+        <div class="title">Settings</div>
+      </paper-toolbar>
+
+      <paper-drawer-panel>
+
+        <paper-scroll-header-panel drawer fixed>
+          <!-- Drawer Content -->
+          <paper-menu style = 'padding-top: 84px;'>
+
+            <a href="">
+              <iron-icon icon="settings"></iron-icon>
+              <span>General</span>
+            </a>
+
+            <a href="">
+              <iron-icon icon="info"></iron-icon>
+              <span>Editor</span>
+            </a>
+
+            <a href="">
+              <iron-icon icon="mail"></iron-icon>
+              <span>Markdown</span>
+            </a>
+
+            <a href="">
+              <iron-icon icon="create"></iron-icon>
+              <span>Theming</span>
+            </a>
+          </paper-menu>
+        </paper-scroll-header-panel>
+
+      </paper-drawer-panel>
+
+      <paper-header-panel main>
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+            <section data-route = "general">
+              <paper-material elevation = '1'>
+                <h1>General</h1>
+              </paper-material>
+            </section>
+
+            <section data-route = "editor">
+              <paper-material elevation = '1'>
+                <h1>Editor</h1>
+              </paper-material>
+            </section>
+
+            <section data-route = "markdown">
+              <paper-material elevation = '1'>
+                <h1>Markdown</h1>
+              </paper-material>
+            </section>
+
+            <section data-route = "theming">
+              <paper-material elevation = '1'>
+                <h1>Theming</h1>
+              </paper-material>
+            </section>
+
+          </iron-pages>
+        </div>
+      </paper-header-panel>
+
+    </paper-scroll-header-panel>
+
+    <script>
+      var remote = require('remote');
+      var app = remote.require('app');
+      var BrowswerWindow = remote.require('browser-window');
+      // Buttons
+      var settingsClose = document.querySelector('#settings-close');
+      var settingsMinimize = document.querySelector('#settings-minimize');
+      var settingsFullscreen = document.querySelector('#settings-fullscreen');
+
+      settingsClose.addEventListener('click', function(){
+        // Settings window
+        var settingsWindow = BrowswerWindow.getFocusedWindow();
+        settingsWindow.close();
+      },false);
+
+      settingsMinimize.addEventListener('click', function(){
+        // Settings window
+        var settingsWindow = BrowswerWindow.getFocusedWindow();
+        settingsWindow.minimize();
+      },false);
+
+      settingsFullscreen.addEventListener('click', function(){
+        // Settings window
+        var settingsWindow = BrowswerWindow.getFocusedWindow();
+        settingsWindow.setFullScreen(!settingsWindow.isFullScreen());
+      },false);
+
+    </script>
+
+  </template>
+
+  <script>
+  // WHY THE MOTHER FUCK IS THIS NOT WORKING
+    (function(document) {
+      'use strict';
+
+      var settings = document.querySelector('#settings');
+
+      // See https://github.com/Polymer/polymer/issues/1381
+      window.addEventListener('WebComponentsReady', function() {
+        page('/', function () {
+          settings.route = 'general';
+        });
+
+        page('/editor', function () {
+          settings.route = 'editor';
+        });
+
+        page('/markdown', function () {
+          settings.route = 'markdown';
+        });
+
+        page('/theming', function () {
+          settings.route = 'theming';
+        });
+
+        page({
+          hashbang: true
+        });
+      });
+
+    })(document);
+  </script>
+
+</body>
+
+</html>

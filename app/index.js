@@ -3,6 +3,8 @@ var ribbonToggle = document.getElementById('toggleRibbon');
 var editor = document.getElementsByTagName('markdown-editor')[0];
 var styleSettings = document.getElementById('style-settings');
 var stylesEditor = document.getElementsByTagName('styles-editor')[0];
+var settings = document.getElementById('settings');
+var settingsModal = document.getElementsByTagName('app-settings')[0];
 
 // Adjust height of editor when window is resized
 window.addEventListener('resize', function(){
@@ -13,6 +15,11 @@ window.addEventListener('resize', function(){
 ribbonToggle.addEventListener('click', function(){
   editor.toggleRibbon();
 }, false);
+
+// Open settings modal
+settings.addEventListener('click', function(){
+  settingsModal.open();
+});
 
 // open
 styleSettings.addEventListener('click', function(){

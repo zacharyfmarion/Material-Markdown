@@ -39,6 +39,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
   <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
 
+  <!-- Fonts -->
+
   <!-- Tile icon for Win8 (144x144) -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
 
@@ -46,7 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="stylesheet" type="text/css" href="styles/main.css">
   <!-- endbuild-->
 
-  <link id = "marked-styles" rel="stylesheet" href="styles/marked-theme.css">
+  <link id = "marked-styles" rel="stylesheet" href="styles/marked-github.css">
 
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -92,9 +94,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </div>
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
-              <paper-icon-button id = "toggleRibbon" icon="menu"></paper-icon-button>
+              <icon-button-switch id = "toggleRibbon" icons = "menu close"></icon-button-switch>
               <div class="title">Markdown Editor</div>
-              <paper-icon-button id = "style-settings" icon="settings"></paper-icon-button>
+              <paper-icon-button id = "style-settings" icon="invert-colors"></paper-icon-button>
+              <paper-icon-button id = "settings" icon="settings"></paper-icon-button>
             </paper-toolbar>
             <div class="content">
                 <markdown-editor wrap mode = "markdown" autoRender noRibbon></markdown-editor>
@@ -102,6 +105,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-header-panel>
           <!-- Editor for the marked styles -->
           <styles-editor wrap></styles-editor>
+          <!-- HTML output modal -->
+          <html-output-modal></html-output-modal>
+          <!-- Settings Modal -->
+          <app-settings></app-settings>
+
 
     <paper-toast id="caching-complete"
                  duration="6000"

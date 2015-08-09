@@ -5,15 +5,16 @@ var app = remote.require('app');
 var BrowserWindow = remote.require('browser-window');
 var Menu = remote.require('menu');
 var dialog = remote.require('dialog');
+var clipboard = require('clipboard');
 
-var myBrowserWindow = BrowserWindow.getAllWindows()[0];
+var myBrowserWindow = BrowserWindow.getFocusedWindow();
 var stylesEditor = document.getElementsByTagName('styles-editor')[0];
 var editor = document.getElementsByTagName('markdown-editor')[0];
 
 // Close app
 document.getElementById('close').onclick = function(){
-  if (editor.savedText === editor.aceEditor.getValue()){
-    app.quit();
+  if ((editor.savedText === editor.aceEditor.getValue()) || (editor.savedText === null && editor.aceEditor.getValue() === '')){
+    myBrowserWindow.close();
   }else{
     var response = dialog.showMessageBox({
       type: 'question',
@@ -22,7 +23,7 @@ document.getElementById('close').onclick = function(){
       title: 'Unsaved changes'
     });
     if (response === 0){
-      app.quit();
+      myBrowserWindow.close();
     }else{
       return;
     }
@@ -50,15 +51,11 @@ var menu = Menu.buildFromTemplate([
     label: 'Electron',
     submenu: [
       {
-        label: 'Blah',
-        click: function(){
-          console.log('blah');
-        }
-      },
-      {
         label: 'Preferences',
         click: function(){
-          console.log('preferences');
+          var settingsWindow = new BrowserWindow({width: 800, height: 500, 'min-width': 800, 'min-height': 500, frame: false});
+          // and load the index.html of the app.
+          settingsWindow.loadUrl('file://' + __dirname + '/settings.html');
         }
       },
       {
@@ -68,7 +65,7 @@ var menu = Menu.buildFromTemplate([
         label: 'Quit',
         click: function(){
           // TODO: Get this to work
-          if ((editor.savedText === editor.aceEditor.getValue()) || (editor.savedText === null && editor.acedEditor.getValue() === '')){
+          if ((editor.savedText === editor.aceEditor.getValue()) || (editor.savedText === null && editor.aceEditor.getValue() === '')){
             app.quit();
           }else{
             var response = dialog.showMessageBox({
@@ -109,6 +106,7 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Open',
         click: function(){
+          //TODO: Handle canceling the file dialog
           if (editor.savedText === null || editor.savedText === editor.aceEditor.getValue()){
             var files = dialog.showOpenDialog({ properties: ['openFile']});
             var file = files[0];
@@ -139,7 +137,9 @@ var menu = Menu.buildFromTemplate([
           {
             label: 'HTML',
             click: function(){
-              // look at mat markdown for how to do this
+              // think about making this another instance of ace editor
+              var outputModal = document.getElementsByTagName('html-output-modal')[0];
+              outputModal.open(editor.aceEditor);
             }
           },
           {
@@ -179,27 +179,47 @@ var menu = Menu.buildFromTemplate([
     ]
   },
   {
-    //TODO: Implement these methods
     label: 'Edit',
     submenu: [
       {
+        label: 'Undo',
+        click: function(){
+          editor.undo();
+        },
+        accelerator: 'Command+Z'
+      },
+      {
+        label: 'Redo',
+        click: function(){
+          editor.redo();
+        },
+        accelerator: 'Command+Y'
+      },
+      {
+        type: 'separator'
+      },
+      {
         label: 'Cut',
         click: function(){
-          // Implement cut
+
         },
         accelerator: 'Command+X'
       },
       {
         label: 'Copy',
         click: function(){
-          // Implement copy
+          // Add a check for if the editor is focused...
+          var selection = editor.aceEditor.getCopyText();
+          clipboard.writeText(selection);
         },
         accelerator: 'Command+C'
       },
       {
         label: 'Paste',
         click: function(){
-          // Implement paste
+          // Add a check for if the editor is focused...
+          var text = clipboard.readText();
+          editor.aceEditor.insert(text);
         },
         accelerator: 'Command+V'
       },
@@ -209,6 +229,16 @@ var menu = Menu.buildFromTemplate([
           // Implement select all
         },
         accelerator: 'Command+A'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Find',
+        click: function(){
+          // editor.aceEditor.find();
+        },
+        accelerator: 'Command+F'
       }
     ]
   },
@@ -225,7 +255,8 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Open DevTools',
         click: function(){
-          myBrowserWindow.openDevTools();
+          var currentBrowserWindow = BrowserWindow.getFocusedWindow();
+          currentBrowserWindow.openDevTools();
         },
         accelerator: 'Command+T'
       }
