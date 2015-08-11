@@ -14,6 +14,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <style>
     :host {
       display: block;
+      padding:0;
+      margin:0;
     }
   </style>
   <template>
@@ -27,7 +29,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         icons: {
           type: String,
-          value: 'menu'
+          value: 'menu',
+          observer: '_iconsChanged'
+        },
+        iconsArray: {
+          type: Array,
+          computed: '_generateArray(icons)'
         },
         animationConfig: {
           value: function() {
@@ -49,24 +56,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [Polymer.NeonAnimationRunnerBehavior],
 
       ready: function(){
-        var icons = this.icons.split(' ');
-        this.$.iconButton.icon = icons[0];
+        this.$.iconButton.icon = this.iconsArray[0];
       },
 
       cycleIcon: function(){
-        var icons = this.icons.split(' ');
-        for (var i = 0; i < icons.length; i++){
-          if (icons[i] === this.$.iconButton.icon){
-            if (i < icons.length-1){
+        for (var i = 0; i < this.iconsArray.length; i++){
+          if (this.iconsArray[i] === this.$.iconButton.icon){
+            if (i < this.iconsArray.length-1){
               this.playAnimation('cross-fade');
-              this.$.iconButton.icon = icons[i+1];
+              this.$.iconButton.icon = this.iconsArray[i+1];
             }else{
               this.playAnimation('cross-fade');
-              this.$.iconButton.icon = icons[0];
+              this.$.iconButton.icon = this.iconsArray[0];
             }
             break;
           }
         }
+      },
+
+      _generateArray: function(icons){
+        return icons.split(' ');
+      },
+
+      _iconsChanged: function(){
+        this.$.iconButton.icon = this.iconsArray[0];
       }
     });
   })();

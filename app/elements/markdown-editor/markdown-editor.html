@@ -39,6 +39,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
     }
 
+    @font-face {
+      font-family: "Roboto_Mono";
+      src: url('../../../dist/fonts/Roboto_Mono/RobotoMono-Light.ttf') format("truetype");
+    }
+
+    @font-face {
+      font-family: "Roboto_Mono";
+      src: url('../../../dist/fonts/Roboto_Mono/RobotoMono-Regular.ttf') format("truetype");
+      font-weight: bold;
+    }
+
     .wrapper{
       height: 100%;
     }
@@ -46,7 +57,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     #marked{
       height: inherit;
       padding: 5px;
-      overflow-y: scroll;
+      overflow-y: scroll !important;
     }
 
     #render-button{
@@ -58,6 +69,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     #editor{
       border-right: 2px solid rgba(100,100,100,.1);
+      font-family: 'Roboto_Mono';
+      font-size: 14;
     }
 
     #ribbon{
@@ -78,23 +91,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       color: #fff;
     }
 
+    #launchIcon{
+      position: absolute;
+      left: 45%;
+      bottom: 5px;
+      color: #9E9E9E;
+    }
+
+    .hide{
+      width: 0;
+    }
+
+    .editor-actions{
+      color: #fff;
+    }
+
   </style>
   <template>
     <div class = "fullbleed layout vertical">
       <div id = "ribbon" class = "layout horizontal">
         <span class = "select-label" id = "themeSelectLabel">Editor Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" value = "{{theme}}"></paper-select>
-        <span class = "select-label">Font: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "Monacco"></paper-select>
-        <span class = "select-label">Font Size: </span><paper-select id = "fontSizeSelect" items = "{{fontSizeOptions}}" initval = "12"></paper-select>
+        <span class = "select-label">Font: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "Roboto_Mono"></paper-select>
+        <span class = "select-label">Font Size: </span><paper-select id = "fontSizeSelect" items = "{{fontSizeOptions}}" initval = "14"></paper-select>
+        <!-- Bold, italic, underline -->
+        <paper-icon-button class = 'editor-actions' icon = 'editor:format-bold' on-tap = 'bold'></paper-icon-button>
+        <paper-icon-button class = 'editor-actions' icon = 'editor:format-italic' on-tap = 'italisize'></paper-icon-button>
+        <paper-icon-button class = 'editor-actions' icon = 'editor:format-underlined' on-tap = 'underline'></paper-icon-button>
+        <paper-icon-button class = 'editor-actions' icon = 'editor:format-strikethrough' on-tap = 'strikethrough'></paper-icon-button>
+        <!-- Undo manager -->
         <paper-icon-button class = 'self-end undoredo' icon = 'undo' on-tap = 'undo'></paper-icon-button>
         <paper-icon-button class = 'self-end undoredo' icon = 'redo' on-tap = 'redo'></paper-icon-button>
       </div>
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
+        <paper-icon-button icon = "launch" id = "launchIcon" on-tap = "_toggleFullscreen"></paper-icon-button>
         <marked-element id = "marked" class = "flex"></marked-element>
       </div>
     </div>
-
-      <paper-button raised on-tap = "renderMarkdown" id = "render-button" hidden$="{{autorender}}">Render</paper-button>
+    <paper-button raised on-tap = "renderMarkdown" id = "render-button" hidden$="{{autorender}}">Render</paper-button>
   </template>
   <script>
 
@@ -109,7 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         autorender: {
           type: Boolean,
           value: true,
-          readonly: true
+          reflectToAttribute: true
         },
         /**
           * File path to file loaded (if one is loaded)
@@ -117,6 +151,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         filepath: {
           type: String,
           value: null,
+          notify: true,
+          reflectToAttribute: true,
           observer: '_filePathChanged'
         },
         /**
@@ -125,6 +161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         noribbon: {
           type: Boolean,
           value: false,
+          reflectToAttribute: true,
           observer: '_watchRibbonState'
         },
         /**
@@ -142,7 +179,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         themeOptions: {
           type: Array,
           value: function(){
-            // All ace themes
+            // All ace themes...TODO: separate dark and light themes & take out ones that don't have highlighting (or different highlighting)
             var themes = ['ambiance','chaos','chrome','clouds','clouds_midnight', 'cobalt', 'crimson_editor', 'dawn', 'dreamweaver', 'eclipse', 'github', 'idle_fingers', 'iplastic', 'katzenmilch',
                           'kr_theme', 'kuroir', 'merbivore', 'merbivore_soft', 'mono_industrial', 'monokai', 'pastel_on_dark', 'solarized_dark', 'solarized_light', 'sqlserver', 'terminal',
                           'textmate', 'tomorrow', 'tomorrow_night', 'tomorrow_night_blue', 'tomorrow_night_bright', 'tomorrow_night_eighties', 'twilight', 'vibrant', 'vibrant_ink', 'xcode'];
@@ -170,7 +207,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: function(){
             // Ace only supports monospace fonts
-            var fonts = ['Cutive_Mono', 'Monacco', 'Nova_Mono', 'Share_Tech_Mono', 'Source_Code_Pro'];
+            var fonts = ['Cutive_Mono', 'Roboto_Mono', 'Nova_Mono', 'Share_Tech_Mono', 'Source_Code_Pro'];
             var fontOptions = [];
             // return an object formatting this correctly
             for (var i = 0; i < fonts.length; i++){
@@ -197,6 +234,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             return sizes;
           }
+        },
+        /**
+          * Whether the editor is in fullscreen
+          */
+        fullscreen: {
+          type: Boolean,
+          value: false
         }
       },
 
@@ -217,6 +261,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var editor = this._createEditor(this.$.editor);
         // Adjust heights based on the noribbon attribute and window size
         this.resizeEditor();
+        this.aceEditor.setFontSize(parseInt(this.$.fontSizeSelect.initval));
         // Edit session based on attributes
         var session = this._editSession(editor);
         // Listen for changes to editor
@@ -285,10 +330,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._readFile(this.aceEditor, filename, this);
       },
 
+      bold: function(){
+        var range = this.aceEditor.getSelectionRange();
+        //this.aceEditor.clearSelection()
+      },
+
+      italisize: function(){
+        var range = this.aceEditor.getSelectionRange();
+        //this.aceEditor.clearSelection()
+      },
+
+      underline: function(){
+        var range = this.aceEditor.getSelectionRange();
+        //this.aceEditor.clearSelection()
+      },
+
+      strikethrough: function(){
+        var range = this.aceEditor.getSelectionRange();
+        //this.aceEditor.clearSelection()
+      },
+      /*
+       * Undo last action from the editor
+       */
       undo: function(){
         this.aceEditor.undo();
       },
-
+      /*
+       * Redo last action from the editor
+       */
       redo: function(){
         this.aceEditor.redo();
       },
@@ -302,7 +371,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _listenForChange: function(session, object){
         session.on('change', function() {
-           if (object.autorender){
+           if (object.autorender && !object.fullscreen){
              object.renderMarkdown();
            }
         });
@@ -337,6 +406,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _filePathChanged: function(){
         if (this.filepath !== null){
+          this.fire('file-opened');
           this._readFile(this.aceEditor, this.filepath, this);
         }
       },
@@ -347,8 +417,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {String} Path to file currently being loaded
        * @param {Object} global "this". TODO: use .bind() or .call() or whatever instead, this is ugly
        */
-      _readFile: function(editor, filePath, object){
-        this.fs.readFile(filePath, function (err, data){
+      _readFile: function(editor, filepath, object){
+        this.fs.readFile(filepath, function (err, data){
             if (err){
                 return console.log(err);
             }else{
@@ -358,6 +428,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 object.savedText = editor.getValue();
             }
         });
+      },
+
+      /*
+       * Toggle a fullscreen view of the editor
+       */
+      _toggleFullscreen: function(){
+        if (this.$.marked.getAttribute('class') === 'flex'){
+          this.$.marked.setAttribute('class', 'hide');
+          this.$.launchIcon.style.transform = 'rotate(180deg)';
+          this.$.launchIcon.style.left = '95%';
+          this.fullscreen = true;
+        }else{
+          this.$.marked.setAttribute('class', 'flex');
+          this.$.launchIcon.style.transform = '';
+          this.$.launchIcon.style.left = '45%';
+          this.fullscreen = false;
+          this.renderMarkdown();
+        }
       }
     });
   })();

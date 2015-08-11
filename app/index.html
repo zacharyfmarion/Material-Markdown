@@ -70,6 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     paper-header-panel{
       border-radius: 0;
     }
+
   </style>
 
   <style is="custom-style">
@@ -80,6 +81,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: 0;
       -webkit-app-region: no-drag;
     }
+
+    #title{
+      @apply(--layout-self-center);
+      color: rgba(0,0,0,.7);
+      padding-right: 5px;
+    }
   </style>
 
 <body unresolved class="fullbleed layout vertical">
@@ -87,17 +94,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template is="dom-bind" id="app">
           <!-- Main Area -->
           <paper-header-panel main condenses keep-condensed-header>
-            <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
+            <div class = "layout horizontal menubar" style = "height: 20px; width = 100%; background: #2196F3;">
               <paper-icon-button class="small-icon" icon="close" id = "close"></paper-icon-button>
               <paper-icon-button class="small-icon" icon="remove" id = "minimize"></paper-icon-button>
               <paper-icon-button class="small-icon" icon="fullscreen" id = "fullscreen"></paper-icon-button>
+              <span class="flex"></span>
+              <span id = 'title'></span>
             </div>
             <!-- Main Toolbar -->
             <paper-toolbar id="mainToolbar">
               <icon-button-switch id = "toggleRibbon" icons = "menu close"></icon-button-switch>
               <div class="title">Markdown Editor</div>
               <paper-icon-button id = "style-settings" icon="invert-colors"></paper-icon-button>
+              <paper-tooltip for = "style-settings">Edit Styles</paper-tooltip>
               <paper-icon-button id = "settings" icon="settings"></paper-icon-button>
+              <paper-tooltip for = "settings">Settings</paper-tooltip>
             </paper-toolbar>
             <div class="content">
                 <markdown-editor wrap mode = "markdown" autoRender noRibbon></markdown-editor>
@@ -125,8 +136,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </platinum-sw-cache>
     </platinum-sw-register>
 
+    <script>require('./settings-config');</script>
     <script>require('./index');</script>
-
     <script>require('./menubar');</script>
 
   </template>

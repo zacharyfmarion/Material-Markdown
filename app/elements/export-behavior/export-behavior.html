@@ -26,6 +26,13 @@ MarkdownBehaviors.ExportBehavior = {
          return require('markdown-pdf');
        }
      },
+
+     jsBeautify: {
+       type: Object,
+       value: function(){
+         return require('js-beautify');
+       }
+     },
      /*
       * Node fs object used for interacting with user's file system
       */
@@ -42,10 +49,27 @@ MarkdownBehaviors.ExportBehavior = {
    * @param {String} Path where the pdf will be saved
    * @param {String} Path to the css file to be used when rendering pdf
    */
-   convertToPdf: function(markdown, path, pathToCss){
+   exportToPdf: function(markdown, path, pathToCss){
      this.markdownPdf({
        cssPath: pathToCss
      }).from.string(markdown).to(path);
+   },
+
+   /**
+    * Convert a string of markdown to an html document
+    * @param {String} markdown string
+    * @param {String} Path where the html will be saved
+    */
+   exportToHTML: function(text, path){
+     var html = marked(text);
+     var formattedHTML = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>Document</title>\n</head>\n<body>' + html +
+      '</body>\n</html>';
+     //var prettifiedHTML = this.jsBeautify.html(html);
+     this.fs.writeFile(path, formattedHTML, function(err){
+       if (err){
+         console.log(err);
+       }
+     });
    }
 
 };

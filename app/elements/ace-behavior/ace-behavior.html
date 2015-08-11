@@ -41,7 +41,13 @@ are so inclined.
       wrap: {
         type: Boolean,
         value: false,
-        notify: true
+        notify: true,
+        observer: '_wrapChanged'
+      },
+
+      showPrintMargin: {
+        type: Boolean,
+        value: false
       },
       /**
         * Defines options to be passed into the editor.setOptions() method
@@ -90,6 +96,9 @@ are so inclined.
       editor.$blockScrolling = Infinity;
       // Set theme based on attrubute
       this._setTheme(editor);
+      // set whether vertical print margin appears
+      editor.setShowPrintMargin(this.showPrintMargin);
+      // set options
       editor.setOptions(this.options);
       return editor;
     },
@@ -132,6 +141,14 @@ are so inclined.
     _themeChanged: function(){
       // If the editor has been defined already...
       if (this.aceEditor) this._setTheme(this.aceEditor);
+    },
+    /**
+     * Observer function for using codeFolding
+     */
+    _wrapChanged: function(){
+      if (this.aceEditor){
+        this.session.setUseWrapMode(this.wrap);
+      }
     },
     /**
      * Helper function that sets the theme of the editor

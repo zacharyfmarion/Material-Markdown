@@ -37,6 +37,12 @@ document.getElementById('minimize').onclick = function(){
 document.getElementById('fullscreen').onclick = function(){
   myBrowserWindow.setFullScreen(!myBrowserWindow.isFullScreen());
 };
+// Open settings
+document.getElementById('settings').onclick = function(){
+  var settingsWindow = new BrowserWindow({width: 800, height: 500, 'min-width': 800, 'min-height': 500, frame: false});
+  // and load the index.html of the app.
+  settingsWindow.loadUrl('file://' + __dirname + '/settings.html');
+};
 
 // Update styles when custom element event is fired, signifying style change
 stylesEditor.addEventListener('styles-changed', function(){
@@ -137,9 +143,11 @@ var menu = Menu.buildFromTemplate([
           {
             label: 'HTML',
             click: function(){
-              // think about making this another instance of ace editor
-              var outputModal = document.getElementsByTagName('html-output-modal')[0];
-              outputModal.open(editor.aceEditor);
+              if (editor.aceEditor.getValue() !== ''){
+                dialog.showSaveDialog(function(filename){
+                  editor.exportToHTML(editor.aceEditor.getValue(), filename);
+                });
+              }
             }
           },
           {
@@ -147,7 +155,7 @@ var menu = Menu.buildFromTemplate([
             click: function(){
               if (editor.savedText !== null){
                 dialog.showSaveDialog(function(filename){
-                  editor.convertToPdf(editor.savedText, filename, 'dist/styles/test.css');
+                  editor.exportToPdf(editor.aceEditor.getValue(), filename, 'dist/styles/test.css');
                 });
               }
             }
@@ -201,7 +209,9 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Cut',
         click: function(){
-
+          var selection = editor.aceEditor.getCopyText();
+          // delete editor text
+          clipboard.writeText(selection);
         },
         accelerator: 'Command+X'
       },
@@ -226,7 +236,7 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Select All',
         click: function(){
-          // Implement select all
+          editor.aceEditor.selectAll();
         },
         accelerator: 'Command+A'
       },

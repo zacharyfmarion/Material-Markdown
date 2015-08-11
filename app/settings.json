@@ -1,0 +1,18 @@
+{
+  "general": {
+    "autorendering": true,
+    "showRibbonOnStart": false
+  },
+  "editor": {
+    "codeFolding": true,
+    "lineNumbers": true
+  },
+  "markdown": {
+
+  },
+  "theming": {
+    "primaryColor": "#2196F3",
+    "darkPrimaryColor": "#303F9F",
+    "accentColor": "#FF4081"
+  }
+}
