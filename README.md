@@ -2,7 +2,7 @@
 
 ![](https://raw.githubusercontent.com/zacharyfmarion/Markdown/master/Screenshot.png?raw=true "Material Markdown")
 
-This is a markdown editor for Mac made using [Electron]() and [Polymer](), and is still under heavy development.
+This is a markdown editor for Mac made using [Electron](http://electron.atom.io/) and [Polymer](https://www.polymer-project.org/), and is still under heavy development.
 
 ## Build instructions
 
