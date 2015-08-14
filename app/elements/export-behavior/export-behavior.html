@@ -70,6 +70,25 @@ MarkdownBehaviors.ExportBehavior = {
          console.log(err);
        }
      });
+   },
+
+   exportToStyledHTML: function(text, path, stylePath){
+     var html = marked(text);
+     var styles = this.fs.readFileSync(stylePath).toString();
+     var prettifiedStyles = cssbeautify(styles, {
+       indent: '  ',
+       autosemicolon: true
+     });
+     var finalStyles = prettifiedStyles.replace(/#marked\s{1}/g, '');
+
+     var formattedHTML = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>Document</title>\n<style>\n' + finalStyles + '\n</style>\n</head>\n<body>\n' + html +
+      '</body>\n</html>';
+     //var prettifiedHTML = this.jsBeautify.html(html);
+     this.fs.writeFile(path, formattedHTML, function(err){
+       if (err){
+         console.log(err);
+       }
+     });
    }
 
 };

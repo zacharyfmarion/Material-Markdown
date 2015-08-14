@@ -100,12 +100,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: function(){
             return require('fs');
           }
-        },
-        js_beautify: {
-          type: Object,
-          value: function(){
-            return require('js-beautify');
-          }
         }
       },
 
@@ -149,8 +143,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _modalClosedWithSave: function(){
         var filePath = 'dist/styles/marked-theme.css';
-        // var styles = this.js_beautify.css(this.css);
-        this.fs.writeFile(filePath, this.css, function(err) {
+        var styles = cssbeautify(this.css, {
+          indent: '  ',
+          autosemicolon: true
+        });
+        this.fs.writeFile(filePath, styles, function(err) {
             if(err) throw err;
             return;
         });
@@ -173,11 +170,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // alert(filePath);
         this.fs.readFile(filePath, function (err, data){
             if (err){
-                throw err;
+                console.log(err);
             }else{
                 // Sets the value of the editor equal to the file and moves the cursor to
                 // the begining
-                var styles = this.js_beautify.css(data.toString());
+                var styles = cssbeautify(data.toString(), {
+                  indent: '  ',
+                  autosemicolon: true
+                });
                 editor.setValue(styles, -1);
             }
         });

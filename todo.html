@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Document</title>
+<style>
+ hr:after, hr:before {
+  display: table;
+  content: "";
+}
+
+ ol, td, th, ul {
+  padding: 0;
+}
+
+@font-face {
+  font-family:octicons-anchor;src:url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+ {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color: #333;
+  font-family: "Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+ strong {
+  font-weight: 700;
+}
+
+ h1 {
+  margin: .67em 0;
+}
+
+ img {
+  border: 0;
+}
+
+ hr {
+  box-sizing: content-box;
+}
+
+ *, img {
+  box-sizing: border-box;
+}
+
+ input {
+  color: inherit;
+  margin: 0;
+  line-height: normal;
+  font: 13px/1.4 Helvetica,arial,nimbussansl,liberationsans,freesans,clean,sans-serif,"Segoe UI Emoji","Segoe UI Symbol";
+}
+
+ html input[disabled] {
+  cursor: default;
+}
+
+ input[type=checkbox] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+ a {
+  background-color: transparent;
+  color: #4078c0;
+  text-decoration: none;
+}
+
+ a:active, a:hover {
+  outline: 0;
+  text-decoration: underline;
+}
+
+ hr:after {
+  clear: both;
+}
+
+ blockquote {
+  margin: 0;
+}
+
+ h1, h2 {
+  padding-bottom: .3em;
+  border-bottom: 1px solid #eee;
+}
+
+ ol ol, ul ol {
+  list-style-type: lower-roman;
+}
+
+ ol ol ol, ol ul ol, ul ol ol, ul ul ol {
+  list-style-type: lower-alpha;
+}
+
+ dd {
+  margin-left: 0;
+}
+
+ code {
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+}
+
+ pre {
+  font: 12px Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  word-wrap: normal;
+}
+
+ .octicon {
+  font: normal normal normal 16px/1 octicons-anchor;
+  display: inline-block;
+  text-decoration: none;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+ .octicon-link:before {
+  content: '\f05c';
+}
+
+>:first-child {
+  margin-top: 0!important;
+}
+
+>:last-child {
+  margin-bottom: 0!important;
+}
+
+ a:not([href]) {
+  color: inherit;
+  text-decoration: none;
+}
+
+ .anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+ .anchor:focus {
+  outline: 0;
+}
+
+ h1, h2, h3, h4, h5, h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+ h1 .octicon-link, h2 .octicon-link, h3 .octicon-link, h4 .octicon-link, h5 .octicon-link, h6 .octicon-link {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+ h1:hover .anchor, h2:hover .anchor, h3:hover .anchor, h4:hover .anchor, h5:hover .anchor, h6:hover .anchor {
+  padding-left: 8px;
+  margin-left: -30px;
+  text-decoration: none;
+}
+
+ h1:hover .anchor .octicon-link, h2:hover .anchor .octicon-link, h3:hover .anchor .octicon-link, h4:hover .anchor .octicon-link, h5:hover .anchor .octicon-link, h6:hover .anchor .octicon-link {
+  display: inline-block;
+}
+
+ h1 {
+  font-size: 2.25em;
+  line-height: 1.2;
+}
+
+ h1 .anchor {
+  line-height: 1;
+}
+
+ h2 {
+  font-size: 1.75em;
+  line-height: 1.225;
+}
+
+ h2 .anchor {
+  line-height: 1;
+}
+
+ h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+ h3 .anchor, h4 .anchor {
+  line-height: 1.2;
+}
+
+ h4 {
+  font-size: 1.25em;
+}
+
+ dl dt, h5, h6 {
+  font-size: 1em;
+}
+
+ h5 .anchor, h6 .anchor {
+  line-height: 1.1;
+}
+
+ h6 {
+  color: #777;
+}
+
+ blockquote, dl, ol, p, pre, table, ul {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+ hr {
+  overflow: hidden;
+  background: #e7e7e7;
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  border: 0;
+}
+
+ ol, ul {
+  padding-left: 2em;
+}
+
+ ol ol, ol ul, ul ol, ul ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+ dl dt, li>p {
+  margin-top: 16px;
+}
+
+ dl {
+  padding: 0;
+}
+
+ dl dt {
+  padding: 0;
+  font-style: italic;
+  font-weight: 700;
+}
+
+ dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+ blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+ blockquote>:first-child {
+  margin-top: 0;
+}
+
+ blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+ table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+ table th {
+  font-weight: 700;
+}
+
+ table td, table th {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+ table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+ table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+ img {
+  max-width: 100%;
+}
+
+ code {
+  padding: .2em 0;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,.04);
+  border-radius: 3px;
+}
+
+ code:after, code:before {
+  letter-spacing: -.2em;
+  content: "\00a0";
+}
+
+ pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: 0 0;
+  border: 0;
+}
+
+ .highlight {
+  margin-bottom: 16px;
+}
+
+ .highlight pre, pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+ .highlight pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+ pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+ pre code:after, pre code:before {
+  content: normal;
+}
+
+ .pl-c {
+  color: #969896;
+}
+
+ .pl-c1, .pl-s .pl-v {
+  color: #0086b3;
+}
+
+ .pl-e, .pl-en {
+  color: #795da3;
+}
+
+ .pl-s .pl-s1, .pl-smi {
+  color: #333;
+}
+
+ .pl-ent {
+  color: #63a35c;
+}
+
+ .pl-k {
+  color: #a71d5d;
+}
+
+ .pl-pds, .pl-s, .pl-s .pl-pse .pl-s1, .pl-sr, .pl-sr .pl-cce, .pl-sr .pl-sra, .pl-sr .pl-sre {
+  color: #183691;
+}
+
+ .pl-v {
+  color: #ed6a43;
+}
+
+ .pl-id {
+  color: #b52a1d;
+}
+
+ .pl-ii {
+  background-color: #b52a1d;
+  color: #f8f8f8;
+}
+
+ .pl-sr .pl-cce {
+  color: #63a35c;
+  font-weight: 700;
+}
+
+ .pl-ml {
+  color: #693a17;
+}
+
+ .pl-mh, .pl-mh .pl-en, .pl-ms {
+  color: #1d3e81;
+  font-weight: 700;
+}
+
+ .pl-mq {
+  color: teal;
+}
+
+ .pl-mi {
+  color: #333;
+  font-style: italic;
+}
+
+ .pl-mb {
+  color: #333;
+  font-weight: 700;
+}
+
+ .pl-md {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+ .pl-mi1 {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+ .pl-mdr {
+  color: #795da3;
+  font-weight: 700;
+}
+
+ .pl-mo {
+  color: #1d3e81;
+}
+
+ kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font: 11px Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: 1px solid #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb;
+}
+
+ .task-list-item {
+  list-style-type: none;
+}
+
+ .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+ .task-list-item input {
+  margin: 0 .35em .25em -1.6em;
+  vertical-align: middle;
+}
+
+ :checked+.radio-label {
+  z-index: 1;
+  position: relative;
+  border-color: #4078c0;
+}
+</style>
+</head>
+<body>
+<h1 id="a-markdown-editor-for-the-material-era">A Markdown Editor for the Material Era</h1>
+<blockquote>
+<p>It is a very clean font and I very much like it, although I certainly think that there could be some beneficial changes made to it in order to increase the amount of awesomeness it contains.</p>
+</blockquote>
+<h3 id="what-comes-next">What comes next</h3>
+<ul>
+<li><p><del>Change the REGEX or whatever on the editor to bold headers and italisize <em>italisized</em> text. <strong>Bold</strong> stuff in a plain text editor is really kind of boring.</del></p>
+<ul>
+<li><del>Add Bold, Italic, and Underlined options in the toolbar</del></li>
+<li>Add functionality to these functions (insert character in editor).</li>
+</ul>
+</li>
+<li><p>Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).</p>
+<ul>
+<li>Find out why Page.js is not working...not exactly sure what is going on with that..</li>
+</ul>
+</li>
+<li><p>Fix stylesEditor and HTML export problem with js_beautify (still have no idea why it&#39;s not working)</p>
+</li>
+<li><p><del>Add fullscreen editing mode</del></p>
+<ul>
+<li><del><strong>Fix wierd fullscreen issue where it makes the marked pane larger instead of hiding it</strong></del></li>
+<li><del>Fix problem in the editor where the entire screen vertically is not filled up (wierd thing with chrome dev tools...kinda an edge case, shouldn&#39;t need to worry about it too much).</del></li>
+</ul>
+</li>
+<li><p>Default title of saved document to first header in document</p>
+</li>
+<li><p>Add find support...maybe do a bottom widget like in atom, or have the toolbar turn into the find bar like in a lot of material apps</p>
+</li>
+<li><p>Find a way to center the title span in the menubar</p>
+</li>
+<li><p><del>Fix cut (remove selection from the editor)</del></p>
+</li>
+<li><p><del>Add revision history...saved to a separate json file...basically have it like:</del></p>
+</li>
+</ul>
+<pre><code>{
+  blah/hello.md : [
+    {
+      time: &quot;06/08/2015 9:45&quot;,
+      content: &quot;#This is a test&quot;
+    },
+    {
+      time: &quot;06/08/2015 10:31&quot;,
+      content: &quot;#This is a test\n&gt; This is a blockquote.&quot;
+    }
+  ],
+  nextfile/test.md: [
+    {
+      time: &quot;09/08/2015 16:19&quot;,
+      content: &quot;#I really like this markdown thing&quot;
+    }
+  ]
+}
+</code></pre><ul>
+<li>Have the file saving correctly, now just need a revision inspector...modal? side panel? Not sure...</li>
+<li><del>Find out why history isn&#39;t working anymore...getting a type error for some reason...</del></li>
+<li>Now I don&#39;t think it works after the first time...</li>
+<li>Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).</li>
+</ul>
+<ul>
+<li><strong><em>Keep it up, you should be able to release 1.0 stable soon (after you learn how to package it).</em></strong></li>
+</ul>
+<h3 id="bugs">Bugs</h3>
+<ul>
+<li>When you open a document and then hit undo, the document goes back to its prior empty state...make a new <code>undoManager()</code> or whatever on document load</li>
+<li>The fullscreen button for the ace editor gets obfuscated when text is under it. (add a background with a very low opacity or something).</li>
+<li><del>Can&#39;t scroll down in the view pane (add #marked{overflow: scroll})</del><ul>
+<li><del>Still can&#39;t scroll for some reason...???????</del></li>
+</ul>
+</li>
+<li>When you replace a file, the filepath refreshes to the old filepath for some reason...not sure how to solve this.</li>
+<li>Still a lot of wierd stuff going on at the bottom of the screen when resizing happens</li>
+<li>Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change.</li>
+</ul>
+<h3 id="ideas-for-future-directions">Ideas for Future Directions</h3>
+<ul>
+<li>Switch out Marked for Remarkable (more extensibility support / options)<ul>
+<li>Would need to make an element...model from <a href="https://github.com/aktowns/polymer-re-markable/blob/master/re-markable.html">this element</a> and <code>marked-element.html</code>.</li>
+</ul>
+</li>
+</ul>
+</body>
+</html>

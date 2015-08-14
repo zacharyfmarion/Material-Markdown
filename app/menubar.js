@@ -51,20 +51,26 @@ document.getElementById('settings').onclick = function(){
 // TODO: Add styles editor to settings
 stylesEditor.addEventListener('styles-changed', function(){
   // reload window
-  var filepath = editor.filepath;
-  myBrowserWindow.reload();
-  editor.filepath = filepath;
+  if (editor.filepath){
+    var filepath = editor.filepath;
+    myBrowserWindow.reload();
+    editor.filepath = filepath;
+  }else{
+    var text = editor.aceEditor.getValue();
+    myBrowserWindow.reload();
+    editor.aceEditor.setValue(text);
+  }
+
 }, false);
 
 function updateHistory(fileName){
   if (history.fileName){
-    var fileHistoryArray = history[fileName];
-    fileHistoryArray.push({
+    //TODO: find out why this is getting rid of all the other entries...basically rewriting it
+    history[fileName].push({
       time: Date.now().toString(),
       contents: editor.aceEditor.getValue(),
-      preview: editor.aceEditor.getValue().substring(0,15) + '...'
+      preview: editor.aceEditor.getValue().substring(0,35) + '...'
     });
-    history[fileName] = fileHistoryArray;
     var historyText = JSON.stringify(history, null, 2);
     console.log(historyText);
     fs.writeFile(__dirname + '/history.json', historyText, function(err){
@@ -192,6 +198,16 @@ var menu = Menu.buildFromTemplate([
               if (editor.aceEditor.getValue() !== ''){
                 dialog.showSaveDialog(function(filename){
                   editor.exportToHTML(editor.aceEditor.getValue(), filename);
+                });
+              }
+            }
+          },
+          {
+            label: 'Styled HTML',
+            click: function(){
+              if (editor.aceEditor.getValue() !== ''){
+                dialog.showSaveDialog(function(filename){
+                  editor.exportToStyledHTML(editor.aceEditor.getValue(), filename, __dirname + '/styles/marked-github.css');
                 });
               }
             }
