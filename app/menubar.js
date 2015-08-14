@@ -6,10 +6,13 @@ var BrowserWindow = remote.require('browser-window');
 var Menu = remote.require('menu');
 var dialog = remote.require('dialog');
 var clipboard = require('clipboard');
+var fs = require('fs');
+var history = require('./history.json');
 
 var myBrowserWindow = BrowserWindow.getFocusedWindow();
 var stylesEditor = document.getElementsByTagName('styles-editor')[0];
 var editor = document.getElementsByTagName('markdown-editor')[0];
+var historyPanel = document.getElementsByTagName('history-panel')[0];
 
 // Close app
 document.getElementById('close').onclick = function(){
@@ -45,10 +48,47 @@ document.getElementById('settings').onclick = function(){
 };
 
 // Update styles when custom element event is fired, signifying style change
+// TODO: Add styles editor to settings
 stylesEditor.addEventListener('styles-changed', function(){
   // reload window
+  var filepath = editor.filepath;
   myBrowserWindow.reload();
+  editor.filepath = filepath;
 }, false);
+
+function updateHistory(fileName){
+  if (history.fileName){
+    var fileHistoryArray = history[fileName];
+    fileHistoryArray.push({
+      time: Date.now().toString(),
+      contents: editor.aceEditor.getValue(),
+      preview: editor.aceEditor.getValue().substring(0,15) + '...'
+    });
+    history[fileName] = fileHistoryArray;
+    var historyText = JSON.stringify(history, null, 2);
+    console.log(historyText);
+    fs.writeFile(__dirname + '/history.json', historyText, function(err){
+      if (err){
+        console.log(err);
+      }
+    });
+  }else{
+    history[fileName] = [
+      {
+        time: Date.now().toString(),
+        contents: editor.aceEditor.getValue(),
+        preview: editor.aceEditor.getValue().substring(0,35) + '...'
+      }
+    ];
+    var initialHistoryText = JSON.stringify(history, null, 2);
+    console.log(initialHistoryText);
+    fs.writeFile(__dirname + '/history.json', initialHistoryText, function(err){
+      if (err){
+        console.log(err);
+      }
+    });
+  }
+}
 
 // Building the Application Menu...TODO: move this to a json file and call from
 // entry.js on app ready
@@ -117,6 +157,9 @@ var menu = Menu.buildFromTemplate([
             var files = dialog.showOpenDialog({ properties: ['openFile']});
             var file = files[0];
             editor.setFilePath(file);
+            //update the history panel with the current filepath
+            historyPanel.filepath = file;
+            historyPanel.getHistoryItems();
           }else{
             var response = dialog.showMessageBox({
               type: 'question',
@@ -129,6 +172,9 @@ var menu = Menu.buildFromTemplate([
               var files = dialog.showOpenDialog({ properties: ['openFile']});
               var file = files[0];
               editor.setFilePath(file);
+              //update the history panel with the current filepath
+              historyPanel.filepath = file;
+              historyPanel.getHistoryItems();
             }else{
               return;
             }
@@ -169,12 +215,18 @@ var menu = Menu.buildFromTemplate([
         label: 'Save',
         click: function(){
           if (editor.filepath === null){
-            dialog.showSaveDialog(function(filename){
-              editor.saveFile(filename);
+            dialog.showSaveDialog(function(fileName){
+              editor.saveFile(fileName);
+              // if the file already has a revision history
+              updateHistory(fileName);
             });
           }else{
             editor.saveFile(editor.filepath);
+            //if current editor text is not already in the last saved position
+            updateHistory(editor.filepath);
           }
+          // Get items in history for history menu
+          historyPanel.getHistoryItems();
         },
         accelerator: 'Command+S'
       },
@@ -183,6 +235,24 @@ var menu = Menu.buildFromTemplate([
         click: function(){
 
         }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'History',
+        click: function(){
+          //show the panel
+          historyPanel.show();
+        },
+        accelerator: 'Command+H'
+      },
+      {
+        label: 'Change styles',
+        click: function(){
+          stylesEditor.open();
+        },
+        accelerator: 'Control+Commmand+S'
       }
     ]
   },
@@ -210,7 +280,8 @@ var menu = Menu.buildFromTemplate([
         label: 'Cut',
         click: function(){
           var selection = editor.aceEditor.getCopyText();
-          // delete editor text
+          var range = editor.aceEditor.getSelectionRange();
+          editor.session.remove(range);
           clipboard.writeText(selection);
         },
         accelerator: 'Command+X'

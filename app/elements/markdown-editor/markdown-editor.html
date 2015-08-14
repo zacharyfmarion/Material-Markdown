@@ -125,7 +125,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
         <paper-icon-button icon = "launch" id = "launchIcon" on-tap = "_toggleFullscreen"></paper-icon-button>
-        <marked-element id = "marked" class = "flex"></marked-element>
+        <marked-element id = "marked" class = "flex" highlight></marked-element>
       </div>
     </div>
     <paper-button raised on-tap = "renderMarkdown" id = "render-button" hidden$="{{autorender}}">Render</paper-button>
@@ -240,16 +240,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           */
         fullscreen: {
           type: Boolean,
-          value: false
+          value: false,
+          observer: '_fullscreenChanged'
         }
       },
 
       /*
        * Ace editor behavior, giving access to ace functionality
        * Export behavior, giving access to markdown export functions
-       * Adds ability to animate objects
        */
-      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior,  Polymer.NeonAnimationRunnerBehavior],
+      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior],
 
       /*
        * Code to be run when template is ready
@@ -258,7 +258,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Change theme based on initval of themeSelect
         this.aceTheme = this.$.themeSelect.getAttribute('value');
         // Create editor
-        var editor = this._createEditor(this.$.editor);
+        var editor = this.createEditor(this.$.editor);
         // Adjust heights based on the noribbon attribute and window size
         this.resizeEditor();
         this.aceEditor.setFontSize(parseInt(this.$.fontSizeSelect.initval));
@@ -434,18 +434,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Toggle a fullscreen view of the editor
        */
       _toggleFullscreen: function(){
-        if (this.$.marked.getAttribute('class') === 'flex'){
-          this.$.marked.setAttribute('class', 'hide');
-          this.$.launchIcon.style.transform = 'rotate(180deg)';
-          this.$.launchIcon.style.left = '95%';
-          this.fullscreen = true;
+        this.toggleAttribute('fullscreen');
+      },
+
+      /*
+       * Observe changes to fullscreen property and change this.$.marked style accordingly
+       */
+      _fullscreenChanged: function(){
+        if (this.fullscreen){
+          this.$.marked.style.display = 'none';
         }else{
-          this.$.marked.setAttribute('class', 'flex');
-          this.$.launchIcon.style.transform = '';
-          this.$.launchIcon.style.left = '45%';
-          this.fullscreen = false;
-          this.renderMarkdown();
+          this.$.marked.style.display = 'inline-block';
         }
+        // Resize editor to account for changes
+        this.resizeEditor();
       }
     });
   })();

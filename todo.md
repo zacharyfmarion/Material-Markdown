@@ -4,7 +4,9 @@
 
 ### What comes next
 
-- Change the REGEX or whatever on the editor to bold headers and italisize _italisized_ text. **Bold** stuff in a plain text editor is really kind of boring.
+- ~~Change the REGEX or whatever on the editor to bold headers and italisize _italisized_ text. **Bold** stuff in a plain text editor is really kind of boring.~~
+  - ~~Add Bold, Italic, and Underlined options in the toolbar~~
+  - Add functionality to these functions (insert character in editor).
 
 - Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).
   - Find out why Page.js is not working...not exactly sure what is going on with that..
@@ -23,14 +25,9 @@
 
 - Find a way to center the title span in the menubar
 
-- ~~Add Bold, Italic, and Underlined options in the toolbar~~
-  - Add functionality to these functions (insert character in editor).
-
 - Change the fullscreen button to paper-fab
 
-- Add find functionality
-
-- Fix cut (remove selection from the editor)
+- ~~Fix cut (remove selection from the editor)~~
 
 - Add revision history...saved to a separate json file...basically have it like:
 
@@ -46,7 +43,7 @@
       content: "#This is a test\n> This is a blockquote."
     }
   ],
-  nexfile/test.md: [
+  nextfile/test.md: [
     {
       time: "09/08/2015 16:19",
       content: "#I really like this markdown thing"
@@ -55,9 +52,16 @@
 }
 ```
 
+  - Have the file saving correctly, now just need a revision inspector...modal? side panel? Not sure...
+  - ~~Find out why history isn't working anymore...getting a type error for some reason...~~
+  - Now I don't think it works after the first time...
+  - Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).
+
 ### Bugs
 
 - When you open a document and then hit undo, the document goes back to its prior empty state...make a new undoManager() or whatever on document load
 - The fullscreen button for the ace editor is underneath the current line of the editor (change z-index).
 - ~~Can't scroll down in the view pane (add #marked{overflow: scroll})~~
   - ~~Still can't scroll for some reason...???????~~
+- When you replace a file, the filepath refreshes to the old filepath for some reason...not sure how to solve this.
+

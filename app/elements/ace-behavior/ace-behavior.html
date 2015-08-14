@@ -88,7 +88,7 @@ are so inclined.
      * @param {String} Name of the container that will hold the editor
      * @return {Object} Instance of the ace editor created
      */
-    _createEditor: function(containerName){
+    createEditor: function(containerName){
       //// Create ACE
       var editor = ace.edit(containerName);
       this.aceEditor = editor;
@@ -102,6 +102,12 @@ are so inclined.
       editor.setOptions(this.options);
       return editor;
     },
+    /**
+     * Resize the ace editor to fill available space
+     */
+    resizeEditor: function(){
+      this.aceEditor.resize();
+    }
     /**
      * Edit an ace session to set wrap, worker, and mode (separate function)
      *
