@@ -1,4 +1,4 @@
-# This is a test of the Roboto Font
+# A Markdown Editor for the Material Era
 
 > It is a very clean font and I very much like it, although I certainly think that there could be some beneficial changes made to it in order to increase the amount of awesomeness it contains.
 
@@ -14,22 +14,18 @@
 - Fix stylesEditor and HTML export problem with js_beautify (still have no idea why it's not working)
 
 - ~~Add fullscreen editing mode~~
-  - **Fix wierd fullscreen issue where it makes the marked pane larger instead of hiding it**
-  - Fix problem in the editor where the entire screen vertically is not filled up (wierd thing with chrome dev tools...kinda an edge case, shouldn't need to worry about it too much).
+  - ~~**Fix wierd fullscreen issue where it makes the marked pane larger instead of hiding it**~~
+  - ~~Fix problem in the editor where the entire screen vertically is not filled up (wierd thing with chrome dev tools...kinda an edge case, shouldn't need to worry about it too much).~~
 
 - Default title of saved document to first header in document
-
-- Keep it up, you should be able to release 1.0 stable soon (after you learn how to package it).
 
 - Add find support...maybe do a bottom widget like in atom, or have the toolbar turn into the find bar like in a lot of material apps
 
 - Find a way to center the title span in the menubar
 
-- Change the fullscreen button to paper-fab
-
 - ~~Fix cut (remove selection from the editor)~~
 
-- Add revision history...saved to a separate json file...basically have it like:
+- ~~Add revision history...saved to a separate json file...basically have it like:~~
 
 ```
 {
@@ -57,11 +53,20 @@
   - Now I don't think it works after the first time...
   - Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).
 
+- **_Keep it up, you should be able to release 1.0 stable soon (after you learn how to package it)._**
+
 ### Bugs
 
-- When you open a document and then hit undo, the document goes back to its prior empty state...make a new undoManager() or whatever on document load
-- The fullscreen button for the ace editor is underneath the current line of the editor (change z-index).
+- When you open a document and then hit undo, the document goes back to its prior empty state...make a new `undoManager()` or whatever on document load
+- The fullscreen button for the ace editor gets obfuscated when text is under it. (add a background with a very low opacity or something).
 - ~~Can't scroll down in the view pane (add #marked{overflow: scroll})~~
   - ~~Still can't scroll for some reason...???????~~
 - When you replace a file, the filepath refreshes to the old filepath for some reason...not sure how to solve this.
+- Still a lot of wierd stuff going on at the bottom of the screen when resizing happens
+- Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change.
+
+### Ideas for Future Directions
+
+- Switch out Marked for Remarkable (more extensibility support / options)
+ - Would need to make an element...model from [this element](https://github.com/aktowns/polymer-re-markable/blob/master/re-markable.html) and `marked-element.html`.
 

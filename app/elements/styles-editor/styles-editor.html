@@ -113,7 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       ready: function(){
         // Create editor
-        var editor = this._createEditor(this.$.stylesEditor);
+        var editor = this.createEditor(this.$.stylesEditor);
         // Edit session based on attributes
         var session = this._editSession(editor);
         session.setMode('ace/mode/css');
@@ -149,8 +149,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _modalClosedWithSave: function(){
         var filePath = 'dist/styles/marked-theme.css';
-        var styles = this.js_beautify.css(this.css);
-        this.fs.writeFile(filePath, styles, function(err) {
+        // var styles = this.js_beautify.css(this.css);
+        this.fs.writeFile(filePath, this.css, function(err) {
             if(err) throw err;
             return;
         });

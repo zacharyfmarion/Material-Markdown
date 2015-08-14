@@ -443,11 +443,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _fullscreenChanged: function(){
         if (this.fullscreen){
           this.$.marked.style.display = 'none';
+          this.$.launchIcon.style.transform = 'rotate(180deg)';
+          this.$.launchIcon.style.left = '95%';
         }else{
+          this.$.launchIcon.style.transform = '';
+          this.$.launchIcon.style.left = '45%';
           this.$.marked.style.display = 'inline-block';
         }
         // Resize editor to account for changes
-        this.resizeEditor();
+        this.resizeAceEditor();
       }
     });
   })();
