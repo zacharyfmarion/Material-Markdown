@@ -116,8 +116,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Bold, italic, underline -->
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-bold' on-tap = 'bold'></paper-icon-button>
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-italic' on-tap = 'italisize'></paper-icon-button>
-        <paper-icon-button class = 'editor-actions' icon = 'editor:format-underlined' on-tap = 'underline'></paper-icon-button>
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-strikethrough' on-tap = 'strikethrough'></paper-icon-button>
+        <!-- Other Formatting -->
+        <paper-icon-button class = 'editor-actions' icon = 'editor:format-list-bulleted' on-tap = 'formatBulleted'></paper-icon-button>
+        <paper-icon-button class = 'editor-actions' icon = 'editor:format-list-numbered' on-tap = 'formatNumbered'></paper-icon-button>
         <!-- Undo manager -->
         <paper-icon-button class = 'self-end undoredo' icon = 'undo' on-tap = 'undo'></paper-icon-button>
         <paper-icon-button class = 'self-end undoredo' icon = 'redo' on-tap = 'redo'></paper-icon-button>
@@ -331,23 +333,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       bold: function(){
-        var range = this.aceEditor.getSelectionRange();
-        //this.aceEditor.clearSelection()
+        this._modifyText('bold');
       },
-
       italisize: function(){
-        var range = this.aceEditor.getSelectionRange();
-        //this.aceEditor.clearSelection()
+        this._modifyText('italisize');
       },
-
-      underline: function(){
-        var range = this.aceEditor.getSelectionRange();
-        //this.aceEditor.clearSelection()
-      },
-
       strikethrough: function(){
-        var range = this.aceEditor.getSelectionRange();
-        //this.aceEditor.clearSelection()
+        this._modifyText('strikethrough');
+      },
+      formatBulleted: function(){
+        this._modifyText('bulleted');
+      },
+      formatNumbered: function(){
+        this._modifyText('numbered');
       },
       /*
        * Undo last action from the editor
@@ -452,7 +450,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
         // Resize editor to account for changes
         this.resizeAceEditor();
-      }
+      },
+
+      _modifyText: function(operation){
+        var text = this.aceEditor.getCopyText();
+        if (text===null || text === ''){
+          //TODO:move cursor to middle
+        }
+        switch(operation){
+          case 'bold':
+            this.aceEditor.insert('**' + text + '**');
+            break;
+          case 'italisize':
+            this.aceEditor.insert('_' + text + '_');
+            break;
+          case 'strikethrough':
+            this.aceEditor.insert('~~' + text + '~~');
+            break;
+          case 'bulleted':
+            //TODO: Make this work for when there are multiple lines
+            this.aceEditor.insert('- ' + text);
+            break;
+          case 'numbered':
+            //TODO: Make this work for when there are multiple lines
+            this.aceEditor.insert('1. ' + text);
+            break;
+          default:
+            console.log('That operation is not defined');
+        }
+        //refocus the ace editor after operation
+        this.aceEditor.focus();
+
+      },
     });
   })();
 

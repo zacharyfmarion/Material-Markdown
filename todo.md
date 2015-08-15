@@ -6,7 +6,7 @@
 
 - ~~Change the REGEX or whatever on the editor to bold headers and italisize _italisized_ text. **Bold** stuff in a plain text editor is really kind of boring.~~
   - ~~Add Bold, Italic, and Underlined options in the toolbar~~
-  - Add functionality to these functions (insert character in editor).
+  - ~~Add functionality to these functions (insert character in editor).~~
 
 - Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).
   - Find out why Page.js is not working...not exactly sure what is going on with that..
@@ -17,11 +17,14 @@
   - ~~**Fix wierd fullscreen issue where it makes the marked pane larger instead of hiding it**~~
   - ~~Fix problem in the editor where the entire screen vertically is not filled up (wierd thing with chrome dev tools...kinda an edge case, shouldn't need to worry about it too much).~~
 
-- Default title of saved document to first header in document
+- Default title of saved document to first header in document (not sure if possible with electron)
 
-- Add find support...maybe do a bottom widget like in atom, or have the toolbar turn into the find bar like in a lot of material apps
+- ~~Add find support...maybe do a bottom widget like in atom, or have the toolbar turn into the find bar like in a lot of material apps~~
+  - Scratch that apparently find support already exists...just need to link it to electron's menu
 
 - Find a way to center the title span in the menubar
+
+- Add fullscreen mode to rendered HTML `marked-element` as well.
 
 - ~~Fix cut (remove selection from the editor)~~
 
@@ -48,10 +51,14 @@
 }
 ```
 
-  - Have the file saving correctly, now just need a revision inspector...modal? side panel? Not sure...
+- ~~Have the file saving correctly, now just need a revision inspector...modal? side panel? Not sure...~~
   - ~~Find out why history isn't working anymore...getting a type error for some reason...~~
-  - Now I don't think it works after the first time...
+  - Find out why history array for a document just gets reset/replaced each time you call `history[filename].push({});`
   - Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).
+
+- When the width of the window gets to be too small, change the formatting buttons on the toolbar to a `paper-icon-button` with `icon = editor:format-list-numbered`. Maybe make a custom element that shows the specific buttons below on click...unless there is already an element you can use which does this.
+
+- **Reduce the filesize by a lot by removing unnecesarry stuff (like other ace builds / ace files you don't need)...right now the folder is half a gig which is obscene...**
 
 - **_Keep it up, you should be able to release 1.0 stable soon (after you learn how to package it)._**
 
@@ -63,10 +70,13 @@
   - ~~Still can't scroll for some reason...???????~~
 - When you replace a file, the filepath refreshes to the old filepath for some reason...not sure how to solve this.
 - Still a lot of wierd stuff going on at the bottom of the screen when resizing happens
-- Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change.
+- Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change. Actually it sometimes does and sometimes doesn't in the ace editor...wierd.
+- Currently the bullet and numbered list buttons do not check for whether you are selecting a whole line or really do any sort of checks...change this to avoid wierd outputs like dashes in the middle of a line.
 
 ### Ideas for Future Directions
 
 - Switch out Marked for Remarkable (more extensibility support / options)
- - Would need to make an element...model from [this element](https://github.com/aktowns/polymer-re-markable/blob/master/re-markable.html) and `marked-element.html`.
-
+  - Would need to make an element...model from [this element](https://github.com/aktowns/polymer-re-markable/blob/master/re-markable.html) and `marked-element.html`.
+  - See [my current repo](https://github.com/zacharyfmarion/Remarkable-Element) for progress.
+- Scroll-sync???
+- Support for [MathJax](https://www.mathjax.org/)

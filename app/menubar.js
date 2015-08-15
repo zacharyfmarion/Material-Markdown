@@ -336,6 +336,30 @@ var menu = Menu.buildFromTemplate([
           // editor.aceEditor.find();
         },
         accelerator: 'Command+F'
+      },
+      {
+        label: 'bold',
+        click: function(){
+          editor.bold();
+        },
+        accelerator: 'Command+B',
+        visible: false
+      },
+      {
+        label: 'italisize',
+        click: function(){
+          editor.italisize();
+        },
+        accelerator: 'Command+I',
+        visible: false
+      },
+      {
+        label: 'strikethrough',
+        click: function(){
+          editor.strikethrough();
+        },
+        accelerator: 'Command+Alt+S',
+        visible: false
       }
     ]
   },
