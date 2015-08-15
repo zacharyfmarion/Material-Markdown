@@ -9,9 +9,12 @@
   - ~~Add functionality to these functions (insert character in editor).~~
 
 - Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).
-  - Find out why Page.js is not working...not exactly sure what is going on with that..
+  - ~~Find out why Page.js is not working...not exactly sure what is going on with that..~~
+  - Need to bind the settings both directions...in other words change settings.json when the settings states change and also load these changes from settings.json into the main application on startup/refresh
 
 - Fix stylesEditor and HTML export problem with js_beautify (still have no idea why it's not working)
+
+- Add multiple font-weights and more fonts...also in settings add option to import a new font...basically copy it into fonts and add it to the fonts array.
 
 - ~~Add fullscreen editing mode~~
   - ~~**Fix wierd fullscreen issue where it makes the marked pane larger instead of hiding it**~~
@@ -80,3 +83,4 @@
   - See [my current repo](https://github.com/zacharyfmarion/Remarkable-Element) for progress.
 - Scroll-sync???
 - Support for [MathJax](https://www.mathjax.org/)
+- Support for extended markdown features (tables, footnotes, etc)

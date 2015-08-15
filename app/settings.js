@@ -1,12 +1,18 @@
 var remote = require('remote');
-var app = remote.require('app');
+var appSettings = require('./settings.json');
 var BrowswerWindow = remote.require('browser-window');
-// Buttons
+var fs = require('fs');
+// Window Buttons
 var settingsClose = document.querySelector('#settings-close');
 var settingsMinimize = document.querySelector('#settings-minimize');
 var settingsFullscreen = document.querySelector('#settings-fullscreen');
 
+// Toggle buttons
+var showRibbonOnStart = document.querySelector('#showRibbonOnStart');
+
 settingsClose.addEventListener('click', function(){
+  // Save changes made to settings
+  fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(appSettings));
   // Settings window
   var settingsWindow = BrowswerWindow.getFocusedWindow();
   settingsWindow.close();
@@ -23,3 +29,7 @@ settingsFullscreen.addEventListener('click', function(){
   var settingsWindow = BrowswerWindow.getFocusedWindow();
   settingsWindow.setFullScreen(!settingsWindow.isFullScreen());
 },false);
+
+showRibbonOnStart.addEventListener('change', function(){
+  appSettings.general.showRibbonOnStart = showRibbonOnStart.checked;
+});

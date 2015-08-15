@@ -54,8 +54,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
 
-  <!-- Routes -->
-  <script src="../bower_components/page/page.js"></script>
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+  <template is="dom-bind" id="settings">
 
   <style is="custom-style">
     .menubar{
@@ -96,15 +98,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 0 16px;
     }
 
-    #settings-panel {
-      border-right: 1px solid rgba(0, 0, 0, 0.14);
+    paper-card {
+      max-width: 640px;
+      margin: 16px;
+    }
+
+    paper-card img{
+      padding: 15px;
+    }
+
+    /*.content-section{
+      overflow-y: scroll;
+    }*/
+
+    .option{
+      padding: 3px;
+    }
+
+    paper-toggle-button{
+      --paper-toggle-button-checked-bar-color:  #E91E63;
+      --paper-toggle-button-checked-button-color:  #E91E63;
+      --paper-toggle-button-checked-ink-color: #E91E63;
+      /*--paper-toggle-button-unchecked-bar-color:  ;*/
+      /*--paper-toggle-button-unchecked-button-color:  ;*/
+      /*--paper-toggle-button-unchecked-ink-color: ;*/
     }
   </style>
-
-</head>
-
-<body unresolved class="fullbleed layout vertical">
-  <template is="dom-bind" id="settings">
 
     <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
       <paper-icon-button class="small-icon" icon="close" id = "settings-close"></paper-icon-button>
@@ -112,115 +131,112 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-icon-button class="small-icon" icon="fullscreen" id = "settings-fullscreen"></paper-icon-button>
     </div>
 
-    <!-- Main Area -->
-    <paper-scroll-header-panel main condenses keep-condensed-header>
 
-      <!-- Main Toolbar -->
-      <paper-toolbar id="mainToolbar" class="">
-        <div class="title">Settings</div>
-      </paper-toolbar>
+    <paper-drawer-panel id="drawerPanel" responsive-width="600px" style = 'top: 20px; height: calc(100% - 20px)'>
 
-      <paper-drawer-panel>
+          <div class="nav" drawer fixed>
+            <paper-header-panel>
+              <paper-toolbar>
+                <dv class="title">Settings</dv>
+              </paper-toolbar>
+              <paper-menu>
 
-        <paper-scroll-header-panel drawer fixed>
-          <!-- Drawer Content -->
-          <paper-menu style = 'padding-top: 84px;'>
+                <a data-route="settings" href="/">
+                  <iron-icon icon="settings"></iron-icon>
+                  <span>General</span>
+                </a>
 
-            <a href="">
-              <iron-icon icon="settings"></iron-icon>
-              <span>General</span>
-            </a>
+                <a data-route="editor" href="/editor">
+                  <iron-icon icon="create"></iron-icon>
+                  <span>Editor</span>
+                </a>
 
-            <a href="">
-              <iron-icon icon="info"></iron-icon>
-              <span>Editor</span>
-            </a>
+                <a data-route="markdown" href="/markdown">
+                  <iron-icon icon="extension"></iron-icon>
+                  <span>Markdown</span>
+                </a>
 
-            <a href="">
-              <iron-icon icon="mail"></iron-icon>
-              <span>Markdown</span>
-            </a>
+                <a data-route="theming" href="/theming">
+                  <iron-icon icon="invert-colors"></iron-icon>
+                  <span>Theming</span>
+                </a>
+              </paper-menu>
+            </paper-header-panel>
 
-            <a href="">
-              <iron-icon icon="create"></iron-icon>
-              <span>Theming</span>
-            </a>
-          </paper-menu>
-        </paper-scroll-header-panel>
+          </div>
 
-      </paper-drawer-panel>
+          <paper-header-panel class="main" main mode="waterfall">
 
-      <paper-header-panel main>
-        <!-- Main Content -->
-        <div class="content">
-          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+            <!-- Main Toolbar -->
+            <paper-toolbar>
+              <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+            </paper-toolbar>
 
-            <section data-route = "general">
-              <paper-material elevation = '1'>
-                <h1>General</h1>
-              </paper-material>
-            </section>
+            <!-- Main Content -->
+            <div class="content">
+              <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
-            <section data-route = "editor">
-              <paper-material elevation = '1'>
-                <h1>Editor</h1>
-              </paper-material>
-            </section>
+                <section data-route = "general" class = 'content-section'>
+                  <div class="layout vertical">
+                    <paper-card heading = "On Startup" image="images/random-background.svg">
+                      <div class="card-content">
+                        <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart" on-></paper-toggle-button></div>
+                        <div class="layout horizontal option"><span class = 'flex'>Enable autorendering</span><paper-toggle-button id = "autorenderOnStart"></paper-toggle-button></div>
+                      </div>
+                    </paper-card>
+                  </div>
+                </section>
 
-            <section data-route = "markdown">
-              <paper-material elevation = '1'>
-                <h1>Markdown</h1>
-              </paper-material>
-            </section>
+                <section data-route = "editor" class = 'content-section'>
+                  <div class="layout vertical">
+                    <paper-card heading = "Defaults" image="images/random-background.svg">
+                      <div class="card-content">
+                        <!-- <div class="layout horizontal option"><span class = 'flex'>Default font</span><paper-select id = "defaultFont" items = "" initval = "Roboto_Mono"></paper-select></div>
+                        <div class="layout horizontal option"><span class = 'flex'>Default fontsize</span><paper-select id = "defaultFontSize" initval = "14"></paper-select></div>
+                        <div class="layout horizontal option"><span class = 'flex'>Default theme</span><paper-select id = "defaultEditorTheme" initval = "Textmate"></paper-select></div> -->
+                      </div>
+                    </paper-card>
+                    <paper-card heading = "Configurations" image="images/random-background.svg">
+                      <div class="card-content">
+                        <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
+                        <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "showLineNumbers"></paper-toggle-button></div>
+                      </div>
+                    </paper-card>
+                  </div>
+                </section>
 
-            <section data-route = "theming">
-              <paper-material elevation = '1'>
-                <h1>Theming</h1>
-              </paper-material>
-            </section>
+                <section data-route = "markdown" class = 'content-section'>
+                  <div class="layout vertical">
+                    <paper-card heading = "Extending Rules" image="images/random-background.svg">
+                      <div class="card-content">
 
-          </iron-pages>
-        </div>
-      </paper-header-panel>
+                      </div>
+                    </paper-card>
+                  </div>
+                </section>
 
-    </paper-scroll-header-panel>
+                <section data-route = "theming" class = 'content-section'>
+                  <div class="layout vertical">
+                    <paper-card heading = "On Startup" image="images/random-background.svg">
+                      <div class="card-content">
+                        <div class="layout horizontal option"><span class = 'flex'>Primary Color</span></div>
+                        <div class="layout horizontal option"><span class = 'flex'>Dark Primary Color</span></div>
+                        <div class="layout horizontal option"><span class = 'flex'>Accent Color</span>></div>
+                      </div>
+                    </paper-card>
+                  </div>
+                </section>
+
+              </iron-pages>
+            </div>
+
+          </paper-header-panel>
+
+        </paper-drawer-panel>
 
     <script>require('./settings');</script>
 
   </template>
-
-  <script>
-  // WHY THE MOTHER FUCK IS THIS NOT WORKING
-    (function(document) {
-      'use strict';
-
-      var settings = document.querySelector('#settings');
-
-      // See https://github.com/Polymer/polymer/issues/1381
-      window.addEventListener('WebComponentsReady', function() {
-        page('/', function () {
-          settings.route = 'general';
-        });
-
-        page('/editor', function () {
-          settings.route = 'editor';
-        });
-
-        page('/markdown', function () {
-          settings.route = 'markdown';
-        });
-
-        page('/theming', function () {
-          settings.route = 'theming';
-        });
-
-        page({
-          hashbang: true
-        });
-      });
-
-    })(document);
-  </script>
 
 </body>
 

@@ -11,7 +11,9 @@
     "neon-animation": "PolymerElements/neon-animation#~1.0.6",
     "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.3",
     "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.2",
-    "marked-element": "PolymerElements/marked-element#~1.0.2"
+    "marked-element": "PolymerElements/marked-element#~1.0.2",
+    "paper-card": "PolymerElements/paper-card#~1.0.1",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.6"
   },
   "devDependencies": {
     "web-component-tester": "*",
