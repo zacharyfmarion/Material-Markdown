@@ -61,7 +61,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-menu class = 'flex'>
         <paper-submenu>
           <!-- If needed add a filter / sort to get the correct order..maybe want the most recent at the top -->
-          <template is = "dom-repeat" items = "{{historyItems}}">
+          <template is = "dom-repeat" id = "historyList" items = "{{historyItems}}">
             <!-- Maybe use a submenu to display some of the content??? -->
             <paper-item on-tap = '_logContent' class="menu-trigger">{{item.time}}</paper-item>
             <paper-menu class="menu-content sublist">
@@ -114,9 +114,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [Polymer.NeonAnimationRunnerBehavior],
 
       getHistoryItems: function(){
+        this.history = require('./history.json');
         console.log(this.history[this.filepath]);
         if (this.history && this.filepath){
           this.historyItems = this.history[this.filepath];
+          //render the changes
+          this.$.historyList.render();
         }
       },
 
@@ -136,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _logContent: function(e){
         var model = e.model;
-        console.log(model.item.contents);
+        // console.log(model.item.contents);
       }
 
 

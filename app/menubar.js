@@ -64,15 +64,13 @@ stylesEditor.addEventListener('styles-changed', function(){
 }, false);
 
 function updateHistory(fileName){
-  if (history.fileName){
-    //TODO: find out why this is getting rid of all the other entries...basically rewriting it
+  if (history[fileName]){
     history[fileName].push({
       time: Date.now().toString(),
       contents: editor.aceEditor.getValue(),
-      preview: editor.aceEditor.getValue().substring(0,35) + '...'
+      preview: editor.aceEditor.getValue().substring(0,100) + '...'
     });
     var historyText = JSON.stringify(history, null, 2);
-    console.log(historyText);
     fs.writeFile(__dirname + '/history.json', historyText, function(err){
       if (err){
         console.log(err);
@@ -83,7 +81,7 @@ function updateHistory(fileName){
       {
         time: Date.now().toString(),
         contents: editor.aceEditor.getValue(),
-        preview: editor.aceEditor.getValue().substring(0,35) + '...'
+        preview: editor.aceEditor.getValue().substring(0,100) + '...'
       }
     ];
     var initialHistoryText = JSON.stringify(history, null, 2);
