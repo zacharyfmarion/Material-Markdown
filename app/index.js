@@ -7,14 +7,33 @@ var history = document.getElementById('history');
 var title = document.getElementById('title');
 var historyPanel = document.getElementsByTagName('history-panel')[0];
 
+// helper functions
+
+/*
+ * Count the number of words in a string of text
+ * @param {String} String to be matched
+ */
+function countWords(str) {
+  var matches = str.match(/[\w\d]+/gi);
+  return matches ? matches.length : 0;
+}
+
 // Adjust height of editor when window is resized
 window.addEventListener('resize', function(){
   editor.resizeEditor();
 }, true);
 
 editor.addEventListener('file-opened', function(){
-  title.textContent = editor.filepath.replace(/^.*(\\|\/|\:)/, '');
+  title.textContent = editor.filepath.replace(/^.*(\\|\/|\:)/, '') + ' - ' + countWords(editor.aceEditor.getValue()) + ' words';
 }, false);
+
+editor.addEventListener('editor-changed', function(){
+  if (editor.filepath){
+    title.textContent = editor.filepath.replace(/^.*(\\|\/|\:)/, '') + ' - ' + countWords(editor.aceEditor.getValue()) + ' words';
+  }else{
+    title.textContent = 'untitled.md - ' + countWords(editor.aceEditor.getValue()) + ' words';
+  }
+});
 
 // Toggle ribbon when the toggle button is clicked
 ribbonToggle.addEventListener('click', function(){

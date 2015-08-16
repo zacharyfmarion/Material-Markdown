@@ -382,6 +382,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _listenForChange: function(session, object){
         session.on('change', function() {
+           object.fire('editor-changed');
            if (object.autorender && !object.fullscreen){
              object.renderMarkdown();
            }
@@ -417,7 +418,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       _filePathChanged: function(){
         if (this.filepath !== null){
-          this.fire('file-opened');
           this._readFile(this.aceEditor, this.filepath, this);
         }
       },
@@ -437,6 +437,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // the begining
                 editor.setValue(data.toString(), -1);
                 object.savedText = editor.getValue();
+                object.fire('file-opened');
             }
         });
       },
