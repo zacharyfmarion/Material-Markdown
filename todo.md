@@ -1,12 +1,14 @@
 # A Markdown Editor for the Material Era
 
-> It is a very clean font and I very much like it, although I certainly think that there could be some beneficial changes made to it in order to increase the amount of awesomeness it contains. asdfas asdf
+> It is a very clean font and I very much like it, although I certainly think that there could be some beneficial changes made to it in order to increase the amount of awesomeness it contains.
 
 ### What comes next
 
 - ~~Change the REGEX or whatever on the editor to bold headers and italisize _italisized_ text. **Bold** stuff in a plain text editor is really kind of boring.~~
   - ~~Add Bold, Italic, and Underlined options in the toolbar~~
   - ~~Add functionality to these functions (insert character in editor).~~
+  - ~~Put cursor in center of text if no text selected~~
+  - Add keybindings to these functions
 
 - Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).
   - ~~Find out why Page.js is not working...not exactly sure what is going on with that..~~
@@ -30,6 +32,8 @@
 - Add fullscreen mode to rendered HTML `marked-element` as well.
 
 - ~~Fix cut (remove selection from the editor)~~
+
+- Add context menus to the editor...no sure whether you should make it native electron or material designy...maybe experiment with both.
 
 - ~~Add revision history...saved to a separate json file...basically have it like:~~
 
@@ -75,6 +79,7 @@
 - Still a lot of wierd stuff going on at the bottom of the screen when resizing happens
 - Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change. Actually it sometimes does and sometimes doesn't in the ace editor...wierd.
 - Currently the bullet and numbered list buttons do not check for whether you are selecting a whole line or really do any sort of checks...change this to avoid wierd outputs like dashes in the middle of a line.
+- when dragging over marked element call e.preventDefault() to stop the electron thing of filling the entire window with text.
 
 ### Ideas for Future Directions
 
@@ -84,3 +89,4 @@
 - Scroll-sync???
 - Support for [MathJax](https://www.mathjax.org/)
 - Support for extended markdown features (tables, footnotes, etc)
+- Add support for comments

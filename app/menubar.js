@@ -10,7 +10,6 @@ var fs = require('fs');
 var history = require('./history.json');
 
 var myBrowserWindow = BrowserWindow.getFocusedWindow();
-var stylesEditor = document.getElementsByTagName('styles-editor')[0];
 var editor = document.getElementsByTagName('markdown-editor')[0];
 var historyPanel = document.getElementsByTagName('history-panel')[0];
 
@@ -46,22 +45,6 @@ document.getElementById('settings').onclick = function(){
   // and load the index.html of the app.
   settingsWindow.loadUrl('file://' + __dirname + '/settings.html');
 };
-
-// Update styles when custom element event is fired, signifying style change
-// TODO: Add styles editor to settings
-stylesEditor.addEventListener('styles-changed', function(){
-  // reload window
-  if (editor.filepath){
-    var filepath = editor.filepath;
-    myBrowserWindow.reload();
-    editor.filepath = filepath;
-  }else{
-    var text = editor.aceEditor.getValue();
-    myBrowserWindow.reload();
-    editor.aceEditor.setValue(text);
-  }
-
-}, false);
 
 function updateHistory(fileName){
   if (history[fileName]){
@@ -256,17 +239,9 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'History',
         click: function(){
-          //show the panel
-          historyPanel.show();
+          (!historyPanel.open) ? historyPanel.show() : historyPanel.hide();
         },
         accelerator: 'Command+H'
-      },
-      {
-        label: 'Change styles',
-        click: function(){
-          stylesEditor.open();
-        },
-        accelerator: 'Control+Commmand+S'
       }
     ]
   },

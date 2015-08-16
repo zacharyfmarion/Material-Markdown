@@ -18,58 +18,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     #stylesEditor{
-      /* position: absolute; */
-      overflow: scroll;
-    }
-
-    paper-dialog.paper-dialog-0{
-      padding: 0;
-      margin: 0;
-      background: #fff;
-      max-height: 1000px !important;
-    }
-
-    paper-toolbar{
-      background: #E91E63;
-    }
-
-    .container{
-      padding:0;
-      margin: 0;
-    }
-
-    .actionButtons{
       position: absolute;
-      right: 5px;
-      bottom: 5px;
+      overflow: scroll;
+      left: 0;
+      right: 0;
+      top: 64px;
+      bottom: 0;
     }
 
-    #applyAction{
-      background: #E91E63;
-      color: #fff;
+    #applyButton{
+      position: absolute;
+      bottom: 8px;
+      right: 5px;
+      z-index: 
     }
 
   </style>
   <template>
-    <paper-dialog id = "stylesModal" modal>
-      <div class = "container">
-        <paper-toolbar>
-          <div class="title">Edit Styles</div>
-        <!--  <paper-tabs selected="0" class="bottom self-end" style="width: 300px;">
-          <paper-tab>ITEM ONE</paper-tab>
-          <paper-tab>ITEM TWO</paper-tab>
-        </paper-tabs> -->
-        <div class="bottom flex"></div>
-      </paper-toolbar>
-        <div id = "stylesEditor"></div>
-      </div>
-      <!-- Actions -->
-      <div class = "layout horizontal actionButtons">
-        <paper-button raised on-tap = "_modalClosedWithoutSave" id = "cancelAction">Cancel</paper-button>
-        <paper-button raised on-tap = "_modalClosedWithSave" id = "applyAction">Apply</paper-button>
-      </div>
-
-    </paper-dialog>
+    <div id = "stylesEditor"></div>
+    <paper-button id = "applyButton" on-tap = "applyChanges">Apply Changes</paper-button>
+    <!-- Add a toast when changes applied -->
   </template>
   <script>
   (function() {
@@ -77,13 +45,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'styles-editor',
 
       properties: {
-        opened: {
-          type: Boolean,
-          value: false,
-          notify: true,
-          observer: '_openStateChanged',
-          reflectToAttribute: true
-        },
         css: {
           type: String,
           value: null,
@@ -111,57 +72,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Edit session based on attributes
         var session = this._editSession(editor);
         session.setMode('ace/mode/css');
-        // Set height of editor
-        this.$.stylesEditor.style.height = ((window.innerHeight / 2) - 65) + 'px';
-        this.$.stylesEditor.style.width = (window.innerWidth / 2)  + 'px';
         // Populate editor with data from marked-theme.css file
         this._populateStyles(editor);
         // Listen for changes to the editor
         this._listenForChange(session, editor, this);
       },
 
-      open: function(){
-        this.opened = true;
-      },
-
-      close: function(){
-        this.opened = false;
-      },
-
-      _openStateChanged: function(){
-        var stylesModal = this.$.stylesModal;
-        (this.opened) ? stylesModal.setAttribute('opened', '') : stylesModal.removeAttribute('opened');
-        // Set unsaved changes to css, to revert back to on close without save
-        this.unsavedChanges = this.css;
-      },
-
       _listenForChange: function(session, editor, object){
         session.on('change', function() {
           Polymer.dom(object).setAttribute('css', editor.getValue());
         });
-      },
-
-      _modalClosedWithSave: function(){
-        var filePath = 'dist/styles/marked-theme.css';
-        var styles = cssbeautify(this.css, {
-          indent: '  ',
-          autosemicolon: true
-        });
-        this.fs.writeFile(filePath, styles, function(err) {
-            if(err) throw err;
-            return;
-        });
-        // Fire a custom event signifying that the style has been edited and saved
-        this.fire('styles-changed');
-        // Close the modal
-        this.close();
-      },
-
-      _modalClosedWithoutSave: function(){
-        // Revert to original
-        this.css = this.unsavedChanges;
-        // Close the modal
-        this.opened = false;
       },
 
       _populateStyles: function(editor){
@@ -181,6 +101,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 editor.setValue(styles, -1);
             }
         });
+      },
+
+      applyChanges: function(){
+        console.log('changes applied');
       }
 
     });

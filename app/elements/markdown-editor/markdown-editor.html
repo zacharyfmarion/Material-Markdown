@@ -120,6 +120,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Other Formatting -->
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-list-bulleted' on-tap = 'formatBulleted'></paper-icon-button>
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-list-numbered' on-tap = 'formatNumbered'></paper-icon-button>
+        <paper-icon-button class = 'editor-actions' icon = 'editor:insert-link' on-tap = 'insertLink'></paper-icon-button>
         <!-- Undo manager -->
         <paper-icon-button class = 'self-end undoredo' icon = 'undo' on-tap = 'undo'></paper-icon-button>
         <paper-icon-button class = 'self-end undoredo' icon = 'redo' on-tap = 'redo'></paper-icon-button>
@@ -294,6 +295,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Adjust height of editor when ribbon shown or hidden
        */
       resizeEditor: function(){
+        //acounts for height of menubar (close, minimize, etc) and ribbon
         var ribbonHeight = (this.noribbon) ? 20 : 80;
         this.$.editor.style.height = (window.innerHeight - 64 - ribbonHeight) + 'px';
         this.$.marked.style.height = (window.innerHeight - 74 - ribbonHeight) + 'px';
@@ -346,6 +348,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       formatNumbered: function(){
         this._modifyText('numbered');
+      },
+      insertLink: function(){
+        this._modifyText('link');
       },
       /*
        * Undo last action from the editor
@@ -454,18 +459,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _modifyText: function(operation){
         var text = this.aceEditor.getCopyText();
-        if (text===null || text === ''){
-          //TODO:move cursor to middle
-        }
         switch(operation){
           case 'bold':
             this.aceEditor.insert('**' + text + '**');
+            if (text === null || text === ''){
+              var pos = this.aceEditor.getCursorPosition();
+              this.aceEditor.moveCursorTo(pos.row, pos.column-2);
+            }
             break;
           case 'italisize':
             this.aceEditor.insert('_' + text + '_');
+            if (text === null || text === ''){
+              var pos = this.aceEditor.getCursorPosition();
+              this.aceEditor.moveCursorTo(pos.row, pos.column-1);
+            }
             break;
           case 'strikethrough':
             this.aceEditor.insert('~~' + text + '~~');
+            if (text === null || text === ''){
+              var pos = this.aceEditor.getCursorPosition();
+              this.aceEditor.moveCursorTo(pos.row, pos.column-2);
+            }
             break;
           case 'bulleted':
             //TODO: Make this work for when there are multiple lines
@@ -474,6 +488,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           case 'numbered':
             //TODO: Make this work for when there are multiple lines
             this.aceEditor.insert('1. ' + text);
+            break;
+          case 'link':
+            this.aceEditor.insert('[]()');
+            var pos = this.aceEditor.getCursorPosition();
+            this.aceEditor.moveCursorTo(pos.row, pos.column-3);
+            console.log(pos);
             break;
           default:
             console.log('That operation is not defined');

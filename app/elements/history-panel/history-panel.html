@@ -95,15 +95,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array
         },
 
+        open: {
+          type: Boolean,
+          value: false
+        },
+
         animationConfig: {
           value: function() {
             return {
               'entry': {
                 name: 'slide-from-left-animation',
-                node: this
-              },
-              'exit': {
-                name: 'slide-from-right-animation',
                 node: this
               }
             }
@@ -114,7 +115,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       behaviors: [Polymer.NeonAnimationRunnerBehavior],
 
       getHistoryItems: function(){
-        this.history = require('./history.json');
         console.log(this.history[this.filepath]);
         if (this.history && this.filepath){
           this.historyItems = this.history[this.filepath];
@@ -124,13 +124,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       show: function(){
+        this.open = true;
         //this.playAnimation('entry');
         var currList = this.$.menu.getAttribute('class');
         this.$.menu.setAttribute('class', currList + ' show-panel');
       },
 
       hide: function(){
-        //this.playAnimation('exit');
+        this.open = false;
+        this.playAnimation('exit');
         var currList = this.$.menu.getAttribute('class');
         this.$.menu.setAttribute('class', currList.replace(' show-panel', ''));
       },
