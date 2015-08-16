@@ -121,6 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-list-bulleted' on-tap = 'formatBulleted'></paper-icon-button>
         <paper-icon-button class = 'editor-actions' icon = 'editor:format-list-numbered' on-tap = 'formatNumbered'></paper-icon-button>
         <paper-icon-button class = 'editor-actions' icon = 'editor:insert-link' on-tap = 'insertLink'></paper-icon-button>
+        <paper-icon-button class = 'editor-actions' icon = 'image:image' on-tap = 'insertImage'></paper-icon-button>
         <!-- Undo manager -->
         <paper-icon-button class = 'self-end undoredo' icon = 'undo' on-tap = 'undo'></paper-icon-button>
         <paper-icon-button class = 'self-end undoredo' icon = 'redo' on-tap = 'redo'></paper-icon-button>
@@ -352,6 +353,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       insertLink: function(){
         this._modifyText('link');
       },
+      insertImage: function(){
+        this._modifyText('image');
+      },
       /*
        * Undo last action from the editor
        */
@@ -494,6 +498,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             var pos = this.aceEditor.getCursorPosition();
             this.aceEditor.moveCursorTo(pos.row, pos.column-3);
             console.log(pos);
+            break;
+          case 'image':
+            this.aceEditor.insert('![]()');
+            var pos = this.aceEditor.getCursorPosition();
+            this.aceEditor.moveCursorTo(pos.row, pos.column-1);
             break;
           default:
             console.log('That operation is not defined');

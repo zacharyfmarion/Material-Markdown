@@ -42,11 +42,17 @@ holder.ondrop = function (e) {
   e.preventDefault();
   editor.style.opacity = '1';
   var file = e.dataTransfer.files[0];
+  console.log(file.type);
   // only allow file drag if there is no filepath already specified
-  if (editor.filepath === null){
+  // only accept markdown and plaintext files into the editor
+  if (editor.filepath === null && (file.type === 'text/markdown' || file.type === 'text/plain')){
     editor.setFilePath(file.path);
     historyPanel.filepath = file.path;
     historyPanel.getHistoryItems();
+  }
+  // if file is an image, insert the image into the editor
+  else if (file.type === 'image/jpg' || file.type === 'image/png'){
+    editor.aceEditor.insert('![](' + file.path + ')');
   }
   return false;
 };
