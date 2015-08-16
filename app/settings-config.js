@@ -3,11 +3,11 @@
 var fs = require('fs');
 var editor = document.getElementsByTagName('markdown-editor')[0];
 var iconSwitch = document.getElementsByTagName('icon-button-switch')[0];
-var appSettings = require('./settings.json');
 
 // Watch for change to settings.json file (when settings are saved)
 
-fs.watch(__dirname + '/settings.json', function (event, filename) {
+fs.watch(__dirname + '/settings.json', function () {
+  var appSettings = require('./settings.json');
   var editorSettings = appSettings.editor;
 
   if (editorSettings.codeFolding === false){
@@ -23,11 +23,15 @@ fs.watch(__dirname + '/settings.json', function (event, filename) {
   var markdown = appSettings.markdown;
 
   var theming = appSettings.theming;
+
+  var outputStyles = appSettings.outputStyles;
+
 });
 
 // Settings to change on next start
 window.addEventListener('WebComponentsReady', function(){
   // Checking General Settings:
+  var appSettings = require('./settings.json');
   var general = appSettings.general;
 
   if (general.autorendering === false){
@@ -37,5 +41,9 @@ window.addEventListener('WebComponentsReady', function(){
   if (general.showRibbonOnStart === true){
     editor.noribbon = false;
     iconSwitch.icons =  'close menu';
+  }
+
+  if (general.showWordCount === true){
+    // Not really much I can do here right now...need to make this more polymeric
   }
 });

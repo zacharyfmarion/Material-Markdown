@@ -13,7 +13,8 @@
     "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.2",
     "marked-element": "PolymerElements/marked-element#~1.0.2",
     "paper-card": "PolymerElements/paper-card#~1.0.1",
-    "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.6"
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.6",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.1"
   },
   "devDependencies": {
     "web-component-tester": "*",

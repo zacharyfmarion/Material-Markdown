@@ -137,13 +137,6 @@ are so inclined.
       session.setMode(fullMode);
     },
     /**
-     * Observer function that changes wrap mode on change of the "wrap" attribute
-     */
-    _wrapModeChanged: function(){
-      var session = this.aceEditor.getSession();
-      session.setUseWrapMode(this.wrap);
-    },
-    /**
      * Observer function that changes theme of editor when the theme attribute changes
      */
     _themeChanged: function(){

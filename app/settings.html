@@ -107,10 +107,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 15px;
     }
 
-    /*.content-section{
-      overflow-y: scroll;
-    }*/
-
     .option{
       padding: 3px;
     }
@@ -123,6 +119,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /*--paper-toggle-button-unchecked-button-color:  ;*/
       /*--paper-toggle-button-unchecked-ink-color: ;*/
     }
+
+    paper-card{
+      --paper-card-content{
+        background: #e5e5e5;
+      }
+    }
   </style>
 
     <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
@@ -130,7 +132,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-icon-button class="small-icon" icon="remove" id = "settings-minimize"></paper-icon-button>
       <paper-icon-button class="small-icon" icon="fullscreen" id = "settings-fullscreen"></paper-icon-button>
     </div>
-
 
     <paper-drawer-panel id="drawerPanel" responsive-width="600px" style = 'top: 20px; height: calc(100% - 20px)'>
 
@@ -183,10 +184,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 <section data-route = "general" class = 'content-section'>
                   <div class="layout vertical center">
-                    <paper-card heading = "On Startup" image="images/random-background.svg">
+                    <paper-card heading = "On Startup" image="images/random-background.svg" animatedShadow>
                       <div class="card-content">
                         <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart" on-></paper-toggle-button></div>
                         <div class="layout horizontal option"><span class = 'flex'>Enable autorendering</span><paper-toggle-button id = "autorenderOnStart"></paper-toggle-button></div>
+                        <!-- Need to make settings a separate element to make this easier -->
+                        <div class="layout horizontal option"><span class = 'flex'>Show Word Count</span><paper-toggle-button id = "showWordCount"></paper-toggle-button></div>
                       </div>
                     </paper-card>
                   </div>
@@ -194,14 +197,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 <section data-route = "editor" class = 'content-section'>
                   <div class="layout vertical center">
-                    <paper-card heading = "Defaults" image="images/random-background.svg">
+                    <paper-card heading = "Defaults" image="images/random-background.svg" animatedShadow>
                       <div class="card-content">
                         <!-- <div class="layout horizontal option"><span class = 'flex'>Default font</span><paper-select id = "defaultFont" items = "" initval = "Roboto_Mono"></paper-select></div>
                         <div class="layout horizontal option"><span class = 'flex'>Default fontsize</span><paper-select id = "defaultFontSize" initval = "14"></paper-select></div>
                         <div class="layout horizontal option"><span class = 'flex'>Default theme</span><paper-select id = "defaultEditorTheme" initval = "Textmate"></paper-select></div> -->
                       </div>
                     </paper-card>
-                    <paper-card heading = "Configurations" image="images/random-background.svg">
+                    <paper-card heading = "Configurations" image="images/random-background.svg" animatedShadow>
                       <div class="card-content">
                         <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
                         <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "showLineNumbers"></paper-toggle-button></div>
@@ -212,7 +215,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 <section data-route = "markdown" class = 'content-section'>
                   <div class="layout vertical center">
-                    <paper-card heading = "Extending Rules" image="images/random-background.svg">
+                    <paper-card heading = "Extending Rules" image="images/random-background.svg" animatedShadow>
                       <div class="card-content">
 
                       </div>
@@ -222,7 +225,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 <section data-route = "theming" class = 'content-section'>
                   <div class="layout vertical center">
-                    <paper-card heading = "On Startup" image="images/random-background.svg">
+                    <paper-card heading = "On Startup" image="images/random-background.svg" animatedShadow>
                       <div class="card-content">
                         <div class="layout horizontal option"><span class = 'flex'>Primary Color</span></div>
                         <div class="layout horizontal option"><span class = 'flex'>Dark Primary Color</span></div>
@@ -233,7 +236,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </section>
 
                 <section data-route = "outputStyles" class = 'content-section'>
-                  <styles-editor wrap></styles-editor>
+                  <!-- <styles-editor wrap></styles-editor> -->
+                  <div class="layout vertical center">
+                    <paper-card heading = "Active Stylesheet" image="images/random-background.svg" animatedShadow>
+                      <div class="card-content">
+                        <div class="layout horizontal center option">
+                          <span class = 'flex'>Choose a stylesheet</span>
+                          <paper-dropdown-menu id = "selectActiveStylesheet" label = "Select Theme">
+                            <paper-menu class="dropdown-content">
+                              <paper-item>Github</paper-item>
+                              <paper-item>Dark Theme</paper-item>
+                              <paper-item>Add +</paper-item>
+                            </paper-menu>
+                          </paper-dropdown-menu>
+                        </div>
+                      </div>
+                    </paper-card>
+                  </div>
                 </section>
 
               </iron-pages>
