@@ -1,6 +1,6 @@
 # A Markdown Editor for the Material Era
 
-> It is a very clean font and I very much like it, although I certainly think that there could be some beneficial changes made to it in order to increase the amount of awesomeness it contains.
+> In my mind, material design represents the most cohesize and unified design philosophy currently in existence - bringing it from mobile and web settings to the desktop seems a natural and exciting step.
 
 ### What comes next
 
@@ -30,6 +30,8 @@
 - Find a way to center the title span in the menubar
 
 - Add fullscreen mode to rendered HTML `marked-element` as well.
+
+- Add word count (probably where the filename currently is)
 
 - ~~Fix cut (remove selection from the editor)~~
 

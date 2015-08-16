@@ -324,30 +324,38 @@ var menu = Menu.buildFromTemplate([
           // editor.aceEditor.find();
         },
         accelerator: 'Command+F'
+      }
+    ]
+  },
+  {
+    label: 'Actions',
+    submenu: [
+      {
+        label: 'Bold',
+        click: function(){
+          if (editor.aceEditor.isFocused){
+            editor.bold();
+          }
+        },
+        accelerator: 'Command+B'
       },
       {
-        label: 'bold',
+        label: 'Italisize',
         click: function(){
-          editor.bold();
+          if (editor.aceEditor.isFocused){
+            editor.italisize();
+          }
         },
-        accelerator: 'Command+B',
-        visible: false
+        accelerator: 'Command+I'
       },
       {
-        label: 'italisize',
+        label: 'Strikethrough',
         click: function(){
-          editor.italisize();
+          if (editor.aceEditor.isFocused){
+            editor.strikethrough();
+          }
         },
-        accelerator: 'Command+I',
-        visible: false
-      },
-      {
-        label: 'strikethrough',
-        click: function(){
-          editor.strikethrough();
-        },
-        accelerator: 'Command+Alt+S',
-        visible: false
+        accelerator: 'Command+U'
       }
     ]
   },
