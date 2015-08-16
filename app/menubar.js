@@ -178,7 +178,7 @@ var menu = Menu.buildFromTemplate([
             click: function(){
               if (editor.aceEditor.getValue() !== ''){
                 dialog.showSaveDialog({
-                  defaultPath: 'markdown.html'
+                  defaultPath: 'untitled.html'
                 },function(filename){
                   editor.exportToHTML(editor.aceEditor.getValue(), filename);
                 });
@@ -190,7 +190,7 @@ var menu = Menu.buildFromTemplate([
             click: function(){
               if (editor.aceEditor.getValue() !== ''){
                 dialog.showSaveDialog({
-                  defaultPath: 'markdown.html'
+                  defaultPath: 'untitled.html'
                 }, function(filename){
                   editor.exportToStyledHTML(editor.aceEditor.getValue(), filename, __dirname + '/styles/marked-github.css');
                 });
@@ -202,7 +202,7 @@ var menu = Menu.buildFromTemplate([
             click: function(){
               if (editor.savedText !== null){
                 dialog.showSaveDialog({
-                  defaultPath: 'markdown.pdf'
+                  defaultPath: 'untitled.pdf'
                 },function(filename){
                   editor.exportToPdf(editor.aceEditor.getValue(), filename, 'dist/styles/test.css');
                 });
@@ -219,7 +219,7 @@ var menu = Menu.buildFromTemplate([
         click: function(){
           if (editor.filepath === null){
             dialog.showSaveDialog({
-              defaultPath: '.md'
+              defaultPath: 'untitled.md'
             },function(fileName){
               editor.saveFile(fileName);
               // if the file already has a revision history
@@ -239,7 +239,7 @@ var menu = Menu.buildFromTemplate([
         label: 'Save As',
         click: function(){
           dialog.showSaveDialog({
-            defaultPath: '.md'
+            defaultPath: 'untitled.md'
           },function(fileName){
             editor.saveFile(fileName);
             // if the file already has a revision history

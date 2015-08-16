@@ -1,31 +1,41 @@
-var appSettings = require('./settings.json');
+'use strict';
+
+var fs = require('fs');
 var editor = document.getElementsByTagName('markdown-editor')[0];
 var iconSwitch = document.getElementsByTagName('icon-button-switch')[0];
+var appSettings = require('./settings.json');
 
-// Checking General Settings:
-var general = appSettings.general;
+// Watch for change to settings.json file (when settings are saved)
 
-if (general.autorendering === false){
-  editor.autorender = false;
-}
+fs.watch(__dirname + '/settings.json', function (event, filename) {
+  var editorSettings = appSettings.editor;
 
-if (general.showRibbonOnStart === true){
-  editor.noribbon = false;
-  iconSwitch.icons =  'close menu';
-}
+  if (editorSettings.codeFolding === false){
+    editor.wrap = false;
+  }
 
-var editorSettings = appSettings.editor;
+  if (editor.lineNumbers === false){
+    // remove line numbers
+  }
 
-if (editorSettings.codeFolding === false){
-  editor.wrap = false;
-}
+  //TODO: Add settings to these
 
-if (editor.lineNumbers === false){
-  // remove line numbers
-}
+  var markdown = appSettings.markdown;
 
-//TODO: Add settings to these
+  var theming = appSettings.theming;
+});
 
-var markdown = appSettings.markdown;
+// Settings to change on next start
+window.addEventListener('WebComponentsReady', function(){
+  // Checking General Settings:
+  var general = appSettings.general;
 
-var theming = appSettings.theming;
+  if (general.autorendering === false){
+    editor.autorender = false;
+  }
+
+  if (general.showRibbonOnStart === true){
+    editor.noribbon = false;
+    iconSwitch.icons =  'close menu';
+  }
+});
