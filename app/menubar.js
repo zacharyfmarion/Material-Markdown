@@ -177,7 +177,9 @@ var menu = Menu.buildFromTemplate([
             label: 'HTML',
             click: function(){
               if (editor.aceEditor.getValue() !== ''){
-                dialog.showSaveDialog(function(filename){
+                dialog.showSaveDialog({
+                  defaultPath: 'markdown.html'
+                },function(filename){
                   editor.exportToHTML(editor.aceEditor.getValue(), filename);
                 });
               }
@@ -187,7 +189,9 @@ var menu = Menu.buildFromTemplate([
             label: 'Styled HTML',
             click: function(){
               if (editor.aceEditor.getValue() !== ''){
-                dialog.showSaveDialog(function(filename){
+                dialog.showSaveDialog({
+                  defaultPath: 'markdown.html'
+                }, function(filename){
                   editor.exportToStyledHTML(editor.aceEditor.getValue(), filename, __dirname + '/styles/marked-github.css');
                 });
               }
@@ -197,7 +201,9 @@ var menu = Menu.buildFromTemplate([
             label: 'PDF',
             click: function(){
               if (editor.savedText !== null){
-                dialog.showSaveDialog(function(filename){
+                dialog.showSaveDialog({
+                  defaultPath: 'markdown.pdf'
+                },function(filename){
                   editor.exportToPdf(editor.aceEditor.getValue(), filename, 'dist/styles/test.css');
                 });
               }
@@ -212,7 +218,9 @@ var menu = Menu.buildFromTemplate([
         label: 'Save',
         click: function(){
           if (editor.filepath === null){
-            dialog.showSaveDialog(function(fileName){
+            dialog.showSaveDialog({
+              defaultPath: '.md'
+            },function(fileName){
               editor.saveFile(fileName);
               // if the file already has a revision history
               updateHistory(fileName);
@@ -230,8 +238,15 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Save As',
         click: function(){
-
-        }
+          dialog.showSaveDialog({
+            defaultPath: '.md'
+          },function(fileName){
+            editor.saveFile(fileName);
+            // if the file already has a revision history
+            updateHistory(fileName);
+          });
+        },
+        accelerator: 'Command+Shift+S'
       },
       {
         type: 'separator'

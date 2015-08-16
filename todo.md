@@ -33,6 +33,8 @@
 
 - ~~Fix cut (remove selection from the editor)~~
 
+- Add padding to editor in fullscreen mode...maybe add a minimalist writing mode??
+
 - Add context menus to the editor...no sure whether you should make it native electron or material designy...maybe experiment with both.
 
 - ~~Add revision history...saved to a separate json file...basically have it like:~~
