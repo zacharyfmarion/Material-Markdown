@@ -356,6 +356,52 @@ var menu = Menu.buildFromTemplate([
           }
         },
         accelerator: 'Command+U'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Unordered List',
+        click: function(){
+          if (editor.aceEditor.isFocused){
+            editor.formatBulleted();
+          }
+        }
+      },
+      {
+        label: 'Ordered List',
+        click: function(){
+          if (editor.aceEditor.isFocused){
+            editor.formatNumbered();
+          }
+        }
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Link',
+        click: function(){
+          if (editor.aceEditor.isFocused){
+            editor.insertLink();
+          }
+        }
+      },
+      {
+        label: 'Image',
+        click: function(){
+          if (editor.aceEditor.isFocused){
+            editor.insertImage();
+          }
+        }
+      },
+      {
+        label: 'Code Block',
+        click: function(){
+          if (editor.aceEditor.isFocused){
+            editor.insertCodeBlock();
+          }
+        }
       }
     ]
   },
