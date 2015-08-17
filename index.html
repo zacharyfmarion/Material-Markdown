@@ -57,6 +57,12 @@
       margin-bottom: 40px;
       z-index: 900;
     }
+
+    .welcome-card > .mdl-card__title {
+      height: 300px;
+      color: #fff;
+      background: url('../Screenshot.png') center / cover;
+    }
     </style>
   </head>
   <body class="mdl-demo mdl-color--grey-100 mdl-color-text--grey-700 mdl-base">
@@ -74,35 +80,42 @@
           <a href="#features" class="mdl-layout__tab">Features</a>
           <a href="#getMaterialMarkdown" class="mdl-layout__tab">Get Material Markdown</a>
           <a href="#FAQ" class="mdl-layout__tab">FAQ</a>
-          <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
-            <i class="material-icons" role="presentation">file_download</i>
-            <span class="visuallyhidden">Add</span>
-          </button>
+          <a href="index.html#download">
+            <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-shadow--4dp mdl-color--accent" id="add">
+              <i class="material-icons" role="presentation">file_download</i>
+              <!-- Large Tooltip -->
+              <span class="visuallyhidden">Add</span>
+            </button>
+          </a>
+          <div class="mdl-tooltip" for="add">Download</div>
         </div>
       </header>
+
+      <!-- Overview Section -->
+
       <main class="mdl-layout__content">
         <div class="mdl-layout__tab-panel is-active" id="overview">
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
-            <header class="section__play-btn mdl-cell mdl-cell--3-col-desktop mdl-cell--2-col-tablet mdl-cell--4-col-phone mdl-color--teal-100 mdl-color-text--white">
-              <i class="material-icons">play_circle_filled</i>
-            </header>
-            <div class="mdl-card mdl-cell mdl-cell--9-col-desktop mdl-cell--6-col-tablet mdl-cell--4-col-phone">
-              <div class="mdl-card__supporting-text">
-                <h4>Features</h4>
-                Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse.
+            <!-- Wide card with share menu button -->
+            <div class="mdl-card mdl-shadow--2dp dl-cell mdl-cell--12-col welcome-card">
+              <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">Welcome</h2>
               </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
+              <div class="mdl-card__supporting-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Mauris sagittis pellentesque lacus eleifend lacinia...
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+                  Get Started
+                </a>
+              </div>
+              <div class="mdl-card__menu">
+                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                  <i class="material-icons">share</i>
+                </button>
               </div>
             </div>
-            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn1">
-              <i class="material-icons">more_vert</i>
-            </button>
-            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right" for="btn1">
-              <li class="mdl-menu__item">Lorem</li>
-              <li class="mdl-menu__item" disabled>Ipsum</li>
-              <li class="mdl-menu__item">Dolor</li>
-            </ul>
           </section>
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
@@ -241,7 +254,7 @@
         <!-- Get Material Markdown section -->
 
         <div class="mdl-layout__tab-panel" id="getMaterialMarkdown">
-          <section class="section--center mdl-grid mdl-grid--no-spacing">
+          <section class="section--center mdl-grid mdl-grid--no-spacing" id = "download">
           </section>
         </div>
 
