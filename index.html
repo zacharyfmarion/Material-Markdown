@@ -61,7 +61,7 @@
     .welcome-card > .mdl-card__title {
       height: 300px;
       color: #fff;
-      background: url('../assets/screenshot.png') center / cover;
+      background: url('../assets/screenshot.png') top / cover;
     }
     </style>
   </head>
@@ -94,6 +94,7 @@
       <!-- Overview Section -->
 
       <main class="mdl-layout__content">
+        <!-- Welcome subsection -->
         <div class="mdl-layout__tab-panel is-active" id="overview">
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <!-- Wide card with share menu button -->
@@ -102,47 +103,52 @@
                 <h2 class="mdl-card__title-text">Welcome</h2>
               </div>
               <div class="mdl-card__supporting-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Mauris sagittis pellentesque lacus eleifend lacinia...
+                Material Markdown in a markdown editor for Mac built using <a href="http://electron.atom.io/">Electron</a>
+                and <a href="https://www.polymer-project.org/1.0/">Polymer</a>, loosely following Google's
+                <a href="https://www.google.com/design/spec/material-design/introduction.html">Material Design Spec</a>. The source code
+                for the editor is hosted on <a href="https://github.com/zacharyfmarion/Markdown">Github</a>, and contributions are welcome.
               </div>
               <div class="mdl-card__actions mdl-card--border">
                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
                   Get Started
                 </a>
               </div>
-              <div class="mdl-card__menu">
-                <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                  <i class="material-icons">share</i>
-                </button>
-              </div>
             </div>
           </section>
+          <!-- About subsection -->
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text mdl-grid mdl-grid--no-spacing">
-                <h4 class="mdl-cell mdl-cell--12-col">Details</h4>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                <h4 class="mdl-cell mdl-cell--12-col">About</h4>
+                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone mdl-layout--large-screen-only">
                   <div class="section__circle-container__circle mdl-color--primary"></div>
                 </div>
+                <!-- subsubsection about web technologies -->
                 <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
+                  <h5>Made with Web Technologies</h5>
+                  Material Markdown is made with Github's <a href="http://electron.atom.io/">Electron</a>, the same framework that powers <a href="">Atom</a>, their text editor. <span class = "mdl-layout--large-screen-only">This gives the
+                  editor the speed and flexibility of a web application with the power of <a href="https://nodejs.org/">Node.js</a> for reliable file management.</span>
                 </div>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone mdl-layout--large-screen-only">
                   <div class="section__circle-container__circle mdl-color--primary"></div>
                 </div>
+                <!-- subsubsection about Theming -->
                 <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
+                  <h5>Powerful Customization</h5>
+                  The markdown editor can be customized with one of over 25 themes, while the rendered HTML can be styled using premade themes of custom CSS provided by the user.
                 </div>
-                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone">
+                <div class="section__circle-container mdl-cell mdl-cell--2-col mdl-cell--1-col-phone mdl-layout--large-screen-only">
                   <div class="section__circle-container__circle mdl-color--primary"></div>
                 </div>
+                <!-- Intelligent -->
                 <div class="section__text mdl-cell mdl-cell--10-col-desktop mdl-cell--6-col-tablet mdl-cell--3-col-phone">
-                  <h5>Lorem ipsum dolor sit amet</h5>
-                  Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Duis nulla tempor do aute et eiusmod velit exercitation nostrud quis <a href="#">proident minim</a>.
+                  <h5>An Intelligent Editor</h5>
+                  Material Markdown, while minimalist in its experience, is made to provide the most intuitive and enjoyable markdown experience possible. It keeps track of all changes
+                  made to open files, allowing the user to restore previous versions and never lose data.
                 </div>
               </div>
+              <!-- TODO: Extensibility section once you switch to Remarkable -->
+              <!-- Also link this to the features tab -->
               <div class="mdl-card__actions">
                 <a href="#" class="mdl-button">Read our features</a>
               </div>
@@ -157,15 +163,16 @@
             </ul>
           </section>
           <section class="section--center mdl-grid mdl-grid--no-spacing mdl-shadow--2dp">
+            <!-- Technology subsection -->
             <div class="mdl-card mdl-cell mdl-cell--12-col">
               <div class="mdl-card__supporting-text">
                 <h4>Technology</h4>
                 Dolore ex deserunt aute fugiat aute nulla ea sunt aliqua nisi cupidatat eu. Nostrud in laboris labore nisi amet do dolor eu fugiat consectetur elit cillum esse. Pariatur occaecat nisi laboris tempor laboris eiusmod qui id Lorem esse commodo in. Exercitation aute dolore deserunt culpa consequat elit labore incididunt elit anim.
               </div>
-              <div class="mdl-card__actions">
-                <a href="#" class="mdl-button">Read our features</a>
-              </div>
             </div>
+
+            <!-- Other shit -->
+
             <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" id="btn3">
               <i class="material-icons">more_vert</i>
             </button>
