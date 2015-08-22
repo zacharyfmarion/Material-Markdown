@@ -6,11 +6,7 @@ This is a markdown editor for Mac made using [Electron](http://electron.atom.io/
 
 ## Build instructions
 
-Make a directory and navigate into it:
-
-`mkdir Mardown && cd $_`
-
-Clone into the file:
+Navigate to a parent directory and clone into it:
 
 `git clone https://github.com/zacharyfmarion/Markdown.git`
 

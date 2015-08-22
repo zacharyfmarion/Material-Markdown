@@ -9,14 +9,17 @@ var iconSwitch = document.getElementsByTagName('icon-button-switch')[0];
 fs.watch(__dirname + '/settings.json', function () {
   var appSettings = require('./settings.json');
   var editorSettings = appSettings.editor;
+  var general = appSettings.general;
 
-  if (editorSettings.codeFolding === false){
-    editor.wrap = false;
-  }
+  // General
 
-  if (editor.lineNumbers === false){
-    // remove line numbers
-  }
+  editor.autorender = general.autorendering;
+  editor.wordCount = general.showWordCount;
+
+  // Editor
+  editor.wrap = editorSettings.codeFolding;
+
+  //line numbers change goes here
 
   //TODO: Add settings to these
 
@@ -34,16 +37,9 @@ window.addEventListener('WebComponentsReady', function(){
   var appSettings = require('./settings.json');
   var general = appSettings.general;
 
-  if (general.autorendering === false){
-    editor.autorender = false;
-  }
-
   if (general.showRibbonOnStart === true){
     editor.noribbon = false;
     iconSwitch.icons =  'close menu';
   }
 
-  if (general.showWordCount === true){
-    // Not really much I can do here right now...need to make this more polymeric
-  }
 });

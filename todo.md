@@ -31,7 +31,7 @@
 
 - Add fullscreen mode to rendered HTML `marked-element` as well.
 
-- Add word count (probably where the filename currently is)
+- ~~Add word count (probably where the filename currently is)~~
 
 - ~~Fix cut (remove selection from the editor)~~
 

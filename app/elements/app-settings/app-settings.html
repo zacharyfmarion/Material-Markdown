@@ -16,32 +16,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
     }
 
-    .actionButtons{
-      position: absolute;
-      right: 5px;
-      bottom: 5px;
+    .menubar{
+      -webkit-app-region: drag;
+      -webkit-user-select: none;
+      border-radius: 0;
     }
 
-    #applyAction{
-      background: #E91E63;
-      color: #fff;
-    }
-
-    #toolbar{
-      background: #E91E63;
-    }
-
-    #dialog{
+    .small-icon {
+      --iron-icon-height: 18px;
+      --iron-icon-width: 18px;
       padding: 0;
       margin: 0;
-      background: #fff;
-      max-height: 1000px !important;
-      min-width: 800px;
-      min-height: 600px;
-    }
-
-    paper-scroll-header-panel {
-      height: 100%;
+      -webkit-app-region: no-drag;
     }
 
     paper-menu iron-icon {
@@ -68,13 +54,212 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 0 16px;
     }
 
-    #settings-panel {
-      border-right: 1px solid rgba(0, 0, 0, 0.14);
+    paper-card {
+      max-width: 640px;
+      margin: 16px;
     }
 
+    paper-card img{
+      padding: 15px;
+    }
+
+    .option{
+      padding: 3px;
+    }
+
+    paper-toggle-button{
+      --paper-toggle-button-checked-bar-color:  #E91E63;
+      --paper-toggle-button-checked-button-color:  #E91E63;
+      --paper-toggle-button-checked-ink-color: #E91E63;
+      /*--paper-toggle-button-unchecked-bar-color:  ;*/
+      /*--paper-toggle-button-unchecked-button-color:  ;*/
+      /*--paper-toggle-button-unchecked-ink-color: ;*/
+    }
+
+    paper-card{
+      --paper-card-content{
+        background: #e5e5e5;
+      }
+    }
+  
   </style>
   <template>
 
+    <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
+      <paper-icon-button class="small-icon" icon="close" id = "settings-close"></paper-icon-button>
+      <paper-icon-button class="small-icon" icon="remove" id = "settings-minimize"></paper-icon-button>
+      <paper-icon-button class="small-icon" icon="fullscreen" id = "settings-fullscreen"></paper-icon-button>
+    </div>
+
+    <paper-drawer-panel id="drawerPanel" responsive-width="600px" style = 'top: 20px; height: calc(100% - 20px)'>
+
+        <div class="nav" drawer fixed>
+          <paper-header-panel>
+            <paper-toolbar>
+              <dv class="title">Settings</dv>
+            </paper-toolbar>
+            <paper-menu>
+
+              <a data-route="settings" href="/">
+                <iron-icon icon="settings"></iron-icon>
+                <span>General</span>
+              </a>
+
+              <a data-route="editor" href="/editor">
+                <iron-icon icon="create"></iron-icon>
+                <span>Editor</span>
+              </a>
+
+              <a data-route="markdown" href="/markdown">
+                <iron-icon icon="extension"></iron-icon>
+                <span>Markdown</span>
+              </a>
+
+              <a data-route="theming" href="/theming">
+                <iron-icon icon="invert-colors"></iron-icon>
+                <span>Theming</span>
+              </a>
+
+              <a data-route="outputStyles" href="/outputStyles">
+                <iron-icon icon="image:color-lens"></iron-icon>
+                <span>Output Styles</span>
+              </a>
+            </paper-menu>
+          </paper-header-panel>
+
+        </div>
+
+        <paper-scroll-header-panel class="main" main fixed>
+
+          <!-- Main Toolbar -->
+          <paper-toolbar>
+            <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          </paper-toolbar>
+
+          <!-- Main Content -->
+          <div class="content">
+            <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+              <section data-route = "general" class = 'content-section'>
+                <div class="layout vertical center">
+                  <paper-card heading = "On Startup" image="images/random-background.svg" animatedShadow>
+                    <div class="card-content">
+                      <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart" on-></paper-toggle-button></div>
+                      <div class="layout horizontal option"><span class = 'flex'>Enable autorendering</span><paper-toggle-button id = "autorendering"></paper-toggle-button></div>
+                      <!-- Need to make settings a separate element to make this easier -->
+                      <div class="layout horizontal option"><span class = 'flex'>Show Word Count</span><paper-toggle-button id = "showWordCount"></paper-toggle-button></div>
+                    </div>
+                  </paper-card>
+                </div>
+              </section>
+
+              <section data-route = "editor" class = 'content-section'>
+                <div class="layout vertical center">
+                  <paper-card heading = "Defaults" image="images/random-background.svg" animatedShadow>
+                    <div class="card-content">
+                    <!-- Default font -->
+                      <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
+                        <paper-dropdown-menu label = "Primary Color">
+                          <paper-menu class="dropdown-content">
+                            <template is = "dom-repeat" items = "['Roboto_Mono', 'other']">
+                              <paper-item>[[item]]</paper-item>
+                            </template>
+                          </paper-menu>
+                        </paper-dropdown-menu>
+                      </div>
+                      <!-- Default Fontsize -->
+                      <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
+                        <paper-dropdown-menu label = "Primary Color">
+                          <paper-menu class="dropdown-content">
+                            <template is = "dom-repeat" items = "fontSizes">
+                              <paper-item>[[item]]</paper-item>
+                            </template>
+                          </paper-menu>
+                        </paper-dropdown-menu>
+                      </div>
+                      <!-- Default Editor Theme -->
+                      <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
+                        <paper-dropdown-menu label = "Primary Color">
+                          <paper-menu class="dropdown-content">
+                            <template is = "dom-repeat" items = "['Monokai', 'Textmate']">
+                              <paper-item>[[item]]</paper-item>
+                            </template>
+                          </paper-menu>
+                        </paper-dropdown-menu>
+                      </div>
+                    </div>
+                  </paper-card>
+                  <paper-card heading = "Configurations" image="images/random-background.svg" animatedShadow>
+                    <div class="card-content">
+                      <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
+                      <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "showLineNumbers"></paper-toggle-button></div>
+                    </div>
+                  </paper-card>
+                </div>
+              </section>
+
+              <section data-route = "markdown" class = 'content-section'>
+                <div class="layout vertical center">
+                  <paper-card heading = "Extending Rules" image="images/random-background.svg" animatedShadow>
+                    <div class="card-content">
+
+                    </div>
+                  </paper-card>
+                </div>
+              </section>
+
+              <section data-route = "theming" class = 'content-section'>
+                <div class="layout vertical center">
+                  <paper-card heading = "On Startup" image="images/random-background.svg" animatedShadow>
+                    <div class="card-content">
+                      <div class="layout horizontal option"><span class = 'flex'>Primary Color</span>
+                        <paper-dropdown-menu label = "Primary Color">
+                          <paper-menu class="dropdown-content">
+                            <paper-item>Indigo</paper-item>
+                            <paper-item>Deep Purple</paper-item>
+                            <paper-item>Blue</paper-item>
+                            <paper-item>Deep Orange</paper-item>
+                          </paper-menu>
+                        </paper-dropdown-menu>
+                      </div>
+                      <div class="layout horizontal option"><span class = 'flex'>Accent Color</span>
+                        <paper-dropdown-menu label = "Primary Color">
+                          <paper-menu class="dropdown-content">
+                            <paper-item>Pink</paper-item>
+                            <paper-item>Other</paper-item>
+                          </paper-menu>
+                      </div>
+                    </div>
+                  </paper-card>
+                </div>
+              </section>
+
+              <section data-route = "outputStyles" class = 'content-section'>
+                <!-- <styles-editor wrap></styles-editor> -->
+                <div class="layout vertical center">
+                  <paper-card heading = "Active Stylesheet" image="images/random-background.svg" animatedShadow>
+                    <div class="card-content">
+                      <div class="layout horizontal center option">
+                        <span class = 'flex'>Choose a stylesheet</span>
+                        <paper-dropdown-menu id = "selectActiveStylesheet" label = "Select Theme">
+                          <paper-menu class="dropdown-content">
+                            <paper-item>Github</paper-item>
+                            <paper-item>Dark Theme</paper-item>
+                            <paper-item>Add +</paper-item>
+                          </paper-menu>
+                        </paper-dropdown-menu>
+                      </div>
+                    </div>
+                  </paper-card>
+                </div>
+              </section>
+
+            </iron-pages>
+          </div>
+
+        </paper-scroll-header-panel>
+
+      </paper-drawer-panel>
   </template>
   <script>
   (function() {
@@ -82,8 +267,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'app-settings',
 
       properties: {
+        fs: {
+          type: Object,
+          value: function(){
+            return require('fs');
+          }
+        },
+        settings: {
+          type: Object
+        },
+        fontSizes: {
+          type: Array,
+          value: function(){
+            var sizes = [];
+            for (var i = 10; i < 26; i++){
+              sizes.push(i);
+            }
+            return sizes;
+          }
+        }
+      },
+      attached: function(){
+        this.readSettings();
+      }
+
+      /*
+       * Reads settings from the settings.json file and populates this info in settings.html
+       */
+      readSettings: function(){
+        this.settings = require('../settings.json');
+        // General
+        this.$.autorendering.checked = this.settings.general.autorendering;
+        this.$.showRibbonOnStart.checked = this.settings.general.showRibbonOnStart;
+        this.$.showWordCount.checked = this.settings.general.showWordCount;
+      },
+
+      /*
+       * Writes modified settings to the settings.json file
+       */
+
+      writeSettings: function(){
+        // If settings is not defined, return with error message
+        if (!this.settings){
+          console.log('settings is not defined');
+          return;
+        }
+        var settingsCopy = this.settings; 
+
+        //General Settings
+        settingsCopy.general.autorendering = this.$.autorendering.checked;
+        settingsCopy.general.showRibbonOnStart = this.$.showRibbonOnStart.checked;
+        settingsCopy.general.showWordCount = this.$.showWordCount.checked;
+
+        this.fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(settingsCopy));
 
       }
+
     });
   })();
   </script>
