@@ -8,8 +8,8 @@ var iconSwitch = document.getElementsByTagName('icon-button-switch')[0];
 
 fs.watch(__dirname + '/settings.json', function () {
   var appSettings = require('./settings.json');
-  var editorSettings = appSettings.editor;
   var general = appSettings.general;
+  var editorSettings = appSettings.editor;
 
   // General
 
@@ -23,11 +23,11 @@ fs.watch(__dirname + '/settings.json', function () {
 
   //TODO: Add settings to these
 
-  var markdown = appSettings.markdown;
-
-  var theming = appSettings.theming;
-
-  var outputStyles = appSettings.outputStyles;
+  // var markdown = appSettings.markdown;
+  //
+  // var theming = appSettings.theming;
+  //
+  // var outputStyles = appSettings.outputStyles;
 
 });
 
@@ -41,5 +41,4 @@ window.addEventListener('WebComponentsReady', function(){
     editor.noribbon = false;
     iconSwitch.icons =  'close menu';
   }
-
 });

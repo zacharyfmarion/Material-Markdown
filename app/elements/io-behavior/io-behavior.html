@@ -1,0 +1,31 @@
+<!--
+@licence
+Created by Zachary Marion and free to use, change, and pretty much do whatever
+the hell you want with. Giving credit is nice though, so please do that if you
+are so inclined.
+-->
+
+<script>
+
+  //ensure that this is not confused with a Polymer behavior in the future
+  var MarkdownBehaviors = MarkdownBehaviors || {};
+  /**
+    * Behavior for setting interacting with native filesytems, exposes the node fs object
+    * @polymerBehavior
+    */
+  MarkdownBehaviors.IoBehavior = {
+      is: 'io-behavior',
+
+      properties: {
+        fs: {
+          type: Object,
+          value: function(){
+            return require('fs');
+          }
+        }
+      }
+
+      //TODO: add write/readfile functions so the object stays private
+
+  }
+</script>

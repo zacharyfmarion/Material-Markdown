@@ -232,6 +232,12 @@ gulp.task('serve:dist', ['default'], function () {
   });
 });
 
+gulp.task('copy-settings', function(){
+  gulp.src(
+    'app/elements/app-settings/settings.json'
+  ).pipe(gulp.dest('dist/elements/app-settings/'));
+});
+
 // Build Production Files, the Default Task
 gulp.task('default', ['clean'], function (cb) {
   runSequence(
@@ -239,6 +245,7 @@ gulp.task('default', ['clean'], function (cb) {
     'elements',
     ['jshint', 'images', 'fonts', 'html'],
     'vulcanize',
+    'copy-settings',
     cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

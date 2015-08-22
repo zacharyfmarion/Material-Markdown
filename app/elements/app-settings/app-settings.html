@@ -9,8 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../settings-routes.html">
+<link rel="import" href="../io-behavior/io-behavior.html">
 
 <dom-module id="app-settings">
+
   <style>
     :host {
       display: block;
@@ -81,9 +84,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         background: #e5e5e5;
       }
     }
-  
+
   </style>
-  <template>
+
+  <template id="settings">
 
     <div class = "layout horizontal start menubar" style = "height: 20px; width = 100%; background: #2196F3;">
       <paper-icon-button class="small-icon" icon="close" id = "settings-close"></paper-icon-button>
@@ -96,7 +100,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="nav" drawer fixed>
           <paper-header-panel>
             <paper-toolbar>
-              <dv class="title">Settings</dv>
+              <div class="title">Settings</div>
             </paper-toolbar>
             <paper-menu>
 
@@ -157,6 +161,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="layout vertical center">
                   <paper-card heading = "Defaults" image="images/random-background.svg" animatedShadow>
                     <div class="card-content">
+
                     <!-- Default font -->
                       <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
                         <paper-dropdown-menu label = "Primary Color">
@@ -171,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
                         <paper-dropdown-menu label = "Primary Color">
                           <paper-menu class="dropdown-content">
-                            <template is = "dom-repeat" items = "fontSizes">
+                            <template is = "dom-repeat" items = "[[fontSizes]]">
                               <paper-item>[[item]]</paper-item>
                             </template>
                           </paper-menu>
@@ -193,6 +198,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
                       <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "showLineNumbers"></paper-toggle-button></div>
+
                     </div>
                   </paper-card>
                 </div>
@@ -214,20 +220,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Primary Color</span>
                         <paper-dropdown-menu label = "Primary Color">
+
                           <paper-menu class="dropdown-content">
-                            <paper-item>Indigo</paper-item>
-                            <paper-item>Deep Purple</paper-item>
-                            <paper-item>Blue</paper-item>
-                            <paper-item>Deep Orange</paper-item>
+                            <paper-item style = "color: #303F9F;">Indigo (#303F9F)</paper-item>
+                            <paper-item style = "color: #512DA8;">Deep Purple (#512DA8)</paper-item>
+                            <paper-item style = "color: #1976D2;">Blue (#1976D2)</paper-item>
+                            <paper-item style = "color: #FF5722;">Deep Orange (#FF5722)</paper-item>
                           </paper-menu>
+
                         </paper-dropdown-menu>
                       </div>
                       <div class="layout horizontal option"><span class = 'flex'>Accent Color</span>
-                        <paper-dropdown-menu label = "Primary Color">
+
+                        <paper-dropdown-menu label = "Accent Color">
+
                           <paper-menu class="dropdown-content">
-                            <paper-item>Pink</paper-item>
-                            <paper-item>Other</paper-item>
+                            <paper-item style = "color: #FF4081;">Pink (#FF4081)</paper-item>
+                            <paper-item style = "color: #7C4DFF;">Purple (#7C4DFF)</paper-item>
+                            <paper-item style = "color: #1976D2;">Blue (#1976D2)</paper-item>
+                            <paper-item style = "color: #FFEB3B;">Yellow (#FFEB3B)</paper-item>
                           </paper-menu>
+
+                        </paper-dropdown-menu>
                       </div>
                     </div>
                   </paper-card>
@@ -261,21 +275,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       </paper-drawer-panel>
   </template>
+
   <script>
   (function() {
     Polymer({
       is: 'app-settings',
 
+      behaviors: [MarkdownBehaviors.IoBehavior],
+
       properties: {
-        fs: {
-          type: Object,
-          value: function(){
-            return require('fs');
-          }
-        },
-        settings: {
-          type: Object
-        },
         fontSizes: {
           type: Array,
           value: function(){
@@ -284,43 +292,59 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               sizes.push(i);
             }
             return sizes;
-          }
+        },
+        settings: {
+          type: Object
         }
       },
+
       attached: function(){
         this.readSettings();
       }
 
       /*
-       * Reads settings from the settings.json file and populates this info in settings.html
+       * Read the settings from settings.json and set the values in the settings window
        */
       readSettings: function(){
         this.settings = require('../settings.json');
-        // General
-        this.$.autorendering.checked = this.settings.general.autorendering;
+        // General settings
         this.$.showRibbonOnStart.checked = this.settings.general.showRibbonOnStart;
+        this.$.autorendering.checked = this.settings.general.autorendering;
         this.$.showWordCount.checked = this.settings.general.showWordCount;
+        // Editor settings
+        this.$.codeFolding.checked = this.settings.editor.codeFolding;
+        this.$.lineNumbers.checked = this.settings.editor.lineNumbers;
+        // Markdown settings...nothing for now
+
+        // Theming settings
+
+        // Output styles settings
       },
 
       /*
-       * Writes modified settings to the settings.json file
+       * Write the settings to settings.json. Settings are then read in settings-config.js to inject changes into the editor
        */
-
       writeSettings: function(){
-        // If settings is not defined, return with error message
         if (!this.settings){
-          console.log('settings is not defined');
+          console.log("settings object is not defined");
           return;
         }
-        var settingsCopy = this.settings; 
+        // Copy a reference to the settings object
+        var tempSettings = this.settings;
+        // General settings
+        tempSettings.general.showRibbonOnStart = this.$.showRibbonOnStart.checked;
+        tempSettings.general.autorendering = this.$.autorendering.checked;
+        tempSettings.general.showWordCount = this.$.showWordCount.checked;
+        // Editor settings
+        tempSettings.editor.codeFolding = this.$.codeFolding.checked;
+        tempSettings.editor.lineNumbers = this.$.lineNumbers.checked;
+        // Markdown settings...nothing for now
 
-        //General Settings
-        settingsCopy.general.autorendering = this.$.autorendering.checked;
-        settingsCopy.general.showRibbonOnStart = this.$.showRibbonOnStart.checked;
-        settingsCopy.general.showWordCount = this.$.showWordCount.checked;
+        // Theming settings
 
-        this.fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(settingsCopy));
+        // Output styles settings
 
+        this.fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(tempSettings));
       }
 
     });
