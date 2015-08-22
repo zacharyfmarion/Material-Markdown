@@ -56,6 +56,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     paper-card {
       max-width: 640px;
       margin: 16px;
+      --paper-card-content{
+        background: #303F9F;
+        color: white;
+      }
     }
     paper-card img{
       padding: 15px;
@@ -67,14 +71,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       --paper-toggle-button-checked-bar-color:  #E91E63;
       --paper-toggle-button-checked-button-color:  #E91E63;
       --paper-toggle-button-checked-ink-color: #E91E63;
-      /*--paper-toggle-button-unchecked-bar-color:  ;*/
-      /*--paper-toggle-button-unchecked-button-color:  ;*/
-      /*--paper-toggle-button-unchecked-ink-color: ;*/
     }
-    paper-card{
-      --paper-card-content{
-        background: #e5e5e5;
-      }
+
+    .dropdown-option{
+      padding-top: 5px;
     }
 
   </style>
@@ -138,7 +138,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "general" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "On Startup" image="images/random-background.svg" animatedShadow>
+                  <paper-card heading = "On Startup" image="images/random-background.svg">
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart" on-></paper-toggle-button></div>
                       <div class="layout horizontal option"><span class = 'flex'>Enable autorendering</span><paper-toggle-button id = "autorendering"></paper-toggle-button></div>
@@ -151,12 +151,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "editor" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "Defaults" image="images/random-background.svg" animatedShadow>
+                  <paper-card heading = "Defaults" image="images/random-background.svg">
                     <div class="card-content">
 
                     <!-- Default font -->
-                      <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
-                        <paper-dropdown-menu label = "Primary Color">
+                      <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Font</span>
+                        <paper-dropdown-menu label = "Defauly Font">
                           <paper-menu class="dropdown-content">
                             <template is = "dom-repeat" items = "['Roboto_Mono', 'other']">
                               <paper-item>[[item]]</paper-item>
@@ -165,8 +165,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-dropdown-menu>
                       </div>
                       <!-- Default Fontsize -->
-                      <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
-                        <paper-dropdown-menu label = "Primary Color">
+                      <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Font Size</span>
+                        <paper-dropdown-menu label = "Default Font Size">
                           <paper-menu class="dropdown-content">
                             <template is = "dom-repeat" items = "[[fontSizes]]">
                               <paper-item>[[item]]</paper-item>
@@ -175,8 +175,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-dropdown-menu>
                       </div>
                       <!-- Default Editor Theme -->
-                      <div class="layout horizontal option"><span class = 'flex'>Default Font</span>
-                        <paper-dropdown-menu label = "Primary Color">
+                      <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Theme</span>
+                        <paper-dropdown-menu label = "Default Theme">
                           <paper-menu class="dropdown-content">
                             <template is = "dom-repeat" items = "['Monokai', 'Textmate']">
                               <paper-item>[[item]]</paper-item>
@@ -186,7 +186,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       </div>
                     </div>
                   </paper-card>
-                  <paper-card heading = "Configurations" image="images/random-background.svg" animatedShadow>
+                  <paper-card heading = "Configurations" image="images/random-background.svg">
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
                       <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "lineNumbers"></paper-toggle-button></div>
@@ -198,7 +198,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "markdown" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "Extending Rules" image="images/random-background.svg" animatedShadow>
+                  <paper-card heading = "Extending Rules" image="images/random-background.svg">
                     <div class="card-content">
 
                     </div>
@@ -208,9 +208,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "theming" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "On Startup" image="images/random-background.svg" animatedShadow>
+                  <paper-card heading = "On Startup" image="images/random-background.svg">
                     <div class="card-content">
-                      <div class="layout horizontal option"><span class = 'flex'>Primary Color</span>
+                      <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Primary Color</span>
                         <paper-dropdown-menu label = "Primary Color">
 
                           <paper-menu class="dropdown-content">
@@ -222,7 +222,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                         </paper-dropdown-menu>
                       </div>
-                      <div class="layout horizontal option"><span class = 'flex'>Accent Color</span>
+                      <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Accent Color</span>
 
                         <paper-dropdown-menu label = "Accent Color">
 
@@ -243,7 +243,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <section data-route = "outputStyles" class = 'content-section'>
                 <!-- <styles-editor wrap></styles-editor> -->
                 <div class="layout vertical center">
-                  <paper-card heading = "Active Stylesheet" image="images/random-background.svg" animatedShadow>
+                  <paper-card heading = "Active Stylesheet" image="images/random-background.svg">
                     <div class="card-content">
                       <div class="layout horizontal center option">
                         <span class = 'flex'>Choose a stylesheet</span>
