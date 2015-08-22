@@ -8,6 +8,16 @@ var iconSwitch = document.getElementsByTagName('icon-button-switch')[0];
 
 fs.watch(__dirname + '/settings.json', function () {
   var appSettings = require('./settings.json');
+  var general = appSettings.general;
+
+  if (general.autorendering === false){
+    editor.autorender = false;
+  }
+
+  if (general.showWordCount === false){
+    editor.wordCount = false;
+  }
+
   var editorSettings = appSettings.editor;
 
   if (editorSettings.codeFolding === false){
@@ -20,11 +30,11 @@ fs.watch(__dirname + '/settings.json', function () {
 
   //TODO: Add settings to these
 
-  var markdown = appSettings.markdown;
-
-  var theming = appSettings.theming;
-
-  var outputStyles = appSettings.outputStyles;
+  // var markdown = appSettings.markdown;
+  //
+  // var theming = appSettings.theming;
+  //
+  // var outputStyles = appSettings.outputStyles;
 
 });
 
@@ -34,16 +44,8 @@ window.addEventListener('WebComponentsReady', function(){
   var appSettings = require('./settings.json');
   var general = appSettings.general;
 
-  if (general.autorendering === false){
-    editor.autorender = false;
-  }
-
   if (general.showRibbonOnStart === true){
     editor.noribbon = false;
     iconSwitch.icons =  'close menu';
-  }
-
-  if (general.showWordCount === true){
-    // Not really much I can do here right now...need to make this more polymeric
   }
 });

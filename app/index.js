@@ -6,6 +6,7 @@ var editor = document.getElementsByTagName('markdown-editor')[0];
 var history = document.getElementById('history');
 var title = document.getElementById('title');
 var historyPanel = document.getElementsByTagName('history-panel')[0];
+var path = require('path');
 
 // helper functions
 
@@ -24,14 +25,14 @@ window.addEventListener('resize', function(){
 }, true);
 
 editor.addEventListener('file-opened', function(){
-  title.textContent = editor.filepath.replace(/^.*(\\|\/|\:)/, '') + ' - ' + countWords(editor.aceEditor.getValue()) + ' words';
+  title.textContent = editor.wordCount ? path.basename(editor.filepath) + ' - ' + countWords(editor.aceEditor.getValue()) + ' words': path.basename(editor.filepath);
 }, false);
 
 editor.addEventListener('editor-changed', function(){
   if (editor.filepath){
-    title.textContent = editor.filepath.replace(/^.*(\\|\/|\:)/, '') + ' - ' + countWords(editor.aceEditor.getValue()) + ' words';
+    title.textContent = editor.wordCount ? path.basename(editor.filepath) + ' - ' + countWords(editor.aceEditor.getValue()) + ' words': path.basename(editor.filepath);
   }else{
-    title.textContent = 'untitled.md - ' + countWords(editor.aceEditor.getValue()) + ' words';
+    title.textContent = editor.wordCount ? 'untitled.md - ' + countWords(editor.aceEditor.getValue()) + ' words': 'untitled.md';
   }
 });
 

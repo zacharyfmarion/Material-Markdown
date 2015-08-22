@@ -141,6 +141,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     Polymer({
       is: 'markdown-editor',
 
+      /*
+       * Ace editor behavior, giving access to ace functionality
+       * Export behavior, giving access to markdown export functions
+       */
+      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior],
+
       properties: {
         /**
           * Element renders on ace change if true
@@ -247,14 +253,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false,
           observer: '_fullscreenChanged'
-        }
+        },
+        /*
+         * Whether the word count is displayed in the titlebar
+         */
+         wordCount: {
+           type: Boolean,
+           value: true
+         }
       },
-
-      /*
-       * Ace editor behavior, giving access to ace functionality
-       * Export behavior, giving access to markdown export functions
-       */
-      behaviors: [MarkdownBehaviors.AceBehavior, MarkdownBehaviors.ExportBehavior],
 
       /*
        * Code to be run when template is ready

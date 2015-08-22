@@ -1,44 +1,24 @@
 var remote = require('remote');
-var appSettings = require('./settings.json');
 var BrowswerWindow = remote.require('browser-window');
 var fs = require('fs');
 // Window Buttons
 var settingsClose = document.querySelector('#settings-close');
 var settingsMinimize = document.querySelector('#settings-minimize');
 var settingsFullscreen = document.querySelector('#settings-fullscreen');
-// App scope
+// App scope & app settings
 var scope = document.querySelector('template[is="dom-bind"]');
+var settings = document.getElementsByTagName('app-settings')[0];
 
-// Toggle buttons
-var showRibbon = document.querySelector('#showRibbonOnStart'), autorendering = document.querySelector('#autorenderOnStart'),
-  codeFolding = document.querySelector('#codeFolding'), lineNumbers = document.querySelector('#showLineNumbers'),
-  activeStylesheet = document.querySelector('selectActiveStylesheet'), showWordCount = document.querySelector('#showWordCount');
-
-// Setting the values in settings to initially match those in settings.json
-// ////// GENERAL
-autorendering.checked = appSettings.general.autorendering;
-showRibbon.checked = appSettings.general.showRibbonOnStart;
-showWordCount.checked = appSettings.general.showWordCount;
-
-// ////// Editor
-codeFolding.checked = appSettings.editor.codeFolding;
-lineNumbers.checked = appSettings.editor.lineNumbers;
-
-// ////// Markdown
-// nothing for right now...one the parser is changed to remarkable you can make it exstensible
-
-// ////// Theming
-// still nothing...
-
-// ////// Output Styles
-activeStylesheet.selectedItem = appSettings.outputStyles.activeStylesheet;
-activeStylesheet.selectedItemLabel = appSettings.outputStyles.activeStylesheet.replace(/^.*(\\|\/|\:)/, '');
+window.addEventListener('WebComponentsReady', function(){
+  // Read settings and load these settings into the settings window
+  settings.readSettings();
+});
 
 // Managing closing etc of the settings window
 
 settingsClose.addEventListener('click', function(){
   // Save changes made to settings
-  fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(appSettings));
+  settings.writeSettings();
   // Settings window
   var settingsWindow = BrowswerWindow.getFocusedWindow();
   settingsWindow.close();
@@ -55,35 +35,3 @@ settingsFullscreen.addEventListener('click', function(){
   var settingsWindow = BrowswerWindow.getFocusedWindow();
   settingsWindow.setFullScreen(!settingsWindow.isFullScreen());
 },false);
-
-
-// Event Listeners for state changes on any of the paper-toggle-buttons...
-// These changes will be applied to the settings.json file on setttings close
-
-// General
-autorendering.addEventListener('change', function(){
-  appSettings.general.autorendering = autorendering.checked;
-});
-
-showRibbon.addEventListener('change', function(){
-  appSettings.general.showRibbonOnStart = showRibbon.checked;
-});
-
-// Editor
-codeFolding.addEventListener('change', function(){
-  appSettings.editor.codeFolding = codeFolding.checked;
-});
-
-lineNumbers.addEventListener('change', function(){
-  appSettings.editor.lineNumbers = lineNumbers.checked;
-});
-
-// Markdown
-
-// Theming
-
-// Output Styles
-
-// activeStylesheet.addEventListener('', function(){
-//
-// });
