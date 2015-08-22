@@ -226,16 +226,10 @@ gulp.task('serve:dist', ['default'], function () {
     // Run as an https by uncommenting 'https: true'
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
-    https: true,
+    // https: true,
     server: 'dist',
     middleware: [ historyApiFallback() ]
   });
-});
-
-gulp.task('copy-settings', function(){
-  gulp.src(
-    'app/elements/app-settings/settings.json'
-  ).pipe(gulp.dest('dist/elements/app-settings/'));
 });
 
 // Build Production Files, the Default Task
@@ -245,7 +239,6 @@ gulp.task('default', ['clean'], function (cb) {
     'elements',
     ['jshint', 'images', 'fonts', 'html'],
     'vulcanize',
-    'copy-settings',
     cb);
     // Note: add , 'precache' , after 'vulcanize', if your are going to use Service Worker
 });

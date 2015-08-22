@@ -24,7 +24,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       -webkit-user-select: none;
       border-radius: 0;
     }
-
     .small-icon {
       --iron-icon-height: 18px;
       --iron-icon-width: 18px;
@@ -32,12 +31,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin: 0;
       -webkit-app-region: no-drag;
     }
-
     paper-menu iron-icon {
       margin-right: 33px;
       opacity: 0.54;
     }
-
     paper-menu a {
       text-decoration: none;
       display: -ms-flexbox;
@@ -56,20 +53,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       min-height: 48px;
       padding: 0 16px;
     }
-
     paper-card {
       max-width: 640px;
       margin: 16px;
     }
-
     paper-card img{
       padding: 15px;
     }
-
     .option{
       padding: 3px;
     }
-
     paper-toggle-button{
       --paper-toggle-button-checked-bar-color:  #E91E63;
       --paper-toggle-button-checked-button-color:  #E91E63;
@@ -78,7 +71,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /*--paper-toggle-button-unchecked-button-color:  ;*/
       /*--paper-toggle-button-unchecked-ink-color: ;*/
     }
-
     paper-card{
       --paper-card-content{
         background: #e5e5e5;
@@ -197,7 +189,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <paper-card heading = "Configurations" image="images/random-background.svg" animatedShadow>
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
-                      <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "showLineNumbers"></paper-toggle-button></div>
+                      <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "lineNumbers"></paper-toggle-button></div>
 
                     </div>
                   </paper-card>
@@ -292,6 +284,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               sizes.push(i);
             }
             return sizes;
+          }
         },
         settings: {
           type: Object
@@ -300,7 +293,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       attached: function(){
         this.readSettings();
-      }
+      },
 
       /*
        * Read the settings from settings.json and set the values in the settings window
