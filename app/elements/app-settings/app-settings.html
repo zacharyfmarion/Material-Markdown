@@ -54,12 +54,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 0 16px;
     }
     paper-card {
-      max-width: 640px;
-      margin: 16px;
       --paper-card-content{
         background: #303F9F;
         color: white;
       }
+    }
+    paper-card {
+      max-width: 640px;
+      margin: 16px;
     }
     paper-card img{
       padding: 15px;
@@ -140,7 +142,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="layout vertical center">
                   <paper-card heading = "On Startup" image="images/random-background.svg">
                     <div class="card-content">
-                      <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart" on-></paper-toggle-button></div>
+                      <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart"></paper-toggle-button></div>
                       <div class="layout horizontal option"><span class = 'flex'>Enable autorendering</span><paper-toggle-button id = "autorendering"></paper-toggle-button></div>
                       <!-- Need to make settings a separate element to make this easier -->
                       <div class="layout horizontal option"><span class = 'flex'>Show Word Count</span><paper-toggle-button id = "showWordCount"></paper-toggle-button></div>
@@ -151,14 +153,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "editor" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "Defaults" image="images/random-background.svg">
+                  <paper-card heading = "Defaults" image="images/random-background.svg" class = "no-bottom-title-padding">
                     <div class="card-content">
 
                     <!-- Default font -->
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Font</span>
-                        <paper-dropdown-menu label = "Defauly Font">
+                        <paper-dropdown-menu label = "Default Font">
                           <paper-menu class="dropdown-content">
-                            <template is = "dom-repeat" items = "['Roboto_Mono', 'other']">
+                            <template is = "dom-repeat" items = "[[fonts]]">
                               <paper-item>[[item]]</paper-item>
                             </template>
                           </paper-menu>
@@ -178,7 +180,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Theme</span>
                         <paper-dropdown-menu label = "Default Theme">
                           <paper-menu class="dropdown-content">
-                            <template is = "dom-repeat" items = "['Monokai', 'Textmate']">
+                            <template is = "dom-repeat" items = "[[themes]]">
                               <paper-item>[[item]]</paper-item>
                             </template>
                           </paper-menu>
@@ -208,7 +210,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "theming" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "On Startup" image="images/random-background.svg">
+                  <paper-card heading = "On Startup" image="images/random-background.svg" class = "no-bottom-title-padding">
                     <div class="card-content">
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Primary Color</span>
                         <paper-dropdown-menu label = "Primary Color">
@@ -249,11 +251,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <span class = 'flex'>Choose a stylesheet</span>
                         <paper-dropdown-menu id = "selectActiveStylesheet" label = "Select Theme">
                           <paper-menu class="dropdown-content">
-                            <paper-item>Github</paper-item>
-                            <paper-item>Dark Theme</paper-item>
-                            <paper-item>Add +</paper-item>
+                          <template is = "dom-repeat" items = "[[outputThemes]]">
+                            <paper-item>[[item]]</paper-item>
+                          </template>
                           </paper-menu>
                         </paper-dropdown-menu>
+                      </div>
+                      <div class="layout horizontal">
+                        <paper-button class = "flex" raised on-tap = "addTheme">Add a theme (.css file)</paper-button>
                       </div>
                     </div>
                   </paper-card>
@@ -286,12 +291,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return sizes;
           }
         },
+        fonts: {
+          type: Array,
+          value: function(){
+            return ['Cutive_Mono', 'Roboto_Mono', 'Nova_Mono', 'Share_Tech_Mono', 'Source_Code_Pro'];
+          }
+        },
+        editorThemes: {
+          type: Array,
+          value: function(){
+            return ['ambiance','chaos','chrome','clouds','clouds_midnight', 'cobalt', 'crimson_editor', 'dawn', 'dreamweaver', 'eclipse', 'github', 'idle_fingers', 'iplastic', 'katzenmilch',
+                          'kr_theme', 'kuroir', 'merbivore', 'merbivore_soft', 'mono_industrial', 'monokai', 'pastel_on_dark', 'solarized_dark', 'solarized_light', 'sqlserver', 'terminal',
+                          'textmate', 'tomorrow', 'tomorrow_night', 'tomorrow_night_blue', 'tomorrow_night_bright', 'tomorrow_night_eighties', 'twilight', 'vibrant', 'vibrant_ink', 'xcode'];
+          }
+        },
+        outputThemes: {
+          type: Array,
+          value: function(){
+            return ['Github'];
+          }
+        },
         settings: {
           type: Object
         }
       },
 
-      attached: function(){
+      ready: function(){
         this.readSettings();
       },
 
@@ -338,6 +363,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Output styles settings
 
         this.fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(tempSettings));
+      },
+
+      addTheme: function(){
+        var remote = require('remote');
+        var dialog = remote.require('dialog');
+        var files = dialog.showOpenDialog({ properties: ['openFile']});
+        var file = files[0];
+        if (file){
+          this.push('outputThemes', this.path.basename(file));
+        }
       }
 
     });

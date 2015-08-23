@@ -68,6 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     #editor{
+      position: relative;
       border-right: 2px solid rgba(100,100,100,.1);
       font-family: 'Roboto_Mono';
       font-size: 14;
@@ -281,6 +282,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // add event listener for select changed
         this.$.fontSelect.addEventListener('select-changed', this._changeFont.bind(this), false);
         this.$.fontSizeSelect.addEventListener('select-changed', this._changeFontSize.bind(this), false);
+
+        // Scroll syncing
+        var scope = this;
+        this.handleEditorScroll(this);
+        this.handleMarkedScroll(this);
       },
 
       // PUBLIC FUNCTIONS
@@ -379,6 +385,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       redo: function(){
         this.aceEditor.redo();
       },
+      /*
+       * Sync scrolling
+       */
+      handleEditorScroll: function(scope){
+        scope.session.on('changeScrollTop', function(scrollTop){
+          // get percentage of way down screen editor is...
+          var ratio = scrollTop / scope.$.editor.clientHeight;
+          console.log(scrollTop + ' (editor)');
+          // ... and apply to marked editor
+          scope.$.marked.scrollTop = ratio * scope.$.marked.clientHeight;
+          console.log((ratio * scope.$.marked.clientHeight) + ' (rendered HTML)');
+        });
+      },
+      /*
+       * Sync scrolling
+       */
+      // handleMarkedScroll: function(scope){  
+      //   scope.$.marked.addEventListener('scroll', function(){
+      //     // get percentage of way down screen editor is...
+      //     var ratio = scope.$.marked.scrollTop / scope.$.marked.clientHeight;
+      //     // ... and apply to marked editor
+      //     scope.session.setScrollTop(ratio * scope.$.marked.clientHeight);
+      //   }, false);
+      // },
 
       // Private functions
 
@@ -387,11 +417,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Object} Current ace session
        * @param {Object} global "this". TODO: use .bind() or .call() or whatever instead, this is ugly
        */
-      _listenForChange: function(session, object){
+      _listenForChange: function(session, scope){
         session.on('change', function() {
-           object.fire('editor-changed');
-           if (object.autorender && !object.fullscreen){
-             object.renderMarkdown();
+           scope.fire('editor-changed');
+           if (scope.autorender && !scope.fullscreen){
+             scope.renderMarkdown();
            }
         });
       },
@@ -435,7 +465,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {String} Path to file currently being loaded
        * @param {Object} global "this". TODO: use .bind() or .call() or whatever instead, this is ugly
        */
-      _readFile: function(editor, filepath, object){
+      _readFile: function(editor, filepath, scope){
         this.fs.readFile(filepath, function (err, data){
             if (err){
                 return console.log(err);
@@ -443,8 +473,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // Sets the value of the editor equal to the file and moves the cursor to
                 // the begining
                 editor.setValue(data.toString(), -1);
-                object.savedText = editor.getValue();
-                object.fire('file-opened');
+                scope.savedText = editor.getValue();
+                scope.fire('file-opened');
             }
         });
       },
