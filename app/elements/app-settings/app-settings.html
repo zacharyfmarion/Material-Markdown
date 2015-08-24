@@ -54,10 +54,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 0 16px;
     }
     paper-card {
-      --paper-card-content{
-        background: #303F9F;
-        color: white;
+      --paper-card-header: {
+        background-color: #303F9F;
       }
+      --paper-card-header-color: #fff;
     }
     paper-card {
       max-width: 640px;
@@ -140,7 +140,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "general" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "On Startup" image="images/random-background.svg">
+                  <paper-card heading = "On Startup" image="images/random-background.svg" elevation = "2">
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Show edit ribbon on start</span><paper-toggle-button id = "showRibbonOnStart"></paper-toggle-button></div>
                       <div class="layout horizontal option"><span class = 'flex'>Enable autorendering</span><paper-toggle-button id = "autorendering"></paper-toggle-button></div>
@@ -153,7 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "editor" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "Defaults" image="images/random-background.svg" class = "no-bottom-title-padding">
+                  <paper-card heading = "Defaults" image="images/random-background.svg" class = "no-bottom-title-padding" elevation = "2">
                     <div class="card-content">
 
                     <!-- Default font -->
@@ -180,7 +180,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Theme</span>
                         <paper-dropdown-menu label = "Default Theme">
                           <paper-menu class="dropdown-content">
-                            <template is = "dom-repeat" items = "[[themes]]">
+                            <template is = "dom-repeat" items = "[[editorThemes]]">
                               <paper-item>[[item]]</paper-item>
                             </template>
                           </paper-menu>
@@ -188,7 +188,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                       </div>
                     </div>
                   </paper-card>
-                  <paper-card heading = "Configurations" image="images/random-background.svg">
+                  <paper-card heading = "Configurations" image="images/random-background.svg" elevation = "2">
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
                       <div class="layout horizontal option"><span class = 'flex'>Show line numbers</span><paper-toggle-button id = "lineNumbers"></paper-toggle-button></div>
@@ -200,7 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "markdown" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "Extending Rules" image="images/random-background.svg">
+                  <paper-card heading = "Extending Rules" image="images/random-background.svg" elevation = "2">
                     <div class="card-content">
 
                     </div>
@@ -210,7 +210,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "theming" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "On Startup" image="images/random-background.svg" class = "no-bottom-title-padding">
+                  <paper-card heading = "On Startup" image="images/random-background.svg" class = "no-bottom-title-padding" elevation = "2">
                     <div class="card-content">
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Primary Color</span>
                         <paper-dropdown-menu label = "Primary Color">
@@ -245,7 +245,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <section data-route = "outputStyles" class = 'content-section'>
                 <!-- <styles-editor wrap></styles-editor> -->
                 <div class="layout vertical center">
-                  <paper-card heading = "Active Stylesheet" image="images/random-background.svg">
+                  <paper-card heading = "Active Stylesheet" image="images/random-background.svg" elevation = "2">
                     <div class="card-content">
                       <div class="layout horizontal center option">
                         <span class = 'flex'>Choose a stylesheet</span>
