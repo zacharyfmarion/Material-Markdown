@@ -18,15 +18,17 @@ var MarkdownBehaviors = MarkdownBehaviors || {};
 MarkdownBehaviors.ExportBehavior = {
   properties: {
     /**
-     * MarkdownPDF...nodeJS package to render markdown into a PDF form
+     * Wrapper for phantomjs
      */
-     markdownPdf: {
-       type: Object,
-       value: function(){
-         return require('markdown-pdf');
-       }
+     htmlToPdf: {
+      type: Object,
+      value: function(){
+        return require('html-pdf');
+      }
      },
-
+     /*
+      * Package to beautify js, css, and html (ostensibly, can't get it to work)
+      */
      jsBeautify: {
        type: Object,
        value: function(){
@@ -50,9 +52,14 @@ MarkdownBehaviors.ExportBehavior = {
    * @param {String} Path to the css file to be used when rendering pdf
    */
    exportToPdf: function(markdown, path, pathToCss){
-     this.markdownPdf({
-       cssPath: pathToCss
-     }).from.string(markdown).to(path);
+    var html = this._getStyledHTML(markdown, pathToCss);
+    var options = {
+      format: 'Letter'
+    }
+    this.htmlToPdf.create(html, options).toFile(path, function(err, res){
+      if (err) return console.log(err);
+      console.log(res); // { filename: path } 
+    });
    },
 
    /**
@@ -60,8 +67,8 @@ MarkdownBehaviors.ExportBehavior = {
     * @param {String} markdown string
     * @param {String} Path where the html will be saved
     */
-   exportToHTML: function(text, path){
-     var html = marked(text);
+   exportToHTML: function(markdown, path){
+     var html = marked(markdown);
      var formattedHTML = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>Document</title>\n</head>\n<body>' + html +
       '</body>\n</html>';
      //var prettifiedHTML = this.jsBeautify.html(html);
@@ -72,8 +79,30 @@ MarkdownBehaviors.ExportBehavior = {
      });
    },
 
-   exportToStyledHTML: function(text, path, stylePath){
-     var html = marked(text);
+   /*
+    * Get string of the styled HTML code given the markdown and path to styles
+    * @param {String} The markdown
+    * @param {String} Path where the html will be saved
+    * @param {String} Path to the css file to style the markdown
+    */
+   exportToStyledHTML: function(markdown, path, stylePath){
+     var formattedHTML = this._getStyledHTML(markdown, stylePath);
+     //var prettifiedHTML = this.jsBeautify.html(html);
+     this.fs.writeFile(path, formattedHTML, function(err){
+       if (err){
+         console.log(err);
+       }
+     });
+   },
+
+   /*
+    * Get string of the styled HTML code given the markdown and path to styles
+    * @param {String} The markdown
+    * @param {String} Path to the css file to style the markdown
+    * @return {String} HTMl as a string
+    */
+   _getStyledHTML: function(markdown, stylePath){
+     var html = marked(markdown);
      var styles = this.fs.readFileSync(stylePath).toString();
      var prettifiedStyles = cssbeautify(styles, {
        indent: '  ',
@@ -81,14 +110,8 @@ MarkdownBehaviors.ExportBehavior = {
      });
      var finalStyles = prettifiedStyles.replace(/#marked\s{1}/g, '');
 
-     var formattedHTML = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>Document</title>\n<style>\n' + finalStyles + '\n</style>\n</head>\n<body>\n' + html +
+     return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n<title>Document</title>\n<style>\n' + '<link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">\n' + finalStyles + '\n</style>\n</head>\n<body>\n' + html +
       '</body>\n</html>';
-     //var prettifiedHTML = this.jsBeautify.html(html);
-     this.fs.writeFile(path, formattedHTML, function(err){
-       if (err){
-         console.log(err);
-       }
-     });
    }
 
 };

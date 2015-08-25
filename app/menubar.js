@@ -204,7 +204,7 @@ var menu = Menu.buildFromTemplate([
                 dialog.showSaveDialog({
                   defaultPath: 'untitled.pdf'
                 },function(filename){
-                  editor.exportToPdf(editor.aceEditor.getValue(), filename, 'dist/styles/test.css');
+                  editor.exportToPdf(editor.aceEditor.getValue(), filename, __dirname + '/styles/marked-github.css');
                 });
               }
             }

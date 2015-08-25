@@ -392,10 +392,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         scope.session.on('changeScrollTop', function(scrollTop){
           // get percentage of way down screen editor is...
           var ratio = scrollTop / scope.$.editor.clientHeight;
-          console.log(scrollTop + ' (editor)');
           // ... and apply to marked editor
           scope.$.marked.scrollTop = ratio * scope.$.marked.clientHeight;
-          console.log((ratio * scope.$.marked.clientHeight) + ' (rendered HTML)');
         });
       },
       /*
