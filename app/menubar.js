@@ -385,7 +385,8 @@ var menu = Menu.buildFromTemplate([
           if (editor.aceEditor.isFocused){
             editor.insertLink();
           }
-        }
+        },
+        accelerator: 'Command+L'
       },
       {
         label: 'Image',
@@ -393,7 +394,8 @@ var menu = Menu.buildFromTemplate([
           if (editor.aceEditor.isFocused){
             editor.insertImage();
           }
-        }
+        },
+        accelerator: 'Command+Shift+I'
       },
       {
         label: 'Code Block',
@@ -401,7 +403,58 @@ var menu = Menu.buildFromTemplate([
           if (editor.aceEditor.isFocused){
             editor.insertCodeBlock();
           }
-        }
+        },
+        accelerator: 'Command+K'
+      },
+      {
+        type: 'separator'
+      },
+      {
+        label: 'Headings',
+        submenu: [
+          {
+            label: "Heading 1",
+            click: function(){
+              editor.insertHeader(1);
+            },
+            accelerator: 'Command+1'
+          },
+          {
+            label: "Heading 2",
+            click: function(){
+              editor.insertHeader(2);
+            },
+            accelerator: 'Command+2'
+          },
+          {
+            label: "Heading 3",
+            click: function(){
+              editor.insertHeader(3);
+            },
+            accelerator: 'Command+3'
+          },
+          {
+            label: "Heading 4",
+            click: function(){
+              editor.insertHeader(4);
+            },
+            accelerator: 'Command+4'
+          },
+          {
+            label: "Heading 5",
+            click: function(){
+              editor.insertHeader(5);
+            },
+            accelerator: 'Command+5'
+          },
+          {
+            label: "Heading 6",
+            click: function(){
+              editor.insertHeader(6);
+            },
+            accelerator: 'Command+6'
+          }
+        ]
       }
     ]
   },

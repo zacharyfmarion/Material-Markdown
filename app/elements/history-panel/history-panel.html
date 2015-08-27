@@ -114,6 +114,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       behaviors: [Polymer.NeonAnimationRunnerBehavior],
 
+      //TODO: change this to this.push() and _then_ add to file w/ fs.writeFileSync()
+
       getHistoryItems: function(){
         console.log(this.history[this.filepath]);
         if (this.history && this.filepath){

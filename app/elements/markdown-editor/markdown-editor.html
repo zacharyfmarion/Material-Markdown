@@ -373,6 +373,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       insertCodeBlock: function(){
         this._modifyText('codeblock');
       },
+      insertHeader: function(num){
+        //if line is empty, simply insert heading...if not insert at beginning
+        var pos = this.aceEditor.getCursorPosition();
+        if (pos.column !== 0){
+          this.aceEditor.navigateLineStart();
+        }  
+        var heading = '';
+        for (var i = 1; i <= num; i++){
+          heading += '#';
+        }
+        this.aceEditor.insert(heading + ' ');
+        if (pos.column !== 0){
+          this.aceEditor.moveCursorTo(pos.row, pos.column);
+        }
+      },
       /*
        * Undo last action from the editor
        */
