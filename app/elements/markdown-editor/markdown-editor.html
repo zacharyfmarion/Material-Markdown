@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../ace-behavior/ace-behavior.html">
 <link rel="import" href="../export-behavior/export-behavior.html">
 <link rel="import" href="hljs-import.html">
-<!-- <link rel="import" href="mathjax-import.html"> -->
+<link rel="import" href="mathjax-import.html">
 
 <dom-module id="markdown-editor">
   <style>
@@ -408,7 +408,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       handleEditorScroll: function(scope){
         scope.session.on('changeScrollTop', function(scrollTop){
           // get percentage of way down screen editor is...
-          var ratio = scrollTop / scope.$.editor.clientHeight;
+          var ratio = scrollTop / scope.aceEditor.getValue().length;
           // ... and apply to marked editor
           scope.$.marked.scrollTop = ratio * scope.$.marked.clientHeight;
         });

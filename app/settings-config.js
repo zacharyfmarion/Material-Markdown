@@ -35,6 +35,17 @@ fs.watch(__dirname + '/settings.json', function () {
 window.addEventListener('WebComponentsReady', function(){
   // Checking General Settings:
   var appSettings = require('./settings.json');
+
+  // for first time use:
+  if (appSettings.isFirstUse){
+    editor.filepath = __dirname + '/welcome.md';
+    appSettings.isFirstUse = false;
+    fs.writeFile(__dirname + '/settings.json', JSON.stringify(appSettings), function(err){
+      if (err) throw err;
+      console.log('first use of MM');
+    });
+  }
+
   var general = appSettings.general;
 
   if (general.showRibbonOnStart === true){

@@ -18,5 +18,6 @@
   },
   "outputStyles": {
     "activeStylesheet": "/Users/Zachary/Desktop/Web Design/markdown-electron-polymer/dist/styles/marked-github.css"
-  }
+  },
+  "isFirstUse": true
 }

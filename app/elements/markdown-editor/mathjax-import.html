@@ -10,4 +10,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 <!-- Importing the mathjax library -->
-<!-- <script src = "../../MathJax-master/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script> -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+<script src="../../bower_components/MathJax/MathJax.js"></script>

@@ -2,6 +2,7 @@
   "name": "polymer-starter-kit",
   "private": true,
   "dependencies": {
+    "MathJax": "~2.5.3",
     "iron-dropdown": "PolymerElements/iron-dropdown#~1.0.3",
     "iron-elements": "PolymerElements/iron-elements#1.0.0",
     "marked-element": "PolymerElements/marked-element#~1.0.2",
