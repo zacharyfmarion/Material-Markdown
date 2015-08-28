@@ -40,7 +40,7 @@ window.addEventListener('WebComponentsReady', function(){
   if (appSettings.isFirstUse){
     editor.filepath = __dirname + '/welcome.md';
     appSettings.isFirstUse = false;
-    fs.writeFile(__dirname + '/settings.json', JSON.stringify(appSettings), function(err){
+    fs.writeFile(__dirname + '/settings.json', JSON.stringify(appSettings, null, 2), function(err){
       if (err) throw err;
       console.log('first use of MM');
     });
