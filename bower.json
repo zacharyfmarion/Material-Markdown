@@ -5,6 +5,7 @@
     "iron-dropdown": "PolymerElements/iron-dropdown#~1.0.3",
     "iron-elements": "PolymerElements/iron-elements#1.0.0",
     "marked-element": "PolymerElements/marked-element#~1.0.2",
+    "marked-mermaid-element": "~1.0.4",
     "mermaid": "~0.5.1",
     "neon-animation": "PolymerElements/neon-animation#~1.0.6",
     "neon-elements": "PolymerElements/neon-elements#1.0.0",

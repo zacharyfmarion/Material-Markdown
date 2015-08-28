@@ -11,6 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../ace-behavior/ace-behavior.html">
 <link rel="import" href="../export-behavior/export-behavior.html">
+<link rel="import" href="hljs-import.html">
 <!-- <link rel="import" href="mathjax-import.html"> -->
 
 <dom-module id="markdown-editor">
@@ -184,7 +185,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         savedText: {
           type: String,
           value: null,
-          reflectToAttribute: true
+          reflectToAttribute: false
         },
         /**
           * All ace editor theme options, formatted for use with <paper-select>
@@ -208,7 +209,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             return final;
           },
-          reflectToAttribute: true
+          reflectToAttribute: false
         },
 
         /**
