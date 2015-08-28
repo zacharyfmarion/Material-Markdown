@@ -11,6 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../ace-behavior/ace-behavior.html">
 <link rel="import" href="../export-behavior/export-behavior.html">
+<!-- <link rel="import" href="mathjax-import.html"> -->
 
 <dom-module id="markdown-editor">
   <style>
@@ -131,7 +132,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
         <paper-icon-button icon = "launch" id = "launchIcon" on-tap = "_toggleFullscreen"></paper-icon-button>
-        <marked-element id = "marked" class = "flex" highlight></marked-element>
+        <marked-mermaid-element id = "marked" class = "flex" highlight></marked-mermaid-element>
       </div>
     </div>
     <paper-button raised on-tap = "renderMarkdown" id = "render-button" hidden$="{{autorender}}">Render</paper-button>
@@ -541,12 +542,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             break;
           case 'bulleted':
-            //TODO: Make this work for when there are multiple lines
+            var pos = this.aceEditor.getCursorPosition();
+            if (pos.column !== 0){
+              this.aceEditor.navigateLineStart();
+            }  
             this.aceEditor.insert('- ' + text);
+            if (pos.column !== 0){
+              this.aceEditor.moveCursorTo(pos.row, pos.column);
+            }
             break;
           case 'numbered':
-            //TODO: Make this work for when there are multiple lines
+            var pos = this.aceEditor.getCursorPosition();
+            if (pos.column !== 0){
+              this.aceEditor.navigateLineStart();
+            }  
             this.aceEditor.insert('1. ' + text);
+            if (pos.column !== 0){
+              this.aceEditor.moveCursorTo(pos.row, pos.column);
+            }
             break;
           case 'link':
             this.aceEditor.insert('[]()');

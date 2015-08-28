@@ -107,6 +107,12 @@ gulp.task('copy', function () {
     .pipe($.rename('elements.vulcanized.html'))
     .pipe(gulp.dest('dist/elements'));
 
+  //var mathjax = gulp.src(['app/MathJax-master/**/*'])
+    //.pipe(gulp.dest('dist/MathJax-master'));
+
+  //return merge(app, bower, elements, vulcanized, swBootstrap, mathjax, swToolbox)
+    //.pipe($.size({title: 'copy'}));
+
   return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox)
     .pipe($.size({title: 'copy'}));
 });

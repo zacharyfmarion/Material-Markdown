@@ -2,19 +2,20 @@
   "name": "polymer-starter-kit",
   "private": true,
   "dependencies": {
+    "iron-dropdown": "PolymerElements/iron-dropdown#~1.0.3",
     "iron-elements": "PolymerElements/iron-elements#1.0.0",
-    "paper-elements": "PolymerElements/paper-elements#1.0.1",
-    "platinum-elements": "PolymerElements/platinum-elements#1.0.1",
+    "marked-element": "PolymerElements/marked-element#~1.0.2",
+    "mermaid": "~0.5.1",
+    "neon-animation": "PolymerElements/neon-animation#~1.0.6",
     "neon-elements": "PolymerElements/neon-elements#1.0.0",
     "page": "visionmedia/page.js#~1.6.3",
-    "iron-dropdown": "PolymerElements/iron-dropdown#~1.0.3",
-    "neon-animation": "PolymerElements/neon-animation#~1.0.6",
-    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.3",
-    "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.2",
-    "marked-element": "PolymerElements/marked-element#~1.0.2",
     "paper-card": "PolymerElements/paper-card#~1.0.1",
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.1",
+    "paper-elements": "PolymerElements/paper-elements#1.0.1",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.3",
     "paper-toggle-button": "PolymerElements/paper-toggle-button#~1.0.6",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.0.1"
+    "paper-tooltip": "PolymerElements/paper-tooltip#~1.0.2",
+    "platinum-elements": "PolymerElements/platinum-elements#1.0.1"
   },
   "devDependencies": {
     "web-component-tester": "*",

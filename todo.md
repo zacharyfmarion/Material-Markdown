@@ -25,7 +25,7 @@
 - Default title of saved document to first header in document (not sure if possible with electron)
 
 - ~~Add find support...maybe do a bottom widget like in atom, or have the toolbar turn into the find bar like in a lot of material apps~~
-  - Scratch that apparently find support already exists...just need to link it to electron's menu
+  - ~~Scratch that apparently find support already exists...just need to link it to electron's menu~~
 
 - Find a way to center the title span in the menubar
 
@@ -82,7 +82,7 @@
 - When you replace a file, the filepath refreshes to the old filepath for some reason...not sure how to solve this.
 - Still a lot of wierd stuff going on at the bottom of the screen when resizing happens
 - Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change. Actually it sometimes does and sometimes doesn't in the ace editor...wierd.
-- Currently the bullet and numbered list buttons do not check for whether you are selecting a whole line or really do any sort of checks...change this to avoid wierd outputs like dashes in the middle of a line.
+- ~~Currently the bullet and numbered list buttons do not check for whether you are selecting a whole line or really do any sort of checks...change this to avoid wierd outputs like dashes in the middle of a line.~~
 - when dragging over marked element call e.preventDefault() to stop the electron thing of filling the entire window with text.
 
 ### Ideas for Future Directions
@@ -90,7 +90,7 @@
 - Switch out Marked for Remarkable (more extensibility support / options)
   - Would need to make an element...model from [this element](https://github.com/aktowns/polymer-re-markable/blob/master/re-markable.html) and `marked-element.html`.
   - See [my current repo](https://github.com/zacharyfmarion/Remarkable-Element) for progress.
-- Scroll-sync???
+- Scroll-sync??? (kinda have it now...)
 - Support for [MathJax](https://www.mathjax.org/)
 - Support for extended markdown features (tables, footnotes, etc)
 - Add support for comments
