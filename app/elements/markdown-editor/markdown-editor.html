@@ -77,7 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     #ribbon{
-      background: #E91E63;
+      background: var(--accent-color);
       height: 60px;
     }
 
@@ -96,8 +96,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     #launchIcon{
       position: absolute;
+      z-index: 99999;
       left: 45%;
       bottom: 5px;
+      /*background: #fff;*/
+      padding: 1px;
+      border-radius: 1px;
       color: #9E9E9E;
     }
 
@@ -157,7 +161,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         autorender: {
           type: Boolean,
           value: true,
-          reflectToAttribute: true
+          reflectToAttribute: true,
+          observer: '_autoRenderStateChanged'
         },
         /**
           * File path to file loaded (if one is loaded)
@@ -380,7 +385,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var pos = this.aceEditor.getCursorPosition();
         if (pos.column !== 0){
           this.aceEditor.navigateLineStart();
-        }  
+        }
         var heading = '';
         for (var i = 1; i <= num; i++){
           heading += '#';
@@ -408,15 +413,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       handleEditorScroll: function(scope){
         scope.session.on('changeScrollTop', function(scrollTop){
           // get percentage of way down screen editor is...
-          var ratio = scrollTop / scope.aceEditor.getValue().length;
+          var ratio = scrollTop / ((scope.session.getScreenLength() * scope.aceEditor.renderer.lineHeight) + scope.aceEditor.renderer.scrollBar.getWidth());
+          // console.log("\n" + scope.session.getScreenLength());
+          // console.log(ratio + '\n');
           // ... and apply to marked editor
-          scope.$.marked.scrollTop = ratio * scope.$.marked.clientHeight;
+          scope.$.marked.scrollTop = ratio * scope.$.marked.scrollHeight;
         });
       },
       /*
        * Sync scrolling
        */
-      // handleMarkedScroll: function(scope){  
+      // handleMarkedScroll: function(scope){
       //   scope.$.marked.addEventListener('scroll', function(){
       //     // get percentage of way down screen editor is...
       //     var ratio = scope.$.marked.scrollTop / scope.$.marked.clientHeight;
@@ -494,6 +501,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
+      _autoRenderStateChanged: function(){
+        console.log('autorendering: ' + this.autorender);
+      },
+
       /*
        * Toggle a fullscreen view of the editor
        */
@@ -546,7 +557,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             var pos = this.aceEditor.getCursorPosition();
             if (pos.column !== 0){
               this.aceEditor.navigateLineStart();
-            }  
+            }
             this.aceEditor.insert('- ' + text);
             if (pos.column !== 0){
               this.aceEditor.moveCursorTo(pos.row, pos.column);
@@ -556,7 +567,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             var pos = this.aceEditor.getCursorPosition();
             if (pos.column !== 0){
               this.aceEditor.navigateLineStart();
-            }  
+            }
             this.aceEditor.insert('1. ' + text);
             if (pos.column !== 0){
               this.aceEditor.moveCursorTo(pos.row, pos.column);

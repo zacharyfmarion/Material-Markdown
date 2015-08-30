@@ -5,9 +5,29 @@ Welcome to Material Markdown!
 
 ### The Basics
 
-Markdown is just a way to convert plaintext into HTML, which is rendered on the right with formatting. It works by looking for special syntax that specifies what formatting should be applied. 
+Markdown is just a way to convert plaintext into HTML, which is rendered on the right with formatting. It works by looking for special syntax that specifies what formatting should be applied.
+
+_italics_, **bold**
+
+- List items are easy
+- Plain and simple
+
+
+1. Ordered lists work too
+2. Easy!
+
+Use backticks for `inline code`,
+
+Use three consecutive backticks for codeblocks:
+
+```javascript
+function hello(){
+  console.log("Material Markdown says hello");
+}
+```
 
 ### Github Flavored Markdown
+
 Material Markdown has support for [Github Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/) (GFM), so you can also do stuff like:
 
 ~~Cross stuff out~~
@@ -21,7 +41,7 @@ Content Cell  | Content Cell
 
 In addition, MM supports [mermaid.js](http://knsv.github.io/mermaid/), a markdown-like way of creating charts and graphs. To make a mermaid figure simply specify the language of the codeblock as 'graph' or 'sequenceDiagram':
 
-```sequenceDiagram
+```
 sequenceDiagram
     Alice->>John: Hello John, how are you?
     John-->>Alice: Great!

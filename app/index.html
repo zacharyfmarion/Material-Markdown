@@ -63,19 +63,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 </head>
 
-  <style>
-    .menubar{
-      -webkit-app-region: drag;
-      -webkit-user-select: none;
-      border-radius: 0;
-    }
-
-    paper-header-panel{
-      border-radius: 0;
-    }
-
-  </style>
-
   <style is="custom-style">
     .small-icon {
       --iron-icon-height: 18px;
@@ -83,6 +70,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       padding: 0;
       margin: 0;
       -webkit-app-region: no-drag;
+    }
+
+    .menubar{
+      -webkit-app-region: drag;
+      -webkit-user-select: none;
+      border-radius: 0;
+      background: var(--light-primary-color);
+    }
+
+    paper-header-panel{
+      border-radius: 0;
     }
 
     #title{
@@ -97,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template is="dom-bind" id="app">
           <!-- Main Area -->
           <paper-header-panel main condenses keep-condensed-header>
-            <div class = "layout horizontal menubar" style = "height: 20px; width = 100%; background: #2196F3;">
+            <div class = "layout horizontal menubar" style = "height: 20px; width = 100%;">
               <paper-icon-button class="small-icon" icon="close" id = "close"></paper-icon-button>
               <paper-icon-button class="small-icon" icon="remove" id = "minimize"></paper-icon-button>
               <paper-icon-button class="small-icon" icon="fullscreen" id = "fullscreen"></paper-icon-button>

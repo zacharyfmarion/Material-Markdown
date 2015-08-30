@@ -45,6 +45,12 @@ are so inclined.
         observer: '_wrapChanged'
       },
 
+      showLineNumbers: {
+        type: Boolean,
+        value: true,
+        observer: '_showLineNumbersChanged'
+      },
+
       showPrintMargin: {
         type: Boolean,
         value: false
@@ -80,6 +86,9 @@ are so inclined.
       session: {
         type: Object,
         readonly: true
+      },
+      aceDocument: {
+        type: Object
       }
     },
     /**
@@ -125,6 +134,8 @@ are so inclined.
       session.setUseWorker(this.useworker);
       // set mode based on attribute
       this._setMode(session);
+      // set the ace document
+      this.aceDocument = this.session.getDocument();
       return session;
     },
     /**
@@ -156,6 +167,12 @@ are so inclined.
      */
     _setTheme: function(editor){
       editor.setTheme('ace/theme/' + this.theme);
+    },
+
+    _showLineNumbersChanged: function(){
+      if (this.aceEditor){
+        this.aceEditor.renderer.setShowGutter(this.showLineNumbers);
+      }
     },
 
     getCopyText: function(){

@@ -4,40 +4,31 @@
 
 ### What comes next
 
+#### Editor
+
 - ~~Change the REGEX or whatever on the editor to bold headers and italisize _italisized_ text. **Bold** stuff in a plain text editor is really kind of boring.~~
   - ~~Add Bold, Italic, and Underlined options in the toolbar~~
   - ~~Add functionality to these functions (insert character in editor).~~
   - ~~Put cursor in center of text if no text selected~~
-  - Add keybindings to these functions
-
-- Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).
-  - ~~Find out why Page.js is not working...not exactly sure what is going on with that..~~
-  - Need to bind the settings both directions...in other words change settings.json when the settings states change and also load these changes from settings.json into the main application on startup/refresh
-
-- Fix stylesEditor and HTML export problem with js_beautify (still have no idea why it's not working)
-
+  - ~~Add keybindings to these functions~~
 - Add multiple font-weights and more fonts...also in settings add option to import a new font...basically copy it into fonts and add it to the fonts array.
-
+- Switch out my dropdown element for Polymer's
 - ~~Add fullscreen editing mode~~
   - ~~**Fix wierd fullscreen issue where it makes the marked pane larger instead of hiding it**~~
   - ~~Fix problem in the editor where the entire screen vertically is not filled up (wierd thing with chrome dev tools...kinda an edge case, shouldn't need to worry about it too much).~~
-
-- Default title of saved document to first header in document (not sure if possible with electron)
-
-- ~~Add find support...maybe do a bottom widget like in atom, or have the toolbar turn into the find bar like in a lot of material apps~~
-  - ~~Scratch that apparently find support already exists...just need to link it to electron's menu~~
-
-- Find a way to center the title span in the menubar
-
 - Add fullscreen mode to rendered HTML `marked-element` as well.
-
-- ~~Add word count (probably where the filename currently is)~~
-
 - ~~Fix cut (remove selection from the editor)~~
-
 - Add padding to editor in fullscreen mode...maybe add a minimalist writing mode??
-
 - Add context menus to the editor...no sure whether you should make it native electron or material designy...maybe experiment with both.
+
+#### Settings
+
+- ~~Add settings functionality (at least now settings.json can persist the changes, so the problem of interacting between browser  windows is no longer an issue).~~
+  - ~~Find out why Page.js is not working...not exactly sure what is going on with that..~~
+  - ~~Need to bind the settings both directions...in other words change settings.json when the settings states change and also load these changes from settings.json into the main application on startup/refresh~~
+
+#### History
+
 
 - ~~Add revision history...saved to a separate json file...basically have it like:~~
 
@@ -67,16 +58,24 @@
   - Find out why history array for a document just gets reset/replaced each time you call `history[filename].push({});`
   - Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).
 
+#### Misc
+
+- Find a way to center the title span in the menubar
+  - Default title of saved document to first header in document (not sure if possible with electron)
+  - ~~Add word count (probably where the filename currently is)~~
+
+- Fix stylesEditor and HTML export problem with js_beautify (still have no idea why it's not working)
+
 - When the width of the window gets to be too small, change the formatting buttons on the toolbar to a `paper-icon-button` with `icon = editor:format-list-numbered`. Maybe make a custom element that shows the specific buttons below on click...unless there is already an element you can use which does this.
 
-- **Reduce the filesize by a lot by removing unnecesarry stuff (like other ace builds / ace files you don't need)...right now the folder is half a gig which is obscene...**
+**Reduce the filesize by a lot by removing unnecesarry stuff (like other ace builds / ace files you don't need)...right now the folder is half a gig which is obscene...**
 
-- **_Keep it up, you should be able to release 1.0 stable soon (after you learn how to package it)._**
+**_Keep it up, you should be able to release 1.0 stable soon (after you learn how to package it)._**
 
 ### Bugs
 
 - When you open a document and then hit undo, the document goes back to its prior empty state...make a new `undoManager()` or whatever on document load
-- The fullscreen button for the ace editor gets obfuscated when text is under it. (add a background with a very low opacity or something).
+- ~~The fullscreen button for the ace editor gets obfuscated when text is under it. (add a background with a very low opacity or something).~~
 - ~~Can't scroll down in the view pane (add #marked{overflow: scroll})~~
   - ~~Still can't scroll for some reason...???????~~
 - When you replace a file, the filepath refreshes to the old filepath for some reason...not sure how to solve this.
@@ -92,5 +91,7 @@
   - See [my current repo](https://github.com/zacharyfmarion/Remarkable-Element) for progress.
 - Scroll-sync??? (kinda have it now...)
 - Support for [MathJax](https://www.mathjax.org/)
-- Support for extended markdown features (tables, footnotes, etc)
-- Add support for comments
+- Support for extended markdown features (footnotes, etc)
+- ~~Support for mermaid~~
+- Support for comments
+- Vary the width of the editor/marked element on drag...definitely doable with flexbox.

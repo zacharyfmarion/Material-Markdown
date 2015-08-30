@@ -153,10 +153,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
               <section data-route = "editor" class = 'content-section'>
                 <div class="layout vertical center">
-                  <paper-card heading = "Defaults" image="images/random-background.svg" class = "no-bottom-title-padding" elevation = "2">
+                  <!-- <paper-card heading = "Defaults" image="images/random-background.svg" class = "no-bottom-title-padding" elevation = "2">
                     <div class="card-content">
 
-                    <!-- Default font -->
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Font</span>
                         <paper-dropdown-menu label = "Default Font">
                           <paper-menu class="dropdown-content">
@@ -166,7 +165,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           </paper-menu>
                         </paper-dropdown-menu>
                       </div>
-                      <!-- Default Fontsize -->
+
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Font Size</span>
                         <paper-dropdown-menu label = "Default Font Size">
                           <paper-menu class="dropdown-content">
@@ -176,7 +175,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                           </paper-menu>
                         </paper-dropdown-menu>
                       </div>
-                      <!-- Default Editor Theme -->
+
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Default Theme</span>
                         <paper-dropdown-menu label = "Default Theme">
                           <paper-menu class="dropdown-content">
@@ -187,7 +186,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         </paper-dropdown-menu>
                       </div>
                     </div>
-                  </paper-card>
+                  </paper-card> -->
                   <paper-card heading = "Configurations" image="images/random-background.svg" elevation = "2">
                     <div class="card-content">
                       <div class="layout horizontal option"><span class = 'flex'>Code Folding</span><paper-toggle-button id = "codeFolding"></paper-toggle-button></div>
@@ -213,26 +212,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <paper-card heading = "On Startup" image="images/random-background.svg" class = "no-bottom-title-padding" elevation = "2">
                     <div class="card-content">
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Primary Color</span>
-                        <paper-dropdown-menu label = "Primary Color">
+                        <paper-dropdown-menu label = "Primary Color" selectedItem = "{{primaryColor}}">
 
                           <paper-menu class="dropdown-content">
-                            <paper-item style = "color: #303F9F;">Indigo (#303F9F)</paper-item>
-                            <paper-item style = "color: #512DA8;">Deep Purple (#512DA8)</paper-item>
-                            <paper-item style = "color: #1976D2;">Blue (#1976D2)</paper-item>
-                            <paper-item style = "color: #FF5722;">Deep Orange (#FF5722)</paper-item>
+                            <paper-item style = "color: #303F9F;">Indigo</paper-item>
+                            <paper-item style = "color: #512DA8;">Deep Purple</paper-item>
+                            <paper-item style = "color: #1976D2;">Blue</paper-item>
+                            <paper-item style = "color: #FF5722;">Deep Orange</paper-item>
                           </paper-menu>
 
                         </paper-dropdown-menu>
                       </div>
                       <div class="layout horizontal center option"><span class = 'flex dropdown-option'>Accent Color</span>
 
-                        <paper-dropdown-menu label = "Accent Color">
+                        <paper-dropdown-menu label = "Accent Color" selectedItem = "{{accentColor}}">
 
                           <paper-menu class="dropdown-content">
-                            <paper-item style = "color: #FF4081;">Pink (#FF4081)</paper-item>
-                            <paper-item style = "color: #7C4DFF;">Purple (#7C4DFF)</paper-item>
-                            <paper-item style = "color: #1976D2;">Blue (#1976D2)</paper-item>
-                            <paper-item style = "color: #FFEB3B;">Yellow (#FFEB3B)</paper-item>
+                            <paper-item style = "color: #FF4081;">Pink</paper-item>
+                            <paper-item style = "color: #7C4DFF;">Purple</paper-item>
+                            <paper-item style = "color: #1976D2;">Blue</paper-item>
+                            <paper-item style = "color: #FFEB3B;">Yellow</paper-item>
                           </paper-menu>
 
                         </paper-dropdown-menu>
@@ -311,6 +310,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             return ['Github'];
           }
         },
+        primaryColor: {
+          type: String
+        },
+        accentColor: {
+          type: String
+        },
         settings: {
           type: Object
         }
@@ -324,17 +329,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Read the settings from settings.json and set the values in the settings window
        */
       readSettings: function(){
-        this.settings = require('../settings.json');
+        var settingsString = this.fs.readFileSync(__dirname + '/settings.json').toString();
+        console.log(settingsString);
+        this.settings = JSON.parse(settingsString);
         // General settings
-        this.$.showRibbonOnStart.checked = this.settings.general.showRibbonOnStart;
-        this.$.autorendering.checked = this.settings.general.autorendering;
-        this.$.showWordCount.checked = this.settings.general.showWordCount;
+        this.$.showRibbonOnStart.checked = this.settings.general.showRibbonOnStart; //true
+        console.log(this.settings.general.showRibbonOnStart);
+        this.$.autorendering.checked = this.settings.general.autorendering; //true
+        console.log(this.settings.general.autorendering);
+        this.$.showWordCount.checked = this.settings.general.showWordCount; //false
+        console.log(this.settings.general.showWordCount);
         // Editor settings
         this.$.codeFolding.checked = this.settings.editor.codeFolding;
         this.$.lineNumbers.checked = this.settings.editor.lineNumbers;
         // Markdown settings...nothing for now
 
         // Theming settings
+        this.primaryColor = this.settings.theming.primaryColor;
+        this.accentColor = this.settings.theming.accentColor;
 
         // Output styles settings
       },
@@ -342,7 +354,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /*
        * Write the settings to settings.json. Settings are then read in settings-config.js to inject changes into the editor
        */
-      writeSettings: function(){
+      returnModifiedSettings: function(){
         if (!this.settings){
           console.log("settings object is not defined");
           return;
@@ -359,10 +371,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Markdown settings...nothing for now
 
         // Theming settings
+        tempSettings.theming.primaryColor = this.primaryColor;
+        tempSettings.theming.accentColor = this.accentColor;
 
         // Output styles settings
 
-        this.fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(tempSettings));
+        // this.fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(tempSettings, null, 2));
+        return tempSettings;
       },
 
       addTheme: function(){

@@ -1,7 +1,7 @@
 {
   "general": {
-    "autorendering": true,
     "showRibbonOnStart": false,
+    "autorendering": true,
     "showWordCount": true
   },
   "editor": {
@@ -12,9 +12,8 @@
 
   },
   "theming": {
-    "primaryColor": "#2196F3",
-    "darkPrimaryColor": "#303F9F",
-    "accentColor": "#FF4081"
+    "primaryColor": "Indigo",
+    "accentColor": "Pink"
   },
   "outputStyles": {
     "activeStylesheet": "/Users/Zachary/Desktop/Web Design/markdown-electron-polymer/dist/styles/marked-github.css"

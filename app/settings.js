@@ -17,7 +17,8 @@ var settings = document.getElementsByTagName('app-settings')[0];
 
 settingsClose.addEventListener('click', function(){
 
-  settings.writeSettings();
+  var newSettings = settings.returnModifiedSettings();
+  fs.writeFileSync(__dirname + '/settings.json', JSON.stringify(newSettings, null, 2));
   // Settings window
   var settingsWindow = BrowswerWindow.getFocusedWindow();
   settingsWindow.close();
@@ -34,4 +35,3 @@ settingsFullscreen.addEventListener('click', function(){
   var settingsWindow = BrowswerWindow.getFocusedWindow();
   settingsWindow.setFullScreen(!settingsWindow.isFullScreen());
 },false);
-
