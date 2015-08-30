@@ -52,14 +52,16 @@ MarkdownBehaviors.ExportBehavior = {
    * @param {String} Path to the css file to be used when rendering pdf
    */
    exportToPdf: function(markdown, path, pathToCss){
-    var html = this._getStyledHTML(markdown, pathToCss);
-    var options = {
-      format: 'Letter'
-    }
-    this.htmlToPdf.create(html, options).toFile(path, function(err, res){
-      if (err) return console.log(err);
-      console.log(res); // { filename: path } 
-    });
+     var html = this._getStyledHTML(markdown, pathToCss);
+     var options = {
+       "format": "Letter",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid
+       "orientation": "portrait", // portrait or landscape
+       "border": "1in", 
+     }
+     this.htmlToPdf.create(html, options).toFile(path, function(err, res){
+       if (err) return console.log(err);
+       console.log(res); // { filename: path }
+     });
    },
 
    /**

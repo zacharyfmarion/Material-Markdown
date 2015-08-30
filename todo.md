@@ -1,4 +1,5 @@
-# A Markdown Editor for the Material Era
+A Markdown Editor for the Material Era
+======================================
 
 > In my mind, material design represents the most cohesize and unified design philosophy currently in existence - bringing it from mobile and web settings to the desktop seems a natural and exciting step.
 

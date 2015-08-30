@@ -117,7 +117,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <div class = "fullbleed layout vertical">
       <div id = "ribbon" class = "layout horizontal">
-        <span class = "select-label" id = "themeSelectLabel">Editor Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" value = "{{theme}}"></paper-select>
+        <span class = "select-label" id = "themeSelectLabel">Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" value = "{{theme}}"></paper-select>
         <span class = "select-label">Font: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "Roboto_Mono"></paper-select>
         <span class = "select-label">Font Size: </span><paper-select id = "fontSizeSelect" items = "{{fontSizeOptions}}" initval = "14"></paper-select>
         <!-- Bold, italic, underline -->
@@ -290,6 +290,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.fontSelect.addEventListener('select-changed', this._changeFont.bind(this), false);
         this.$.fontSizeSelect.addEventListener('select-changed', this._changeFontSize.bind(this), false);
 
+        this._windowResized.bind(this);
+
         // Scroll syncing
         var scope = this;
         this.handleEditorScroll(this);
@@ -442,7 +444,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _listenForChange: function(session, scope){
         session.on('change', function() {
            scope.fire('editor-changed');
-           if (scope.autorender && !scope.fullscreen){
+           if (scope.autorender){
              scope.renderMarkdown();
            }
         });
@@ -516,17 +518,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Observe changes to fullscreen property and change this.$.marked style accordingly
        */
       _fullscreenChanged: function(){
+        // we want a sixth of padding on each side...calculated below
+        var fullscreenPadding = window.innerWidth / 6;
         if (this.fullscreen){
           this.$.marked.style.display = 'none';
+          this.showLineNumbers = false;
+
+          if (this.aceEditor){
+            this.aceEditor.renderer.setPadding(fullscreenPadding);
+          }
           this.$.launchIcon.style.transform = 'rotate(180deg)';
           this.$.launchIcon.style.left = '95%';
         }else{
           this.$.launchIcon.style.transform = '';
+          this.showLineNumbers = true;
+          if (this.aceEditor){
+            this.aceEditor.renderer.setPadding(0);
+          }
           this.$.launchIcon.style.left = '45%';
           this.$.marked.style.display = 'inline-block';
         }
         // Resize editor to account for changes
         this.resizeAceEditor();
+      },
+
+      _windowResized: function(){
+        window.addEventListener('resize', function(e){
+          if (this.fullscreen){
+            var fullscreenPadding = window.innerWidth / 6;
+            this.aceEditor.renderer.setPadding(fullscreenPadding);
+          }
+        }, false)
       },
 
       _modifyText: function(operation){

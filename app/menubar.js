@@ -7,6 +7,8 @@ var Menu = remote.require('menu');
 var dialog = remote.require('dialog');
 var clipboard = require('clipboard');
 var fs = require('fs');
+var removeMd = require('remove-markdown');
+
 var history = require('./history.json');
 
 var myBrowserWindow = BrowserWindow.getFocusedWindow();
@@ -124,15 +126,19 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'New',
         click: function(){
-          // Depends on if you are going to use tabs and routing or if this is a
-          // single window affair
+          if (editor.savedText === null || editor.savedText === editor.aceEditor.getValue()){
+            editor.filepath = null;
+            editor.aceEditor.setValue('');
+          }
         },
         accelerator: 'Command+N'
       },
       {
         label: 'New Window',
         click: function(){
-
+          var newWindow = new BrowserWindow({width: 1200, height: 800, 'min-width': 800, 'min-height': 500, frame: false});
+          // and load the index.html of the app.
+          newWindow.loadUrl('file://' + __dirname + '/index.html');
         },
         accelerator: 'Command+Shift+N'
       },
@@ -298,6 +304,15 @@ var menu = Menu.buildFromTemplate([
           clipboard.writeText(selection);
         },
         accelerator: 'Command+C'
+      },
+      {
+        label: 'Copy Plaintext',
+        click: function(){
+          var selection = editor.aceEditor.getCopyText();
+          var plaintext = removeMd(selection);
+          clipboard.writeText(plaintext);
+        },
+        accelerator: 'Command+Shift+C'
       },
       {
         label: 'Paste',
