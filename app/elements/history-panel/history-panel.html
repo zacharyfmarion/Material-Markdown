@@ -9,13 +9,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
 <dom-module id="history-panel">
   <style>
     :host {
       display: block;
     }
-
     #menu{
       position: absolute;
       top: 0;
@@ -25,51 +23,53 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: none;
       background: #fff;
     }
-
     paper-menu{
       /*height: 100%;*/
       padding-bottom: 0;
     }
-
     paper-toolbar{
       background: var(--accent-color);
     }
-
     .show-panel{
       display: block !important;
     }
-
     .sublist {
       padding-left: 20px;
       padding-right: 20px;
       padding-top: 0;
     }
-
     .submenu{
       font-size: 14px;
     }
-
+    #listmenu{
+      max-height: calc(100% - 70px);
+      overflow: scroll;
+    }
   </style>
   <template>
     <paper-material id = "menu" elevation = '2' class = 'fullbleed layout vertical'>
-      <paper-header-panel>
-        <paper-toolbar>
+      <paper-header-panel class="list-panel" drawer>
+        <paper-toolbar fixed>
           <div class="title">History</div>
           <paper-icon-button icon = 'close' on-tap = 'hide'></paper-icon-button>
         </paper-toolbar>
+        <paper-menu class="list" id = "listmenu">
+          <paper-submenu>
+            <!-- If needed add a filter / sort to get the correct order..maybe want the most recent at the top -->
+            <template is = "dom-repeat" id = "historyList" items = "{{historyItems}}">
+              <!-- Maybe use a submenu to display some of the content??? -->
+              <paper-item on-tap = '_logContent' class="menu-trigger">{{item.time}}</paper-item>
+              <paper-menu class="menu-content sublist">
+                <paper-item class = 'submenu'>{{item.preview}}</paper-item>
+                <div class="layout horizontal">
+                  <paper-button>Preview</paper-button>
+                  <paper-button>Restore</paper-button>
+                </div>
+              </paper-menu>
+            </template>
+          </paper-submenu>
+        </paper-menu>
       </paper-header-panel>
-      <paper-menu class = 'flex'>
-        <paper-submenu>
-          <!-- If needed add a filter / sort to get the correct order..maybe want the most recent at the top -->
-          <template is = "dom-repeat" id = "historyList" items = "{{historyItems}}">
-            <!-- Maybe use a submenu to display some of the content??? -->
-            <paper-item on-tap = '_logContent' class="menu-trigger">{{item.time}}</paper-item>
-            <paper-menu class="menu-content sublist">
-              <paper-item class = 'submenu'>{{item.preview}}</paper-item>
-            </paper-menu>
-          </template>
-        </paper-submenu>
-      </paper-menu>
     </paper-material>
 
   </template>
@@ -117,11 +117,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       //TODO: change this to this.push() and _then_ add to file w/ fs.writeFileSync()
 
       getHistoryItems: function(){
-        console.log(this.history[this.filepath]);
         if (this.history && this.filepath){
-          this.historyItems = this.history[this.filepath];
-          //render the changes
-          this.$.historyList.render();
+          // console.log(this.history[this.filepath]);
+          this.history = require('./history.json');
+          // if no history items
+          if (!this.historyItems){
+            this.historyItems = this.history[this.filepath];
+          }else{
+            this.push('historyItems', this.history[this.filepath][this.history[this.filepath].length-1])
+          }
         }
       },
 

@@ -21,6 +21,7 @@ Use backticks for `inline code`,
 Use three consecutive backticks for codeblocks:
 
 ```javascript
+// MM uses Highlight.js for awesome auto-highlighting
 function hello(){
   console.log("Material Markdown says hello");
 }
