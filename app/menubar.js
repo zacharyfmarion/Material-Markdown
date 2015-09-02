@@ -49,9 +49,11 @@ document.getElementById('settings').onclick = function(){
 };
 
 function updateHistory(fileName){
+  var date = new Date();
+  var now = date.toString().replace(/\sGMT.*/g, '');
   if (history[fileName]){
     history[fileName].push({
-      time: Date.now().toString(),
+      time: now,
       contents: editor.aceEditor.getValue(),
       preview: editor.aceEditor.getValue().substring(0,100) + '...'
     });
@@ -64,7 +66,7 @@ function updateHistory(fileName){
   }else{
     history[fileName] = [
       {
-        time: Date.now().toString(),
+        time: now,
         contents: editor.aceEditor.getValue(),
         preview: editor.aceEditor.getValue().substring(0,100) + '...'
       }
@@ -146,10 +148,15 @@ var menu = Menu.buildFromTemplate([
         label: 'Open',
         click: function(){
           //TODO: Handle canceling the file dialog
+          // If a file was already open, reset the historyItems to null
+          var hadDocumentOpen = (this.filepath === null) ? true : false;
           if (editor.savedText === null || editor.savedText === editor.aceEditor.getValue()){
             var files = dialog.showOpenDialog({ properties: ['openFile']});
             var file = files[0];
             editor.setFilePath(file);
+            if (hadDocumentOpen){
+              historyPanel.historyItems = null;
+            }
             //update the history panel with the current filepath
             historyPanel.filepath = file;
             historyPanel.getHistoryItems();
@@ -166,6 +173,9 @@ var menu = Menu.buildFromTemplate([
               var file = files[0];
               editor.setFilePath(file);
               //update the history panel with the current filepath
+              if (hadDocumentOpen){
+                historyPanel.historyItems = null;
+              }
               historyPanel.filepath = file;
               historyPanel.getHistoryItems();
             }else{
