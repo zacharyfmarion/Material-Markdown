@@ -20,9 +20,9 @@ Run gulp to build a distribution version
 
 Open the application using Electron:
 
-`node_modules/electron-prebuilt/dist/Electron.app/Contents/MacOS/Electron .`
+`npm start`
 
-I realize this is a bit convoluted at the moment...once a stable build is reached I will package it using Electron and provide a download link.
+Once a stable build is reached I will package it using Electron and provide a download link.
 
 ## Contributing
 
