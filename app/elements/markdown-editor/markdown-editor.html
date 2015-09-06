@@ -28,22 +28,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     @font-face {
       font-family: "Nova_Mono";
-      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+      src: url('../../../dist/fonts/Nova_Mono/NovaMono.ttf') format("truetype");
     }
 
     @font-face {
       font-family: "Share_Tech_Mono";
-      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+      src: url('../../../dist/fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf') format("truetype");
     }
 
     @font-face {
       font-family: "Source_Code_Pro";
-      src: url('../../../dist/fonts/Cutive_Mono/CutiveMono-Regular.ttf') format("truetype");
+      src: url('../../../dist/fonts/Source_Code_Pro/SourceCodePro-Regular.ttf') format("truetype");
     }
 
     @font-face {
       font-family: "Roboto_Mono";
       src: url('../../../dist/fonts/Roboto_Mono/RobotoMono-Light.ttf') format("truetype");
+      font-weight: normal;
     }
 
     @font-face {
@@ -419,7 +420,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // console.log("\n" + scope.session.getScreenLength());
           // console.log(ratio + '\n');
           // ... and apply to marked editor
-          scope.$.marked.scrollTop = ratio * scope.$.marked.scrollHeight;
+          scope.$.marked.scrollTop = ratio * (scope.$.marked.scrollHeight + 150);
         });
       },
       /*

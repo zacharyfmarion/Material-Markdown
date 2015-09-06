@@ -239,6 +239,7 @@ var menu = Menu.buildFromTemplate([
             },function(fileName){
               editor.saveFile(fileName);
               // if the file already has a revision history
+              historyPanel.filepath = fileName;
               updateHistory(fileName);
             });
           }else{
@@ -259,6 +260,7 @@ var menu = Menu.buildFromTemplate([
           },function(fileName){
             editor.saveFile(fileName);
             // if the file already has a revision history
+            historyPanel.filepath = fileName;
             updateHistory(fileName);
           });
         },
