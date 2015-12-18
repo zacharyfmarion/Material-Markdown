@@ -71,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <paper-item class = 'submenu'>{{item.preview}}</paper-item>
                 <div class="layout horizontal">
                   <paper-button>Preview</paper-button>
-                  <paper-button>Restore</paper-button>
+                  <paper-button on-tap = "restore">Restore</paper-button>
                 </div>
               </paper-menu>
               <hr>
@@ -150,6 +150,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.playAnimation('exit');
         var currList = this.$.menu.getAttribute('class');
         this.$.menu.setAttribute('class', currList.replace(' show-panel', ''));
+      },
+
+      restore: function(e){
+        var model = e.model;
+        // firing a custom event to retore the prev. version to the main editor
+        this.fire('restore-history', {contents: model.item.contents});
       },
 
       //dev function

@@ -36,6 +36,11 @@ editor.addEventListener('editor-changed', function(){
   }
 });
 
+// Restore a previous version of the document on load
+historyPanel.addEventListener('restore-history', function(e){
+  editor.aceEditor.setValue(e.detail.contents);
+});
+
 // Toggle ribbon when the toggle button is clicked
 ribbonToggle.addEventListener('click', function(){
   editor.toggleRibbon();

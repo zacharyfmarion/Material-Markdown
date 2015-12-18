@@ -45,7 +45,7 @@ document.getElementById('fullscreen').onclick = function(){
 document.getElementById('settings').onclick = function(){
   var settingsWindow = new BrowserWindow({width: 800, height: 500, 'min-width': 800, 'min-height': 500, frame: false});
   // and load the index.html of the app.
-  settingsWindow.loadUrl('file://' + __dirname + '/settings.html');
+  settingsWindow.loadURL('file://' + __dirname + '/settings.html');
 };
 
 function updateHistory(fileName){
@@ -92,7 +92,7 @@ var menu = Menu.buildFromTemplate([
         click: function(){
           var settingsWindow = new BrowserWindow({width: 800, height: 500, 'min-width': 800, 'min-height': 500, frame: false});
           // and load the index.html of the app.
-          settingsWindow.loadUrl('file://' + __dirname + '/settings.html');
+          settingsWindow.loadURL('file://' + __dirname + '/settings.html');
         }
       },
       {
@@ -140,7 +140,7 @@ var menu = Menu.buildFromTemplate([
         click: function(){
           var newWindow = new BrowserWindow({width: 1200, height: 800, 'min-width': 800, 'min-height': 500, frame: false});
           // and load the index.html of the app.
-          newWindow.loadUrl('file://' + __dirname + '/index.html');
+          newWindow.loadURL('file://' + __dirname + '/index.html');
         },
         accelerator: 'Command+Shift+N'
       },
@@ -440,42 +440,42 @@ var menu = Menu.buildFromTemplate([
         label: 'Headings',
         submenu: [
           {
-            label: "Heading 1",
+            label: 'Heading 1',
             click: function(){
               editor.insertHeader(1);
             },
             accelerator: 'Command+1'
           },
           {
-            label: "Heading 2",
+            label: 'Heading 2',
             click: function(){
               editor.insertHeader(2);
             },
             accelerator: 'Command+2'
           },
           {
-            label: "Heading 3",
+            label: 'Heading 3',
             click: function(){
               editor.insertHeader(3);
             },
             accelerator: 'Command+3'
           },
           {
-            label: "Heading 4",
+            label: 'Heading 4',
             click: function(){
               editor.insertHeader(4);
             },
             accelerator: 'Command+4'
           },
           {
-            label: "Heading 5",
+            label: 'Heading 5',
             click: function(){
               editor.insertHeader(5);
             },
             accelerator: 'Command+5'
           },
           {
-            label: "Heading 6",
+            label: 'Heading 6',
             click: function(){
               editor.insertHeader(6);
             },
