@@ -1,4 +1,6 @@
-var scope = document.querySelector('template[is="dom-bind"]');
+// Node Modules
+var remote = require('remote');
+var path = require('path');
 
 // Dom elements
 var ribbonToggle = document.getElementById('toggleRibbon');
@@ -6,7 +8,14 @@ var editor = document.getElementsByTagName('markdown-editor')[0];
 var history = document.getElementById('history');
 var title = document.getElementById('title');
 var historyPanel = document.getElementsByTagName('history-panel')[0];
-var path = require('path');
+
+// Making sure all links are opened externally
+var webcontents = remote.require('browser-window').getFocusedWindow().webContents;
+
+webcontents.on('will-navigate', function(event, url){
+  event.preventDefault(); // <-- TODO: Fix this...not working for some reason
+  require('shell').openExternal(url);
+});
 
 // helper functions
 

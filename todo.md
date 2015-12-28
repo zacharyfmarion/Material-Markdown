@@ -30,7 +30,6 @@ A Markdown Editor for the Material Era
 
 #### History
 
-
 - ~~Add revision history...saved to a separate json file...basically have it like:~~
 
 ```
@@ -57,7 +56,7 @@ A Markdown Editor for the Material Era
 - ~~Have the file saving correctly, now just need a revision inspector...modal? side panel? Not sure...~~
   - ~~Find out why history isn't working anymore...getting a type error for some reason...~~
   - Find out why history array for a document just gets reset/replaced each time you call `history[filename].push({});`
-  - Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).
+  - **Change implementation to mirror git (only save changes...have an insertions and deletions key or something, look up how git actually does it).**
 
 #### Misc
 
@@ -84,6 +83,7 @@ A Markdown Editor for the Material Era
 - Scrolling when the element is already at the bottom of its content does not scroll the entire application when in the Ace editor, but it does in the marked-element pane...find the css property that you need to change. Actually it sometimes does and sometimes doesn't in the ace editor...wierd.
 - ~~Currently the bullet and numbered list buttons do not check for whether you are selecting a whole line or really do any sort of checks...change this to avoid wierd outputs like dashes in the middle of a line.~~
 - when dragging over marked element call e.preventDefault() to stop the electron thing of filling the entire window with text.
+- Currently when you open links they open internally...they should open in a new window...
 
 ### Ideas for Future Directions
 
