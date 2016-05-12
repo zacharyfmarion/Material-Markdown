@@ -90,3 +90,12 @@ holder.ondrop = function (e) {
   }
   return false;
 };
+
+// Adding message about settings requiring a restart to take effect
+
+
+
+// Function to close the toast once settings has been opened
+function closeToast(selector){
+  document.querySelector(selector).close();
+}

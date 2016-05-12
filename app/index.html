@@ -137,6 +137,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- History Panel -->
           <history-panel></history-panel>
 
+    <!-- TODO: Make this toast visible on settings window close (or open...probably easier) -->
+    <paper-toast id="settingsWarning" text="Restart to put any changes into effect" duration = "0">
+      <span role="button" tabindex="0" style="color: #E91E63;margin: 10px" onclick="closeToast('#settings_warning')">Dismiss</span>
+    </paper-toast>
+
 
     <paper-toast id="caching-complete"
                  duration="6000"

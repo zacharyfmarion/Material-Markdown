@@ -118,6 +118,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
     <div class = "fullbleed layout vertical">
+      <!-- Editor Ribbon -->
       <div id = "ribbon" class = "layout horizontal">
         <span class = "select-label" id = "themeSelectLabel">Theme: </span><paper-select id = "themeSelect" items = "{{themeOptions}}" value = "{{theme}}"></paper-select>
         <span class = "select-label">Font: </span><paper-select id = "fontSelect" items = "{{fontOptions}}" initval = "Roboto_Mono"></paper-select>
@@ -136,6 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-icon-button class = 'self-end undoredo' icon = 'undo' on-tap = 'undo'></paper-icon-button>
         <paper-icon-button class = 'self-end undoredo' icon = 'redo' on-tap = 'redo'></paper-icon-button>
       </div>
+
       <div class="fullbleed layout horizontal wrapper flex">
         <div id = "editor" class = "flex"></div>
         <paper-icon-button icon = "launch" id = "launchIcon" on-tap = "_toggleFullscreen"></paper-icon-button>
@@ -201,8 +203,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Array,
           value: function(){
             // All ace themes...TODO: separate dark and light themes & take out ones that don't have highlighting (or different highlighting)
-            var themes = ['ambiance','chaos','chrome','clouds','clouds_midnight', 'cobalt', 'crimson_editor', 'dawn', 'dreamweaver', 'eclipse', 'github', 'idle_fingers', 'iplastic', 'katzenmilch',
-                          'kr_theme', 'kuroir', 'merbivore', 'merbivore_soft', 'mono_industrial', 'monokai', 'pastel_on_dark', 'solarized_dark', 'solarized_light', 'sqlserver', 'terminal',
+            var themes = ['ambiance','chaos','chrome','clouds','clouds_midnight', 'cobalt', 'crimson_editor', 'dawn', 'dreamweaver', 'eclipse', 'github', 'idle_fingers', 'iplastic', 'katzenmilch', 'kr_theme', 'kuroir', 'merbivore', 'merbivore_soft', 'mono_industrial', 'monokai', 'pastel_on_dark', 'solarized_dark', 'solarized_light', 'sqlserver', 'terminal',
                           'textmate', 'tomorrow', 'tomorrow_night', 'tomorrow_night_blue', 'tomorrow_night_bright', 'tomorrow_night_eighties', 'twilight', 'vibrant', 'vibrant_ink', 'xcode'];
             var final = [];
             for (var i = 0; i < themes.length; i++){

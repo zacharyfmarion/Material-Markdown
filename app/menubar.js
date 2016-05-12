@@ -90,6 +90,7 @@ var menu = Menu.buildFromTemplate([
       {
         label: 'Preferences',
         click: function(){
+          //document.getElementById('settingsWarning').open(); //open a toast warning user about saving settings changes
           var settingsWindow = new BrowserWindow({width: 800, height: 500, 'min-width': 800, 'min-height': 500, frame: false});
           // and load the index.html of the app.
           settingsWindow.loadURL('file://' + __dirname + '/settings.html');
